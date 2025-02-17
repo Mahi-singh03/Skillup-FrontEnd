@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, DatePicker, Form, Input, Select, message } from 'antd';
+import { Button, DatePicker, Form, Input, Select, Radio, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import './Styles/StudentRegistrationForm.css';
 
@@ -54,6 +54,14 @@ const StudentRegistrationForm = () => {
           <Input />
         </Form.Item>
 
+        <Form.Item label="Gender" name="gender" rules={[{ required: true, message: 'Gender selection is required' }]}>
+          <Radio.Group>
+            <Radio value="Male">Male</Radio>
+            <Radio value="Female">Female</Radio>
+            <Radio value="Other">Other</Radio>
+          </Radio.Group>
+        </Form.Item>
+
         <Form.Item label="Email" name="emailAddress" rules={[{ required: true, type: 'email', message: 'Enter a valid email' }]}>
           <Input />
         </Form.Item>
@@ -72,7 +80,7 @@ const StudentRegistrationForm = () => {
 
         <Form.Item label="Course" name="selectedCourse" rules={[{ required: true, message: 'Course selection is required' }]}>
           <Select>
-            {['HTML, CSS, JS', 'React', 'MERN FullStack', 'Autocad', 'CorelDRAW', 'Tally', 'Premier Pro', 'Wordpress', 'Computer Course', 'MS Office', 'PTE'].map((course) => (
+            {['HTML, CSS, JS', 'React', 'MERN FullStack', 'Autocad', 'CorelDRAW', 'Tally', 'Premier Pro', 'WordPress', 'Computer Course', 'MS Office', 'PTE'].map((course) => (
               <Option key={course} value={course}>{course}</Option>
             ))}
           </Select>

@@ -1,0 +1,94 @@
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Profile Container */
+.profile-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 130px;
+    min-width: 100%;
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Profile Avatar */
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #4caf50;
+    object-fit: cover;
+}
+
+/* Section Titles */
+.section-title {
+    margin: 20px 0 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333333;
+    padding: 40px;
+}
+
+/* TextField Styling */
+.MuiTextField-root {
+    background-color: #fafafa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root {
+    border-radius: 8px;
+    background-color: #fafafa;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.MuiInputBase-root {
+    font-size: 16px;
+}
+
+/* Focus State for Input Fields */
+.MuiOutlinedInput-root.Mui-focused {
+    border-color: #4caf50;
+}
+
+/* Highlighted Field */
+.highlighted-field .MuiOutlinedInput-root {
+    border-color: #ff9800;
+}
+
+/* Grid System for Layout */
+.MuiGrid-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-container {
+        padding: 15px;
+    }
+
+    .section-title {
+        font-size: 1.125rem;
+    }
+}
