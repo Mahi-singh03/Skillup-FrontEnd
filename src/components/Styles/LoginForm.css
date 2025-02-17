@@ -1,12 +1,14 @@
 /* Login Form Specific Styles */
+
 .login-form-container {
     width: 580px;
     margin: auto;
     padding: 2rem;
-    background: #fff;
+    background: rgb(227, 240, 243);
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    
   }
   
   .login-form-title {

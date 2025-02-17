@@ -37,8 +37,9 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-form-container">
-      <h2 className="login-form-title">Login</h2>
+    <div className="login-form-container-Main">
+      <div className="login-form-container">
+      <h2 className="login-form-title">Student Login</h2>
       <Form name="login" initialValues={{ remember: true }} onFinish={onFinish} validateTrigger="onSubmit" className="login-responsive-form">
         <Form.Item name="emailAddress" rules={[{ required: true, type: 'email', message: 'Please input a valid Email Address!' }]}>
           <Input prefix={<MailOutlined />} placeholder="Email Address" className="login-input" />
@@ -62,6 +63,7 @@ const LoginForm = () => {
           </Button>
         </Form.Item>
       </Form>
+    </div>
     </div>
   );
 };
