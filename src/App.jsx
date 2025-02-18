@@ -12,7 +12,7 @@ import "./App.css";
 const LandingPage = lazy(() => import("./components/LandingPage.jsx"));
 const Home = lazy(() => import("./components/Home.jsx"));
 const StudentRegistrationForm = lazy(() => import("./components/Register.jsx"));
-const LoginForm = lazy(() => import("./components/login.jsx"));
+const LoginForm = lazy(() => import("./components/Login.jsx"));
 const WeeklyExams = lazy(() => import("./components/Exams/WeeklyExams.jsx"));
 
 function App() {
