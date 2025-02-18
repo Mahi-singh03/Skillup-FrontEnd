@@ -8,7 +8,7 @@ const LandingPage = () => {
       {/* Background Video */}
       <video autoPlay muted loop className="background-video">
         <source 
-          src="https://res.cloudinary.com/dufxj1sau/video/upload/v1739861593/nx8mlzhznvaqoxwbnfie.mp4" 
+          src="https://res.cloudinary.com/dufxj1sau/video/upload/v1739862494/ajwd4afaajbbzoisuswg.mp4" 
           type="video/mp4" 
         />
       </video>
