@@ -1,14 +1,101 @@
-.question-container {
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
+/* General Exam Layout */
+.exam-container {
+  min-width: 1200px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+  padding-top: 100px;
 }
 
+/* Header */
+.exam-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.exam-title {
+  font-size: 44px;
+  font-weight: bold;
+}
+
+.timer {
+  font-size: 28px;
+  font-weight: bold;
+  background: #ffeb3b;
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  background: #e0e0e0;
+  border-radius: 5px;
+  height: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #007bff;
+  border-radius: 5px;
+  transition: width 0.3s;
+}
+
+.progress-text {
+  font-size: 44px;
+  padding-top: 20px;
+  margin-bottom: 100px;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  background: #ffdddd;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  text-align: center;
+
+}
+
+/* Grid Layout */
+.question-grid {
+  padding-top: 100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+/* Question Card */
+.question-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.question-card:hover {
+  transform: scale(1.02);
+}
+
+.question-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Options */
 .options-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 20px 0;
 }
 
 .option {
@@ -22,19 +109,38 @@
 }
 
 .option:hover {
-  background-color: #f5f5f5;
+  background: #f5f5f5;
 }
 
+/* Submit Button */
 .submit-button {
-  padding: 10px 20px;
-  background-color: #007bff;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .submit-button:disabled {
-  background-color: #cccccc;
+  background: #ccc;
   cursor: not-allowed;
-} 
+}
+
+/* Result Box */
+.result-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f8f8;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.result-box h2 {
+  font-size: 20px;
+  font-weight: bold;
+}

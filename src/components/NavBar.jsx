@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { Menu, X, ChevronDown, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import lgLogo from "../assets/FINAL lg LOGO.svg";
@@ -8,13 +9,36 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState({});
-  
-  const secondaryMenuItems = ["Home", "Courses", "Register", "About", "Gallery", "Login", "Logout"];
+
+  const secondaryMenuItems = [
+    { name: "Home", path: "/Home" },
+    { name: "Courses", path: "/Courses" },
+    { name: "Register", path: "/Register" },
+    { name: "About", path: "/About" },
+    { name: "Gallery", path: "/Gallery" },
+    { name: "Login", path: "/Login" },
+    { name: "Logout", path: "/Logout" },
+  ];
+
   const dropdowns = [
-    { name: "Exams", options: ["Exam Instruction", "Exam Result", "Weekly Exam","Final Exam"] },
-    { name: "Verification", options: ["Verify Student", "Verify Staff"] },
-    { name: "Resources", options: ["Syllabus", "Study Material"] },
-    { name: "Job", options: ["Career Guidance", "Job Apply"] },
+    { name: "Exams", options: [
+      { name: "Exam Instruction", path: "/Exams/Exam-Instruction" },
+      { name: "Exam Result", path: "/Exams/Exam-Result" },
+      { name: "Weekly Exam", path: "/Exams/Weekly-Exam" },
+      { name: "Final Exam", path: "/Exams/Final-Exam" }
+    ]},
+    { name: "Verification", options: [
+      { name: "Verify Student", path: "/Verification/Verify-Student" },
+      { name: "Verify Staff", path: "/Verification/Verify-Staff" }
+    ]},
+    { name: "Resources", options: [
+      { name: "Syllabus", path: "/Resources/Syllabus" },
+      { name: "Study Material", path: "/Resources/Study-Material" }
+    ]},
+    { name: "Job", options: [
+      { name: "Career Guidance", path: "/Job/Career-Guidance" },
+      { name: "Job Apply", path: "/Job/Job-Apply" }
+    ]}
   ];
 
   const handleDropdownClick = (name) => {
@@ -32,11 +56,11 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="container mx-auto flex justify-between items-center p-4">
-        {/* Logo section */}
-        <div className="flex-shrink-0">
+        {/* Logo */}
+        <Link to="/">
           <img src={lgLogo} alt="Large Logo" className="hidden lg:block object-cover w-auto h-12" />
           <img src={smLogo} alt="Small Logo" className="block lg:hidden object-cover w-auto h-12" />
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex space-x-6 items-center">
@@ -59,25 +83,29 @@ export default function Navbar() {
                     className="absolute left-0 mt-2 w-48 bg-white shadow-md rounded-lg overflow-hidden"
                   >
                     {dropdown.options.map((option) => (
-                      <a key={option} href={`#${option.toLowerCase().replace(/ /g, "-")}`} className="block px-4 py-2 hover:bg-gray-100 transition">
-                        {option}
-                      </a>
+                      <NavLink 
+                        key={option.name} 
+                        to={option.path} 
+                        className="block px-4 py-2 hover:bg-gray-100 transition"
+                      >
+                        {option.name}
+                      </NavLink>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
           ))}
-          <button className="text-gray-700 hover:text-blue-400 transition">
+          <NavLink to="/Profile" className="text-gray-700 hover:text-blue-400 transition">
             <User size={28} />
-          </button>
+          </NavLink>
         </div>
 
-        {/* Mobile Menu Button - Visible on md and smaller */}
+        {/* Mobile Menu Button */}
         <div className="lg:hidden flex items-center space-x-4">
-          <button className="text-gray-700 hover:text-blue-400 transition">
+          <NavLink to="/Profile" className="text-gray-700 hover:text-blue-400 transition">
             <User size={28} />
-          </button>
+          </NavLink>
           <button className="text-gray-700 focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -87,9 +115,13 @@ export default function Navbar() {
       {/* Secondary Navbar */}
       <div className="hidden lg:flex bg-gray-100 p-2 justify-center shadow-md">
         {secondaryMenuItems.map((item) => (
-          <a key={item} href={`#${item.toLowerCase()}`} className="mx-4 text-gray-700 hover:text-blue-400 transition">
-            {item}
-          </a>
+          <NavLink 
+            key={item.name} 
+            to={item.path} 
+            className={({ isActive }) => isActive ? "mx-4 text-blue-500 font-bold transition" : "mx-4 text-gray-700 hover:text-blue-400 transition"}
+          >
+            {item.name}
+          </NavLink>
         ))}
       </div>
 
@@ -106,28 +138,15 @@ export default function Navbar() {
             <button className="absolute top-5 right-5 text-gray-700" onClick={() => setIsOpen(false)}>
               <X size={28} />
             </button>
-            {dropdowns.map((dropdown) => (
-              <div key={dropdown.name} className="w-full text-center">
-                <button className="w-full py-2 text-lg font-semibold text-gray-700 hover:text-blue-400 bg-gray-200 border-b" onClick={() => handleMobileDropdown(dropdown.name)}>
-                  {dropdown.name} <ChevronDown size={16} className={`ml-1 transform ${mobileDropdownOpen[dropdown.name] ? "rotate-180" : "rotate-0"} transition`} />
-                </button>
-                <AnimatePresence>
-                  {mobileDropdownOpen[dropdown.name] && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden bg-gray-100">
-                      {dropdown.options.map((option) => (
-                        <a key={option} href={`#${option.toLowerCase().replace(/ /g, "-")}`} className="block px-4 py-2 hover:bg-gray-200 transition">
-                          {option}
-                        </a>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
             {secondaryMenuItems.map((item) => (
-              <motion.a key={item} href={`#${item.toLowerCase()}`} className="block py-4 text-lg text-gray-700 hover:text-blue-400 transition" onClick={() => setIsOpen(false)}>
-                {item}
-              </motion.a>
+              <NavLink 
+                key={item.name} 
+                to={item.path} 
+                className="block py-4 text-lg text-gray-700 hover:text-blue-400 transition"
+                onClick={() => setIsOpen(false)}
+              >
+                {item.name}
+              </NavLink>
             ))}
           </motion.div>
         )}

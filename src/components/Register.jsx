@@ -27,7 +27,7 @@ const StudentRegistrationForm = () => {
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data));
         message.success('Registration successful!');
-        navigate('/', { replace: true });
+        navigate('/Profile', { replace: true });
       } else {
         message.error(data.message || 'Registration failed.');
       }

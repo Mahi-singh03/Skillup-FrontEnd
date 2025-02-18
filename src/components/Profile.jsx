@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Paper, Typography, Avatar, TextField } from '@mui/material';
+import { Container, Grid, Paper, Typography, Avatar, TextField, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import './Styles/Profile.css';
 
 const Profile = () => {
     const [studentData, setStudentData] = useState({});
     const [profilePic, setProfilePic] = useState(localStorage.getItem('profilePic') || '/placeholder-profile.png');
+    const navigate = useNavigate();
 
     useEffect(() => {
         try {
@@ -81,6 +83,17 @@ const Profile = () => {
                         </Grid>
                     ))}
                 </Grid>
+                
+                {/* Navigate to Weekly Exam Button */}
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    fullWidth 
+                    style={{ marginTop: '20px' }}
+                    onClick={() => navigate('/Exams/Weekly-Exam')}
+                >
+                    Go to Weekly Exam
+                </Button>
             </Paper>
         </Container>
     );
