@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaHome, FaBook, FaImage, FaUserPlus, FaInfoCircle, FaPhoneAlt, FaUserCheck, FaBriefcase, FaSignInAlt, FaChalkboardTeacher, FaGraduationCap } from "react-icons/fa";
-import "./Styles/Landing-Page.css";
+import "./Styles/Landing-page.css";
 
 const LandingPage = () => {
   return (
