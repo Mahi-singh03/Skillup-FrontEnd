@@ -76,6 +76,116 @@ const questions = [
     ],
     answer: "Looks up a value in a vertical column and returns a corresponding value",
   },
+  {
+    question: "In Excel, which of the following is not a valid chart type?",
+    options: ["Line Chart", "Pie Chart", "Diagram Chart", "Column Chart"],
+    answer: "Diagram Chart",
+  },
+  {
+    question: "Which function returns the highest value from a range of numbers?",
+    options: ["MIN", "MAX", "AVERAGE", "SUM"],
+    answer: "MAX",
+  },
+  {
+    question: "What is the default view in PowerPoint when you open a new presentation?",
+    options: ["Slide Sorter View", "Normal View", "Outline View", "Reading View"],
+    answer: "Normal View",
+  },
+  {
+    question: "Which feature allows you to apply motion effects to objects on a slide?",
+    options: ["Transitions", "Animations", "Slide Master", "Themes"],
+    answer: "Animations",
+  },
+  {
+    question: "In PowerPoint, which shortcut key is used to start the slideshow from the beginning?",
+    options: ["F5", "Shift + F5", "Ctrl + S", "Alt + Enter"],
+    answer: "F5",
+  },
+  {
+    question: "What is the default ledger created in Tally?",
+    options: ["Cash and Bank", "Profit & Loss Account", "Capital Account", "Sundry Creditors"],
+    answer: "Profit & Loss Account",
+  },
+  {
+    question: "What is the shortcut to create a new ledger in Tally?",
+    options: ["Alt + C", "Ctrl + N", "Alt + L", "Ctrl + L"],
+    answer: "Alt + C",
+  },
+  {
+    question: "What is the full form of ERP in Tally?",
+    options: [
+      "Enterprise Resource Processing",
+      "Enterprise Resource Planning",
+      "Enhanced Resource Planning",
+      "Enterprise Revenue Planning",
+    ],
+    answer: "Enterprise Resource Planning",
+  },
+  {
+    question: "In Tally, which voucher type is used for recording purchase transactions?",
+    options: ["Payment Voucher", "Receipt Voucher", "Purchase Voucher", "Journal Voucher"],
+    answer: "Purchase Voucher",
+  },
+  {
+    question: "Which of the following is not an accounting feature in Tally?",
+    options: ["Inventory Management", "Cost Center", "Ledger Management", "Payroll Processing"],
+    answer: "Payroll Processing",
+  },
+  {
+    question: "In Tally, what does the 'Gateway of Tally' screen provide access to?",
+    options: [
+      "Company Information",
+      "Accounting and Inventory Features",
+      "Reports and Statements",
+      "All of the above",
+    ],
+    answer: "All of the above",
+  },
+  {
+    question: "What is the shortcut key to open the Balance Sheet in Tally?",
+    options: ["F9", "F10", "F12", "F1"],
+    answer: "F9",
+  },
+  {
+    question: "The speed of a processor is measured in:",
+    options: ["Bytes", "Hertz (Hz)", "Bits", "Pixels"],
+    answer: "Hertz (Hz)",
+  },
+  {
+    question: "Which part of the computer is responsible for executing instructions of a program?",
+    options: ["RAM", "CPU", "Hard", "Control unit"],
+    answer: "CPU",
+  },
+  {
+    question: "What does IP stand for in networking?",
+    options: ["Internet Process", "Internet Protocol", "Internal Program", "Internet Provider"],
+    answer: "Internet Protocol",
+  },
+  {
+    question: "Which device is used to connect multiple networks together?",
+    options: ["Switch", "Router", "Hub", "Modem"],
+    answer: "Router",
+  },
+  {
+    question: "Which of the following is a private IP address?",
+    options: ["192.168.1.1", "8.8.8.8", "172.217.0.1", "208.67.222.222"],
+    answer: "192.168.1.1",
+  },
+  {
+    question: "What does DNS stand for?",
+    options: ["Domain Name System", "Data Network Service", "Digital Name Server", "Dynamic Network System"],
+    answer: "Domain Name System",
+  },
+  {
+    question: "What does HTTPS stand for?",
+    options: [
+      "HyperText Transfer Private Server",
+      "High Transmission Transfer Protocol Secure",
+      "HyperText Transfer Protocol Secure",
+      "Hybrid Transmission Technology System",
+    ],
+    answer: "HyperText Transfer Protocol Secure",
+  },
 ];
 
 const Question = ({ currentQuestion, onAnswerSubmit }) => {

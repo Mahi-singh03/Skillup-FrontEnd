@@ -36,7 +36,6 @@
   margin-bottom: 20px;
   position: relative;
   padding-top: 20px;
-  margin-bottom: 20px;
 }
 
 .progress-bar {
@@ -60,7 +59,6 @@
   margin-bottom: 15px;
   border-radius: 5px;
   text-align: center;
-
 }
 
 /* Grid Layout */
@@ -135,12 +133,34 @@
 .result-box {
   margin-top: 20px;
   padding: 20px;
-  background: #f8f8f8;
+  background: #cee6e7;
   border-radius: 5px;
   text-align: center;
+  font-size: 69px;
 }
 
 .result-box h2 {
   font-size: 20px;
+  font-weight: bold;
+}
+
+/* Correct and Incorrect Answer Highlighting */
+.correct {
+  border: 2px solid #4caf50 !important;
+  background-color: #e8f5e9;
+}
+
+.wrong {
+  border: 2px solid #f44336 !important;
+  background-color: #ffebee;
+}
+
+.correct-answer {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.wrong-answer {
+  color: #f44336;
   font-weight: bold;
 }
