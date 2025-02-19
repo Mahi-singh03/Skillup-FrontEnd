@@ -23,7 +23,6 @@ const LandingPage = () => {
           <div className="dropdown">
             <button className="btn"><FaGraduationCap className="icon" /> Exam</button>
             <div className="dropdown-content">
-              <Link to="/Exams/Exam-Instruction">Exam Instructions</Link>
               <Link to="/Exams/Weekly-Exam">Weekly Exam</Link>
               <Link to="/Exams/Exam-Result">Exam Result</Link>
               <Link to="/Exams/Final-Exam">Final Exams</Link>
