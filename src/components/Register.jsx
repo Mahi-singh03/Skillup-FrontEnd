@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react'; // Added useContext
 import { Button, DatePicker, Form, Input, Select, Radio, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs'; // Ensure date format compatibility
+import dayjs from 'dayjs';
+import { UserContext } from "../utils/components/UserContext"; // Ensure correct import path
 import './Styles/StudentRegistrationForm.css';
 
 const { Option } = Select;
@@ -10,12 +11,13 @@ const StudentRegistrationForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { handleLogin } = useContext(UserContext); // Get handleLogin from context
 
   useEffect(() => {
     try {
       const user = localStorage.getItem('user');
       if (user && JSON.parse(user)) {
-        navigate('/', { replace: true });
+        navigate('/profile', { replace: true }); // Updated to '/profile'
       }
     } catch (error) {
       console.error('Error checking user login:', error);
@@ -25,7 +27,6 @@ const StudentRegistrationForm = () => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      // Convert DatePicker value to a string (YYYY-MM-DD) before sending to backend
       const formattedValues = {
         ...values,
         dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null,
@@ -43,9 +44,9 @@ const StudentRegistrationForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('user', JSON.stringify(data));
+        handleLogin(data); // Use context method to update state
         message.success('Registration successful!');
-        navigate('/Profile', { replace: true });
+        navigate('/profile', { replace: true }); // Updated to '/profile'
       } else {
         message.error(data.message || 'Registration failed.');
       }
@@ -56,6 +57,7 @@ const StudentRegistrationForm = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="form-container">

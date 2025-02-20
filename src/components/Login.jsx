@@ -1,71 +1,70 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Form, Input, message } from 'antd';
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import './Styles/LoginForm.css';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../utils/components/UserContext";
+import { message } from "antd";
+import "./Styles/LoginForm.css";
 
-const LoginForm = () => {
-  const [loading, setLoading] = useState(false);
+const Login = () => {
+  const { handleLogin } = useContext(UserContext);
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (localStorage.getItem('user')) navigate('/');
-  }, [navigate]);
-
-  const onFinish = async (values) => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
+
     try {
-      const response = await fetch('http://localhost:5000/api/students/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
-      
+      const response = await fetch(
+        "https://skillup-backend-production.up.railway.app/api/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('user', JSON.stringify(data));
-        message.success('Login successful!');
-        navigate('/', { replace: true });
+        handleLogin(data);
+        message.success("Login successful!");
+        navigate("/profile");
       } else {
-        message.error(data.message || 'Login failed.');
+        message.error(data.message || "Login failed.");
       }
-    } catch {
-      message.error('An error occurred. Please try again.');
+    } catch (error) {
+      console.error("Login error:", error);
+      message.error("An error occurred.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-form-container-Main">
-      <div className="login-form-container">
-      <h2 className="login-form-title">Student Login</h2>
-      <Form name="login" initialValues={{ remember: true }} onFinish={onFinish} validateTrigger="onSubmit" className="login-responsive-form">
-        <Form.Item name="emailAddress" rules={[{ required: true, type: 'email', message: 'Please input a valid Email Address!' }]}>
-          <Input prefix={<MailOutlined />} placeholder="Email Address" className="login-input" />
-        </Form.Item>
-
-        <Form.Item name="password" rules={[{ required: true, message: 'Please input your Password!' }]}>
-          <Input.Password prefix={<LockOutlined />} placeholder="Password" className="login-input-password" />
-        </Form.Item>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block className="login-btn">
-            {loading ? 'Logging in...' : 'Log in'}
-          </Button>
-        </Form.Item>
-
-        <div className="login-or-divider">OR</div>
-
-        <Form.Item>
-          <Button type="default" block onClick={() => navigate('/register')} className="login-btn">
-            Register Now
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={onSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default Login;

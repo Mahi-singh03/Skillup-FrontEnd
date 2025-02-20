@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import ScrollToTop from "./utils/components/ScrollToTop.jsx";
 import Loader from "./utils/loader.jsx";
 import MainLayout from "./Layouts/MainLayout.jsx";
-
+import { UserProvider} from "./utils/components/UserContext.jsx";
 import Profile from "./components/Profile.jsx";
 
 import "./App.css";
@@ -17,7 +17,8 @@ const WeeklyExams = lazy(() => import("./components/Exams/WeeklyExams.jsx"));
 
 function App() {
   return (
-    <BrowserRouter>
+   <UserProvider>
+     <BrowserRouter>
       <ScrollToTop />
       <Suspense fallback={<Loader />}>
         <Routes>
@@ -65,6 +66,7 @@ function App() {
         </Routes>
       </Suspense>
     </BrowserRouter>
+    </UserProvider>
   );
 }
 
