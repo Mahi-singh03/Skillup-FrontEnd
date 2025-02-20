@@ -1,6 +1,5 @@
 .home-container {
-   
-    width: 100vw;
-    height: 100vh;
-    padding-top: 90px;
-  }
+    background-color: aliceblue;
+    min-width: 100vb;
+    min-height: 100vh;
+    display: flex;}

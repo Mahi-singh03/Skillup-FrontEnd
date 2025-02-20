@@ -1,13 +1,16 @@
 /* Login Form Specific Styles */
-
+.Container{
+  border-radius: 20px;
+}
 .login-form-container {
     width: 580px;
     margin: auto;
     padding: 2rem;
     background: rgb(227, 240, 243);
-    border-radius: 10px;
+    border-radius: 30px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+   margin-top:180px ;
     
   }
   
@@ -69,6 +72,7 @@
     .login-form-container {
       width: 90%;
       padding: 1.5rem;
+      
     }
   
     .login-input,

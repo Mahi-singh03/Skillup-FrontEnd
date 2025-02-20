@@ -9,15 +9,25 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setIsAuthenticated(!!user);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsAuthenticated(false);
+  };
 
   const secondaryMenuItems = [
     { name: "Home", path: "/Home" },
     { name: "Courses", path: "/Courses" },
-    { name: "Register", path: "/Register" },
+    ...(isAuthenticated ? [] : [{ name: "Register", path: "/Register" }, { name: "Login", path: "/Login" }]),
     { name: "About", path: "/About" },
     { name: "Gallery", path: "/Gallery" },
-    { name: "Login", path: "/Login" },
-    { name: "Logout", path: "/Logout" },
+    ...(isAuthenticated ? [{ name: "Logout", path: "#" }] : []),
   ];
 
   const dropdowns = [
@@ -43,10 +53,6 @@ export default function Navbar() {
 
   const handleDropdownClick = (name) => {
     setActiveDropdown(activeDropdown === name ? null : name);
-  };
-
-  const handleMobileDropdown = (name) => {
-    setMobileDropdownOpen((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
   useEffect(() => {
@@ -99,6 +105,11 @@ export default function Navbar() {
           <NavLink to="/Profile" className="text-gray-700 hover:text-blue-400 transition">
             <User size={28} />
           </NavLink>
+          {isAuthenticated && (
+            <button onClick={handleLogout} className="text-gray-700 hover:text-red-400 transition">
+              Logout
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -114,15 +125,21 @@ export default function Navbar() {
 
       {/* Secondary Navbar */}
       <div className="hidden lg:flex bg-gray-100 p-2 justify-center shadow-md">
-        {secondaryMenuItems.map((item) => (
-          <NavLink 
-            key={item.name} 
-            to={item.path} 
-            className={({ isActive }) => isActive ? "mx-4 text-blue-500 font-bold transition" : "mx-4 text-gray-700 hover:text-blue-400 transition"}
-          >
-            {item.name}
-          </NavLink>
-        ))}
+        {secondaryMenuItems.map((item) =>
+          item.name === "Logout" ? (
+            <button key={item.name} onClick={handleLogout} className="mx-4 text-gray-700 hover:text-red-400 transition">
+              Logout
+            </button>
+          ) : (
+            <NavLink
+              key={item.name}
+              to={item.path}
+              className={({ isActive }) => (isActive ? "mx-4 text-blue-500 font-bold transition" : "mx-4 text-gray-700 hover:text-blue-400 transition")}
+            >
+              {item.name}
+            </NavLink>
+          )
+        )}
       </div>
 
       {/* Mobile Menu */}
@@ -138,16 +155,22 @@ export default function Navbar() {
             <button className="absolute top-5 right-5 text-gray-700" onClick={() => setIsOpen(false)}>
               <X size={28} />
             </button>
-            {secondaryMenuItems.map((item) => (
-              <NavLink 
-                key={item.name} 
-                to={item.path} 
-                className="block py-4 text-lg text-gray-700 hover:text-blue-400 transition"
-                onClick={() => setIsOpen(false)}
-              >
-                {item.name}
-              </NavLink>
-            ))}
+            {secondaryMenuItems.map((item) =>
+              item.name === "Logout" ? (
+                <button key={item.name} onClick={handleLogout} className="block py-4 text-lg text-gray-700 hover:text-red-400 transition">
+                  Logout
+                </button>
+              ) : (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  className="block py-4 text-lg text-gray-700 hover:text-blue-400 transition"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </NavLink>
+              )
+            )}
           </motion.div>
         )}
       </AnimatePresence>

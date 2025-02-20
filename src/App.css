@@ -2,9 +2,7 @@
 
 
 #root {
-  display: block;
-  justify-content: center;
-  align-items: center; 
-  display: flex;
+ min-width: 100vw;
+ min-height: 100vh;
 }
 
