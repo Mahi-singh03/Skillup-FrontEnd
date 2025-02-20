@@ -3,7 +3,11 @@
   min-width: 1200px;
   margin: auto;
   font-family: Arial, sans-serif;
-  padding-top: 100px;
+  padding-top: 15%;
+
+  margin-left: 40%;
+  margin-right: -50px;
+  
 }
 
 /* Header */
