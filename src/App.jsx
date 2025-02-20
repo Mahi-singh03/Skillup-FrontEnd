@@ -1,10 +1,8 @@
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./utils/components/ScrollToTop.jsx";
 import Loader from "./utils/loader.jsx";
 import MainLayout from "./Layouts/MainLayout.jsx";
-
-import Profile from "./components/Profile.jsx";
 
 import "./App.css";
 
@@ -14,6 +12,7 @@ const Home = lazy(() => import("./components/Home.jsx"));
 const StudentRegistrationForm = lazy(() => import("./components/Register.jsx"));
 const LoginForm = lazy(() => import("./components/Login.jsx"));
 const WeeklyExams = lazy(() => import("./components/Exams/WeeklyExams.jsx"));
+const Profile = lazy(() => import("./components/Profile.jsx"));
 
 function App() {
   return (
@@ -22,48 +21,50 @@ function App() {
       <Suspense fallback={<Loader />}>
         <Routes>
           {/* Landing Page (No Navbar) */}
-          <Route path="/" element={<LandingPage />} key="landing-page" />
+          <Route path="/" element={<LandingPage />} />
 
           {/* Routes with Navbar inside MainLayout */}
-          <Route element={<MainLayout />} key="main-layout">
-            <Route path="/Home" element={<Home />} key="home" />
-            <Route path="/Courses" element={<h1>Courses</h1>} key="courses" />
-            <Route path="/Register" element={<StudentRegistrationForm />} key="register" />
-            <Route path="/About" element={<h1>About</h1>} key="about" />
-            <Route path="/Gallery" element={<h1>Gallery</h1>} key="gallery" />
-            <Route path="/Profile" element={<Profile />} key="profile" />
-            <Route path="/Login" element={<LoginForm />} key="login" />
-            <Route path="/Logout" element={<h1>Logout</h1>} key="logout" />
+          <Route element={<MainLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/courses" element={<h1>Courses</h1>} />
+            <Route path="/register" element={<StudentRegistrationForm />} />
+            <Route path="/about" element={<h1>About</h1>} />
+            <Route path="/gallery" element={<h1>Gallery</h1>} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/logout" element={<h1>Logout</h1>} />
 
             {/* Exams Section */}
-            <Route path="/Exams/Exam-Instruction" element={<h1>Exam Instruction</h1>} key="exam-instruction" />
-            <Route path="/Exams/Exam-Result" element={<h1>Exam Result</h1>} key="exam-result" />
-            <Route path="/Exams/Weekly-Exam" element={<WeeklyExams />} key="weekly-exam" />
-            <Route path="/Exams/Final-Exam" element={<h1>Final Exam</h1>} key="final-exam" />
+            <Route path="/exams/exam-instruction" element={<h1>Exam Instruction</h1>} />
+            <Route path="/exams/exam-result" element={<h1>Exam Result</h1>} />
+            <Route path="/exams/weekly-exam" element={<WeeklyExams />} />
+            <Route path="/exams/final-exam" element={<h1>Final Exam</h1>} />
 
             {/* Verification Section */}
-            <Route path="/Verification/Verify-Student" element={<h1>Verify Student</h1>} key="verify-student" />
-            <Route path="/Verification/Verify-Staff" element={<h1>Verify Staff</h1>} key="verify-staff" />
+            <Route path="/verification/verify-student" element={<h1>Verify Student</h1>} />
+            <Route path="/verification/verify-staff" element={<h1>Verify Staff</h1>} />
 
             {/* Resources Section */}
-            <Route path="/Resources/Syllabus" element={<h1>Syllabus</h1>} key="syllabus" />
-            <Route path="/Resources/Study-Material" element={<h1>Study Material</h1>} key="study-material" />
+            <Route path="/resources/syllabus" element={<h1>Syllabus</h1>} />
+            <Route path="/resources/study-material" element={<h1>Study Material</h1>} />
 
             {/* Job Section */}
-            <Route path="/Job/Career-Guidance" element={<h1>Career Guidance</h1>} key="career-guidance" />
-            <Route path="/Job/Job-Apply" element={<h1>Job Apply</h1>} key="job-apply" />
+            <Route path="/job/career-guidance" element={<h1>Career Guidance</h1>} />
+            <Route path="/job/job-apply" element={<h1>Job Apply</h1>} />
 
             {/* Admin Section */}
-            <Route path="/Admin/Dashboard" element={<h1>Dashboard</h1>} key="dashboard" />
-            <Route path="/Admin/Manage-Users" element={<h1>Manage Users</h1>} key="manage-users" />
-            <Route path="/Admin/Manage-Courses" element={<h1>Manage Courses</h1>} key="manage-courses" />
-            <Route path="/Admin/Manage-Exams" element={<h1>Manage Exams</h1>} key="manage-exams" />
-            <Route path="/Admin/Manage-Resources" element={<h1>Manage Resources</h1>} key="manage-resources" />
-            <Route path="/Admin/Student-Attendence" element={<h1>Student Attendance</h1>} key="student-attendance" />
-            <Route path="/Admin/Staff-Attendence" element={<h1>Staff Attendance</h1>} key="staff-attendance" />
+            <Route path="/admin/dashboard" element={<h1>Dashboard</h1>} />
+            <Route path="/admin/manage-users" element={<h1>Manage Users</h1>} />
+            <Route path="/admin/manage-courses" element={<h1>Manage Courses</h1>} />
+            <Route path="/admin/manage-exams" element={<h1>Manage Exams</h1>} />
+            <Route path="/admin/manage-resources" element={<h1>Manage Resources</h1>} />
+            <Route path="/admin/student-attendance" element={<h1>Student Attendance</h1>} />
+            <Route path="/admin/staff-attendance" element={<h1>Staff Attendance</h1>} />
           </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>
   );
 }
+
+export default App;
