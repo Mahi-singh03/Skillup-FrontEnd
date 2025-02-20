@@ -32,7 +32,7 @@ const LandingPage = () => {
       </video>
       <video autoPlay muted loop playsInline className="background-video mobile">
         <source
-          src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740037598/Background_videos/nxjeb5g8u023jwgm4qsx.mp4"
+          src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740038221/Background_videos/p3e102ttunokguxhceih.mp4"
           type="video/mp4"
         />
       </video>
