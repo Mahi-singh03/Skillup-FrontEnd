@@ -1,25 +1,30 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaBook, FaImage, FaUserPlus, FaInfoCircle, FaPhoneAlt, FaUserCheck, FaBriefcase, FaSignInAlt, FaChalkboardTeacher, FaGraduationCap } from "react-icons/fa";
+import { FaHome, FaBook, FaImage, FaUserPlus, FaInfoCircle, FaPhoneAlt, FaUserCheck, FaBriefcase, FaSignInAlt, FaGraduationCap } from "react-icons/fa";
 import "./Styles/Landing-page.css";
 
 const LandingPage = () => {
   return (
     <div className="Landing-container">
       {/* Background Video */}
-      <video autoPlay muted loop className="background-video">
-        <source 
-          src="https://res.cloudinary.com/dufxj1sau/video/upload/v1739863634/y2bt3yavjqku4nhazip8.mp4" 
-          type="video/mp4" 
-        />
-      </video>
+  
+
+<video autoPlay muted loop className="background-video desktop">
+<source src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740031225/Background_videos/fpkv1rwjhmuhixhaven0.mp4" type="video/mp4" />
+</video>
+<video autoPlay muted loop className="background-video tablet">
+<source src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740031225/Background_videos/fpkv1rwjhmuhixhaven0.mp4" type="video/mp4" />
+</video>
+<video autoPlay muted loop className="background-video mobile">
+<source src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740031225/Background_videos/hpi7wn7b46vhvwckflz6.mp4" type="video/mp4" />
+</video>
       
       {/* Buttons and Menu */}
       <div className="content">
-        <div className="row">
+        <div className="row single-row">
           <Link to="/Home" className="btn"><FaHome className="icon" /> Go to Home</Link>
         </div>
-        <div className="row">
+        <div className="row multi-row">
           <div className="dropdown">
             <button className="btn"><FaGraduationCap className="icon" /> Exam</button>
             <div className="dropdown-content">
@@ -50,7 +55,7 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-        <div className="row">
+        <div className="row multi-row">
           <Link to="/Courses" className="btn"><FaBook className="icon" /> Courses</Link>
           <Link to="/Gallery" className="btn"><FaImage className="icon" /> Gallery</Link>
           <Link to="/Register" className="btn"><FaUserPlus className="icon" /> Student Registration</Link>
