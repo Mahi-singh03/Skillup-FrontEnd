@@ -157,5 +157,7 @@
     min-width: 90%;
     left: 50%;
     transform: translateX(-50%);
+    width: 200px;
+    background-color: rgb(183, 248, 239);
   }
 }
