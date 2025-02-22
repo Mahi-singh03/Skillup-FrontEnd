@@ -2,4 +2,34 @@
     background-color: aliceblue;
     min-width: 100vb;
     min-height: 100vh;
-    display: flex;}
+    padding-top: 120px;
+}
+
+
+
+/* Cousrces*/
+
+
+.Course-offerings-div{
+background-color: rgb(234, 234, 234);
+}
+
+.Course-offerings-heading{
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    background-color: rgb(234, 234, 234);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    border-bottom: 1px solid black;
+    font-family: "Roboto", sans-serif;
+    color: rgb(12, 140, 248);
+    margin-bottom: 0;
+}
+
+.course-offerings-content{
+    background-color: rgb(234, 234, 234);
+    margin: 0;
+    width: 100%;
+}

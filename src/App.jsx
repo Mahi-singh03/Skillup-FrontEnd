@@ -14,6 +14,7 @@ const Home = lazy(() => import("./components/Home.jsx"));
 const StudentRegistrationForm = lazy(() => import("./components/Register.jsx"));
 const LoginForm = lazy(() => import("./components/Login.jsx"));
 const WeeklyExams = lazy(() => import("./components/Exams/WeeklyExams.jsx"));
+const CardGrid = lazy(() => import("./components/Courses.jsx"));
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
           {/* Routes with Navbar inside MainLayout */}
           <Route element={<MainLayout />} key="main-layout">
             <Route path="/Home" element={<Home />} key="home" />
-            <Route path="/Courses" element={<h1>Courses</h1>} key="courses" />
+            <Route path="/Courses" element={<CardGrid />} key="courses" />
             <Route path="/Register" element={<StudentRegistrationForm />} key="register" />
             <Route path="/About" element={<h1>About</h1>} key="about" />
             <Route path="/Gallery" element={<h1>Gallery</h1>} key="gallery" />
