@@ -5,14 +5,13 @@ import Loader from "./utils/loader.jsx";
 import MainLayout from "./Layouts/MainLayout.jsx";
 import { UserProvider} from "./utils/components/UserContext.jsx";
 import Profile from "./components/Profile.jsx";
-
+import Login from "./components/Login.jsx"
 import "./App.css";
 
 // Lazy Load Components
 const LandingPage = lazy(() => import("./components/LandingPage.jsx"));
 const Home = lazy(() => import("./components/Home.jsx"));
 const StudentRegistrationForm = lazy(() => import("./components/Register.jsx"));
-const LoginForm = lazy(() => import("./components/Login.jsx"));
 const WeeklyExams = lazy(() => import("./components/Exams/WeeklyExams.jsx"));
 const CardGrid = lazy(() => import("./components/Courses.jsx"));
 
@@ -34,8 +33,10 @@ function App() {
             <Route path="/About" element={<h1>About</h1>} key="about" />
             <Route path="/Gallery" element={<h1>Gallery</h1>} key="gallery" />
             <Route path="/Profile" element={<Profile />} key="profile" />
-            <Route path="/Login" element={<LoginForm />} key="login" />
             <Route path="/Logout" element={<h1>Logout</h1>} key="logout" />
+
+            {/* Login sections */}
+            <Route path="/StudentLogin" element={<Login />} key="Login" />
 
             {/* Exams Section */}
             <Route path="/Exams/Exam-Instruction" element={<h1>Exam Instruction</h1>} key="exam-instruction" />

@@ -24,7 +24,7 @@ export default function Navbar() {
   const secondaryMenuItems = [
     { name: "Home", path: "/Home" },
     { name: "Courses", path: "/Courses" },
-    ...(isAuthenticated ? [] : [{ name: "Register", path: "/Register" }, { name: "Login", path: "/Login" }]),
+    ...(isAuthenticated ? [] : [{ name: "Register", path: "/Register" }, { name: "Login", path: "/StudentLogin" }]),
     { name: "About", path: "/About" },
     { name: "Gallery", path: "/Gallery" },
     ...(isAuthenticated ? [{ name: "Logout", path: "#" }] : []),

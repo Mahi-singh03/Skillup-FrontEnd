@@ -78,8 +78,8 @@ const LandingPage = () => {
               <FaSignInAlt className="icon" /> Login
             </button>
             <div className="dropdown-content">
-              <Link to="/Login">Student Login</Link>
-              <Link to="/Login">Teacher Login</Link>
+              <Link to="/StudentLogin">Student Login</Link>
+              <Link to="Staff/Login">Staff Login</Link>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@import "flowbite/src/themes/default";
 
 #root {
  min-width: 100vw;
