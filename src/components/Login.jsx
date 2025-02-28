@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../utils/components/UserContext";
 import { BeatLoader } from "react-spinners";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import "./Styles/LoginForm.css"
 
 const Login = () => {
   const { handleLogin } = useContext(UserContext);
@@ -42,11 +43,11 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 mt-10">
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
-          Sign In
-        </h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-200 px-1 mt-10 main ">
+      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg container">
+        <h1 className="text-3xl font-bold text-gray-800 text-center mb-6 main-heading">
+          Student Login
+        </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-gray-600 text-sm font-semibold mb-1">

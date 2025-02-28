@@ -61,7 +61,7 @@ const StudentRegistrationForm = () => {
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Student Registration</h2>
+      <h1 className=" main-heading"> Register Yourself</h1>
       <Form layout="vertical" form={form} onFinish={onFinish} className="custom-form">
         <Form.Item label="Full Name" name="fullName" rules={[{ required: true, message: 'Enter full name' }]}>
           <Input spellCheck={false} autoCorrect="off" autoCapitalize="none" placeholder="John Doe" />

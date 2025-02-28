@@ -14,6 +14,7 @@ const Home = lazy(() => import("./components/Home.jsx"));
 const StudentRegistrationForm = lazy(() => import("./components/Register.jsx"));
 const WeeklyExams = lazy(() => import("./components/Exams/WeeklyExams.jsx"));
 const CardGrid = lazy(() => import("./components/Courses.jsx"));
+const Gallery = lazy(()=> import("./components/Gallery.jsx"))
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
             <Route path="/Courses" element={<CardGrid />} key="courses" />
             <Route path="/Register" element={<StudentRegistrationForm />} key="register" />
             <Route path="/About" element={<h1>About</h1>} key="about" />
-            <Route path="/Gallery" element={<h1>Gallery</h1>} key="gallery" />
+            <Route path="/Gallery" element={<Gallery/>} key="gallery" />
             <Route path="/Profile" element={<Profile />} key="profile" />
             <Route path="/Logout" element={<h1>Logout</h1>} key="logout" />
 
