@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'; // Added useContext
+import React, { useState, useEffect, useContext } from 'react';
 import { Button, DatePicker, Form, Input, Select, Radio, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { UserContext } from "../utils/components/UserContext"; // Ensure correct import path
+import { UserContext } from "../utils/components/UserContext";
 import './Styles/StudentRegistrationForm.css';
 
 const { Option } = Select;
@@ -11,16 +11,12 @@ const StudentRegistrationForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { handleLogin } = useContext(UserContext); // Get handleLogin from context
+  const { login } = useContext(UserContext); // Changed to login
 
   useEffect(() => {
-    try {
-      const user = localStorage.getItem('user');
-      if (user && JSON.parse(user)) {
-        navigate('/profile', { replace: true }); // Updated to '/profile'
-      }
-    } catch (error) {
-      console.error('Error checking user login:', error);
+    const user = localStorage.getItem('user');
+    if (user) {
+      navigate('/profile', { replace: true });
     }
   }, [navigate]);
 
@@ -44,9 +40,9 @@ const StudentRegistrationForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        handleLogin(data); // Use context method to update state
+        login(data); // Use context login method
         message.success('Registration successful!');
-        navigate('/profile', { replace: true }); // Updated to '/profile'
+        navigate('/profile', { replace: true });
       } else {
         message.error(data.message || 'Registration failed.');
       }

@@ -11,10 +11,10 @@ const Home = () => {
           autoPlay
           loop
           muted
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          className="absolute top-0 left-0 w-full h200 object-fill "
         >
           <source
-            src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740204620/Well_trained_facilitymmemeber_20250222_104253_0001_4_wktlrt.mp4"
+            src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740808238/Background_videos/fkxhvipt0ssctcockk1l.mp4"
             type="video/mp4"
           />
           Your browser does not support the video tag.

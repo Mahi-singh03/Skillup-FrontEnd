@@ -1,63 +1,71 @@
-import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { UserContext } from "../utils/components/UserContext";
 import lgLogo from "../assets/FINAL lg LOGO.svg";
 import smLogo from "../assets/fINAL sm logo.svg";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [mobileDropdownOpen, setMobileDropdownOpen] = useState({});
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    setIsAuthenticated(!!user);
-  }, []);
+  const { isAuthenticated, logout } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsAuthenticated(false);
+    logout();
+    navigate("/Home");
+    setIsOpen(false);
   };
+
+  const dropdowns = [
+    { 
+      name: "Exams", 
+      options: [
+        { name: "Exam Instruction", path: "/Exams/Exam-Instruction" },
+        { name: "Exam Result", path: "/Exams/Exam-Result" },
+        { name: "Weekly Exam", path: "/Exams/Weekly-Exam" },
+        { name: "Final Exam", path: "/Exams/Final-Exam" }
+      ]
+    },
+    { 
+      name: "Verification", 
+      options: [
+        { name: "Verify Student", path: "/Verification/Verify-Student" },
+        { name: "Verify Staff", path: "/Verification/Verify-Staff" }
+      ]
+    },
+    { 
+      name: "Resources", 
+      options: [
+        { name: "Syllabus", path: "/Resources/Syllabus" },
+        { name: "Study Material", path: "/Resources/Study-Material" }
+      ]
+    },
+    { 
+      name: "Job", 
+      options: [
+        { name: "Career Guidance", path: "/Job/Career-Guidance" },
+        { name: "Job Apply", path: "/Job/Job-Apply" }
+      ]
+    }
+  ];
 
   const secondaryMenuItems = [
     { name: "Home", path: "/Home" },
     { name: "Courses", path: "/Courses" },
-    ...(isAuthenticated ? [] : [{ name: "Register", path: "/Register" }, { name: "Login", path: "/StudentLogin" }]),
+    ...(isAuthenticated ? [] : [
+      { name: "Register", path: "/Register" },
+      { name: "Login", path: "/StudentLogin" }
+    ]),
     { name: "About", path: "/About" },
     { name: "Gallery", path: "/Gallery" },
     ...(isAuthenticated ? [{ name: "Logout", path: "#" }] : []),
   ];
 
-  const dropdowns = [
-    { name: "Exams", options: [
-      { name: "Exam Instruction", path: "/Exams/Exam-Instruction" },
-      { name: "Exam Result", path: "/Exams/Exam-Result" },
-      { name: "Weekly Exam", path: "/Exams/Weekly-Exam" },
-      { name: "Final Exam", path: "/Exams/Final-Exam" }
-    ]},
-    { name: "Verification", options: [
-      { name: "Verify Student", path: "/Verification/Verify-Student" },
-      { name: "Verify Staff", path: "/Verification/Verify-Staff" }
-    ]},
-    { name: "Resources", options: [
-      { name: "Syllabus", path: "/Resources/Syllabus" },
-      { name: "Study Material", path: "/Resources/Study-Material" }
-    ]},
-    { name: "Job", options: [
-      { name: "Career Guidance", path: "/Job/Career-Guidance" },
-      { name: "Job Apply", path: "/Job/Job-Apply" }
-    ]}
-  ];
-
   const handleDropdownClick = (name) => {
     setActiveDropdown(activeDropdown === name ? null : name);
   };
-
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "auto";
-  }, [isOpen]);
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
@@ -105,11 +113,6 @@ export default function Navbar() {
           <NavLink to="/Profile" className="text-gray-700 hover:text-blue-400 transition">
             <User size={28} />
           </NavLink>
-          {isAuthenticated && (
-            <button onClick={handleLogout} className="text-gray-700 hover:text-red-400 transition">
-              Logout
-            </button>
-          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -127,14 +130,22 @@ export default function Navbar() {
       <div className="hidden lg:flex bg-gray-100 p-2 justify-center shadow-md">
         {secondaryMenuItems.map((item) =>
           item.name === "Logout" ? (
-            <button key={item.name} onClick={handleLogout} className="mx-4 text-gray-700 hover:text-red-400 transition">
+            <button 
+              key={item.name} 
+              onClick={handleLogout}
+              className="mx-4 text-gray-700 hover:text-red-400 transition"
+            >
               Logout
             </button>
           ) : (
             <NavLink
               key={item.name}
               to={item.path}
-              className={({ isActive }) => (isActive ? "mx-4 text-blue-500 font-bold transition" : "mx-4 text-gray-700 hover:text-blue-400 transition")}
+              className={({ isActive }) => 
+                isActive 
+                  ? "mx-4 text-blue-500 font-bold transition" 
+                  : "mx-4 text-gray-700 hover:text-blue-400 transition"
+              }
             >
               {item.name}
             </NavLink>
@@ -157,7 +168,11 @@ export default function Navbar() {
             </button>
             {secondaryMenuItems.map((item) =>
               item.name === "Logout" ? (
-                <button key={item.name} onClick={handleLogout} className="block py-4 text-lg text-gray-700 hover:text-red-400 transition">
+                <button 
+                  key={item.name} 
+                  onClick={handleLogout}
+                  className="block py-4 text-lg text-gray-700 hover:text-red-400 transition"
+                >
                   Logout
                 </button>
               ) : (

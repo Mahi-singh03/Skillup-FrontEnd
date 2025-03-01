@@ -2,191 +2,308 @@ import React, { useState } from 'react';
 
 const questions = [
   {
-    question: "Which of the following language does the computer understand?",
+    question: "Which software is commonly used for word processing?",
     options: [
-      "Computer understands only C Language",
-      "Computer understands only Assembly Language",
-      "Computer understands only Binary Language",
-      "Computer understands only BASIC",
+      "Microsoft Excel",
+      "Microsoft Word",
+      "Adobe Photoshop",
+      "Google Chrome"
     ],
-    answer: "Computer understands only Binary Language",
+    answer: "Microsoft Word"
   },
   {
-    question: "Which of the following is the brain of the computer?",
+    question: "Which of the following is NOT an operating system?",
     options: [
-      "Central Processing Unit",
-      "Memory",
-      "Arithmetic and Logic unit",
-      "Control unit",
+      "Windows 11",
+      "Linux",
+      "Google Drive",
+      "macOS"
     ],
-    answer: "Central Processing Unit",
+    answer: "Google Drive"
   },
   {
-    question: "Which of the following is the smallest unit of data in a computer?",
-    options: ["Bit", "KB", "Nibble", "Byte"],
-    answer: "Bit",
-  },
-  {
-    question: "Which feature in MS Word allows you to create a pre-formatted document layout?",
-    options: ["Templates", "Styles", "Themes", "Macros"],
-    answer: "Templates",
-  },
-  {
-    question: "In MS Word, which shortcut key is used to align text to the center?",
-    options: ["Ctrl + L", "Ctrl + R", "Ctrl + E", "Ctrl + J"],
-    answer: "Ctrl + E",
-  },
-  {
-    question: "What is the default file format for a Word document in MS Word 2016?",
-    options: [".txt", ".doc", ".docx", ".rtf"],
-    answer: ".docx",
-  },
-  {
-    question: "What is the function of the 'Format Painter' tool in MS Word?",
+    question: "Which application is widely used for creating presentations?",
     options: [
-      "Copies text from one document to another",
-      "Copies formatting from one part of the document to another",
-      "Creates a new style for text formatting",
-      "Removes formatting from selected text",
+      "MS Paint",
+      "Microsoft PowerPoint",
+      "Adobe Acrobat",
+      "Notepad"
     ],
-    answer: "Copies formatting from one part of the document to another",
+    answer: "Microsoft PowerPoint"
   },
   {
-    question: "Which feature allows you to view two different parts of a document at the same time?",
-    options: ["Split View", "Dual View", "Page Layout", "Outline Mode"],
-    answer: "Split View",
-  },
-  {
-    question: "What function is used to count numeric values in a range?",
-    options: ["COUNTIF", "COUNTA", "COUNT", "SUM"],
-    answer: "COUNT",
-  },
-  {
-    question: "What is the default extension of an Excel workbook in MS Excel 2016?",
-    options: [".xlsx", ".xls", ".xlsm", ".csv"],
-    answer: ".xlsx",
-  },
-  {
-    question: "What does the VLOOKUP function do in Excel?",
+    question: "Which software is best suited for database management?",
     options: [
-      "Looks up a value in a vertical column and returns a corresponding value",
-      "Searches for a value in a row and returns a corresponding value",
-      "Sorts data alphabetically",
-      "Merges two tables",
+      "MySQL",
+      "Photoshop",
+      "Excel",
+      "VLC Media Player"
     ],
-    answer: "Looks up a value in a vertical column and returns a corresponding value",
+    answer: "MySQL"
   },
   {
-    question: "In Excel, which of the following is not a valid chart type?",
-    options: ["Line Chart", "Pie Chart", "Diagram Chart", "Column Chart"],
-    answer: "Diagram Chart",
-  },
-  {
-    question: "Which function returns the highest value from a range of numbers?",
-    options: ["MIN", "MAX", "AVERAGE", "SUM"],
-    answer: "MAX",
-  },
-  {
-    question: "What is the default view in PowerPoint when you open a new presentation?",
-    options: ["Slide Sorter View", "Normal View", "Outline View", "Reading View"],
-    answer: "Normal View",
-  },
-  {
-    question: "Which feature allows you to apply motion effects to objects on a slide?",
-    options: ["Transitions", "Animations", "Slide Master", "Themes"],
-    answer: "Animations",
-  },
-  {
-    question: "In PowerPoint, which shortcut key is used to start the slideshow from the beginning?",
-    options: ["F5", "Shift + F5", "Ctrl + S", "Alt + Enter"],
-    answer: "F5",
-  },
-  {
-    question: "What is the default ledger created in Tally?",
-    options: ["Cash and Bank", "Profit & Loss Account", "Capital Account", "Sundry Creditors"],
-    answer: "Profit & Loss Account",
-  },
-  {
-    question: "What is the shortcut to create a new ledger in Tally?",
-    options: ["Alt + C", "Ctrl + N", "Alt + L", "Ctrl + L"],
-    answer: "Alt + C",
-  },
-  {
-    question: "What is the full form of ERP in Tally?",
+    question: "What type of software is Microsoft Excel?",
     options: [
-      "Enterprise Resource Processing",
-      "Enterprise Resource Planning",
-      "Enhanced Resource Planning",
-      "Enterprise Revenue Planning",
+      "Word Processor",
+      "Database Management System",
+      "Spreadsheet Software",
+      "Operating System"
     ],
-    answer: "Enterprise Resource Planning",
+    answer: "Spreadsheet Software"
   },
   {
-    question: "In Tally, which voucher type is used for recording purchase transactions?",
-    options: ["Payment Voucher", "Receipt Voucher", "Purchase Voucher", "Journal Voucher"],
-    answer: "Purchase Voucher",
-  },
-  {
-    question: "Which of the following is not an accounting feature in Tally?",
-    options: ["Inventory Management", "Cost Center", "Ledger Management", "Payroll Processing"],
-    answer: "Payroll Processing",
-  },
-  {
-    question: "In Tally, what does the 'Gateway of Tally' screen provide access to?",
+    question: "Which of the following is an example of a cloud storage service?",
     options: [
-      "Company Information",
-      "Accounting and Inventory Features",
-      "Reports and Statements",
-      "All of the above",
+      "Microsoft Office",
+      "Google Drive",
+      "Adobe Photoshop",
+      "Mozilla Firefox"
     ],
-    answer: "All of the above",
+    answer: "Google Drive"
   },
   {
-    question: "What is the shortcut key to open the Balance Sheet in Tally?",
-    options: ["F9", "F10", "F12", "F1"],
-    answer: "F9",
+    question: "Which of the following software is NOT an antivirus program?",
+    options: [
+      "Norton",
+      "McAfee",
+      "Kaspersky",
+      "WinRAR"
+    ],
+    answer: "WinRAR"
   },
   {
-    question: "The speed of a processor is measured in:",
-    options: ["Bytes", "Hertz (Hz)", "Bits", "Pixels"],
-    answer: "Hertz (Hz)",
+    question: "Which file format is commonly used for compressed files?",
+    options: [
+      ".zip",
+      ".docx",
+      ".mp3",
+      ".exe"
+    ],
+    answer: ".zip"
   },
   {
-    question: "Which part of the computer is responsible for executing instructions of a program?",
-    options: ["RAM", "CPU", "Hard", "Control unit"],
-    answer: "CPU",
+    question: "Which of the following is an example of an open-source operating system?",
+    options: [
+      "Windows",
+      "macOS",
+      "Linux",
+      "iOS"
+    ],
+    answer: "Linux"
   },
   {
-    question: "What does IP stand for in networking?",
-    options: ["Internet Process", "Internet Protocol", "Internal Program", "Internet Provider"],
-    answer: "Internet Protocol",
+    question: "What is the primary function of an operating system?",
+    options: [
+      "To manage computer hardware and software resources",
+      "To create documents",
+      "To browse the internet",
+      "To edit images"
+    ],
+    answer: "To manage computer hardware and software resources"
   },
   {
-    question: "Which device is used to connect multiple networks together?",
-    options: ["Switch", "Router", "Hub", "Modem"],
-    answer: "Router",
+    question: "Which protocol is used for sending emails?",
+    options: [
+      "FTP",
+      "SMTP",
+      "HTTP",
+      "SSH"
+    ],
+    answer: "SMTP"
   },
   {
-    question: "Which of the following is a private IP address?",
-    options: ["192.168.1.1", "8.8.8.8", "172.217.0.1", "208.67.222.222"],
-    answer: "192.168.1.1",
+    question: "Which protocol is used for transferring files over the internet?",
+    options: [
+      "FTP",
+      "HTTPS",
+      "TCP",
+      "POP3"
+    ],
+    answer: "FTP"
   },
   {
-    question: "What does DNS stand for?",
-    options: ["Domain Name System", "Data Network Service", "Digital Name Server", "Dynamic Network System"],
-    answer: "Domain Name System",
+    question: "What does URL stand for?",
+    options: [
+      "Uniform Resource Locator",
+      "Universal Resource Link",
+      "Unified Routing Language",
+      "User Registered Link"
+    ],
+    answer: "Uniform Resource Locator"
+  },
+  {
+    question: "Which of the following is a web browser?",
+    options: [
+      "Windows",
+      "Google Chrome",
+      "Microsoft Word",
+      "Android"
+    ],
+    answer: "Google Chrome"
+  },
+  {
+    question: "Which of these services is NOT a search engine?",
+    options: [
+      "Google",
+      "Yahoo",
+      "Bing",
+      "WhatsApp"
+    ],
+    answer: "WhatsApp"
+  },
+  {
+    question: "Which organization is responsible for assigning domain names?",
+    options: [
+      "ICANN",
+      "W3C",
+      "ISO",
+      "IEEE"
+    ],
+    answer: "ICANN"
+  },
+  {
+    question: "Which of the following is an example of a top-level domain (TLD)?",
+    options: [
+      "www",
+      ".com",
+      "http",
+      "/index.html"
+    ],
+    answer: ".com"
+  },
+  {
+    question: "Which of the following is NOT a social media platform?",
+    options: [
+      "Facebook",
+      "Instagram",
+      "Twitter",
+      "Excel"
+    ],
+    answer: "Excel"
+  },
+  {
+    question: "Which company developed the Chrome web browser?",
+    options: [
+      "Apple",
+      "Microsoft",
+      "Google",
+      "Mozilla"
+    ],
+    answer: "Google"
   },
   {
     question: "What does HTTPS stand for?",
     options: [
-      "HyperText Transfer Private Server",
-      "High Transmission Transfer Protocol Secure",
-      "HyperText Transfer Protocol Secure",
-      "Hybrid Transmission Technology System",
+      "Hypertext Transfer Protocol Secure",
+      "High Transmission Protocol System",
+      "Hyperlink Text Processing System",
+      "Hypertext Technical Processing System"
     ],
-    answer: "HyperText Transfer Protocol Secure",
+    answer: "Hypertext Transfer Protocol Secure"
   },
+  {
+    question: "What is the purpose of a firewall in a computer network?",
+    options: [
+      "To speed up internet connections",
+      "To protect against unauthorized access",
+      "To store backup files",
+      "To block advertisements"
+    ],
+    answer: "To protect against unauthorized access"
+  },
+  {
+    question: "Which of the following is NOT a web hosting service?",
+    options: [
+      "Bluehost",
+      "HostGator",
+      "Google Chrome",
+      "GoDaddy"
+    ],
+    answer: "Google Chrome"
+  },
+  {
+    question: "What is phishing?",
+    options: [
+      "A method to catch fish using technology",
+      "A cybersecurity attack to steal personal information",
+      "A form of online shopping",
+      "A type of software development"
+    ],
+    answer: "A cybersecurity attack to steal personal information"
+  },
+  {
+    question: "Which of the following is used to secure online transactions?",
+    options: [
+      "SSL Certificate",
+      "JPEG",
+      "IP Address",
+      "HTML"
+    ],
+    answer: "SSL Certificate"
+  },
+  {
+    question: "Which of the following is a cloud computing platform?",
+    options: [
+      "Windows 10",
+      "AWS (Amazon Web Services)",
+      "Microsoft Paint",
+      "Adobe Photoshop"
+    ],
+    answer: "AWS (Amazon Web Services)"
+  },
+  {
+    question: "Which term refers to the speed of an internet connection?",
+    options: [
+      "Latency",
+      "Bandwidth",
+      "Resolution",
+      "Cache"
+    ],
+    answer: "Bandwidth"
+  },
+  {
+    question: "Which of the following best describes the purpose of a VPN?",
+    options: [
+      "To increase internet speed",
+      "To encrypt internet traffic and provide anonymity",
+      "To download software faster",
+      "To prevent software crashes"
+    ],
+    answer: "To encrypt internet traffic and provide anonymity"
+  },
+  {
+    question: "What does DNS stand for in networking?",
+    options: [
+      "Data Name System",
+      "Domain Name System",
+      "Digital Network Security",
+      "Direct Navigation Service"
+    ],
+    answer: "Domain Name System"
+  },
+  {
+    question: "Which of the following is an example of an online collaboration tool?",
+    options: [
+      "Photoshop",
+      "Google Docs",
+      "Windows Explorer",
+      "iTunes"
+    ],
+    answer: "Google Docs"
+  },
+  {
+    question: "Which technology is used for wireless internet access?",
+    options: [
+      "Bluetooth",
+      "Wi-Fi",
+      "USB",
+      "Ethernet"
+    ],
+    answer: "Wi-Fi"
+  }
 ];
+
+// Rest of your React component code
 
 const Question = ({ currentQuestion, onAnswerSubmit }) => {
   const [selectedAnswer, setSelectedAnswer] = useState('');

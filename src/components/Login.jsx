@@ -6,7 +6,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import "./Styles/LoginForm.css"
 
 const Login = () => {
-  const { handleLogin } = useContext(UserContext);
+  const { login } = useContext(UserContext); // Changed to login
   const navigate = useNavigate();
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +33,7 @@ const Login = () => {
 
       if (!response.ok) throw new Error(data.message || "Login failed");
 
-      handleLogin(data);
+      login(data); // Use context login method
       navigate("/profile");
     } catch (error) {
       setError(error.message);
@@ -41,7 +41,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 px-1 mt-10 main ">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg container">

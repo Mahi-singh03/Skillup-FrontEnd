@@ -1,5 +1,17 @@
-
-.main-1{
+/* Add to Gallery.css */
+.main-1 {
+    min-height: 80vh;
+    padding-top: 150px;
     background-color: rgb(195, 230, 230);
-    margin-top: 7%;
+}
+
+
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

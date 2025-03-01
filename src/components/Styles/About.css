@@ -1,0 +1,273 @@
+/* About.css - Optimized Version */
+
+/* Base Styles */
+.about-container {
+
+    padding: 2rem;
+    padding-top: 150px;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: rgb(195, 230, 230);
+  }
+  
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 0.5rem;
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: #e74c3c;
+  }
+  
+  .section-tagline {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+  
+  /* Main About Section */
+  .main-about {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+    margin-bottom: 3rem;
+  }
+  
+  .main-title {
+    font-size: 2.8rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  
+  .tagline {
+    font-size: 1.4rem;
+    color: #e74c3c;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .about-text {
+    max-width: 800px;
+    margin: 0 auto;
+    color: #34495e;
+    line-height: 1.8;
+    font-size: 1.1rem;
+  }
+  
+  /* Motto Section */
+  .motto-section {
+    background: #2c3e50;
+    padding: 4rem 1rem;
+    text-align: center;
+    margin: 3rem 0;
+  }
+  
+  .motto-text {
+    color: #ffffff;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .motto-subtext {
+    color: #bdc3c7;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  
+  /* Visit Us Section */
+  .location-container {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+  
+  .address-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .address-text {
+    font-size: 1.1rem;
+    color: #34495e;
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+    align-items: stretch;
+    height: 600px;
+    width: 100%;
+  }
+  
+  .image-wrapper {
+    height: 800px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .map-wrapper {
+    height: 800px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .location-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .map-iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  
+  /* Staff Section */
+  .staff-section {
+    margin-top:20rem;
+  }
+  
+  .staff-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+  
+  .staff-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .staff-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-image-wrapper {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+  }
+  
+  .staff-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .staff-details {
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .staff-name {
+    color: #2c3e50;
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .staff-role {
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  /* Animations */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .animate-slideIn {
+    animation: slideIn 0.6s ease-out forwards;
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .staff-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .main-title { font-size: 2.4rem; }
+    .motto-text { font-size: 2rem; }
+  }
+  
+  @media (max-width: 768px) {
+    .about-container { padding: 1rem; }
+    .section-title { font-size: 2rem; }
+    .media-grid { grid-template-columns: 1fr; }
+    .main-title { font-size: 2rem; }
+    .tagline { font-size: 1.2rem; }
+    .motto-text { font-size: 1.8rem; }
+    .image-wrapper,
+    .map-wrapper { height: 300px; }
+    .staff-grid { grid-template-columns: 1fr; }
+  }
+  
+  @media (max-width: 480px) {
+    .main-title { font-size: 1.8rem; }
+    .section-title { font-size: 1.75rem; }
+    .motto-text { font-size: 1.5rem; }
+    .image-wrapper,
+    .map-wrapper { height: 250px; }
+  }
