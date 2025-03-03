@@ -59,6 +59,18 @@ const coursesData = [
         CourseName : "Telly",
         CourseDescription : " Covers all the concepts of telly",
         CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/dbbtp9rwyom4vjjxn2x5.png"
+    },
+    {
+        id : 11,
+        CourseName : "Wordpress",
+        CourseDescription : "Cover all the concepts of Wordpress",
+        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1740821352/Course-logo/oflds6wit4dszjsspyfe.jpg"
+    },
+    {
+        id : 12,
+        CourseName : "Adobe Premier Pro",
+        CourseDescription  : "Covers all the copncepts of Premier Pro",
+        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1740822798/Course-logo/wohubwesdiazaqi4cfze.jpg"
     }
 ]
 
