@@ -1,6 +1,6 @@
 import React from "react";
 import HorizontalCardList from "../utils/components/Home/cardLayout.jsx";
-import "../components/styles/Home.css";
+import "./Styles/Home.css";
 
 const Home = () => {
   return (
