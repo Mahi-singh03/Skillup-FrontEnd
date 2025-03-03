@@ -1,5 +1,5 @@
 import React from "react";
-import HorizontalCardList from "../utils/components/Home/CardLayout";
+import HorizontalCardList from "../utils/components/Home/cardLayout.jsx";
 import "../components/styles/Home.css";
 
 const Home = () => {
