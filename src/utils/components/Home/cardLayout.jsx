@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export function HorizontalCard({ title, category, description, image }) {
   return (
     <motion.div whileHover={{ y: -5 }} className="h-full">
-      <Card className="w-full flex flex-col md:flex-row h-full transition-all duration-300 hover:shadow-xl bg-amber-100 hover:border-blue-50">
+      <Card className="w-full flex flex-col md:flex-row h-full transition-all duration-300 hover:shadow-xl  hover:border-blue-50">
         <CardHeader
           shadow={false}
           floated={false}
