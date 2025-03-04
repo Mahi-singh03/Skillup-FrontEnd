@@ -27,8 +27,8 @@ const Home = () => {
       {/* Featured Courses Section */}
       <section className="featured-courses p-6">
         <div className="section-header animate-fade-in">
-          <h2 className="section-title">Featured Courses</h2>
-          <p className="section-subtitle">Explore our most popular learning paths curated by industry experts</p>
+          <h2 className="section-title">Trending Courses</h2>
+          <p className="section-subtitle">Explore our most popular Courses to get industry ready</p>
         </div>
 
         <HorizontalCardList /> {/* Enhance this component with card hover effects */}

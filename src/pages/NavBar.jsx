@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { UserContext } from "../utils/components/UserContext";
+import { UserContext } from "../utils/components/UserContext.jsx";
 import lgLogo from "../assets/FINAL lg LOGO.svg";
 import smLogo from "../assets/fINAL sm logo.svg";
 
