@@ -11,3 +11,18 @@
     font-size: 8vh;
     color: rgb(30, 144, 255);
 }
+/* Hide scrollbar for Chrome, Safari, and Edge */
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for Firefox */
+  * {
+    scrollbar-width: none;
+  }
+  
+  /* Hide scrollbar for Internet Explorer and Edge */
+  * {
+    -ms-overflow-style: none;
+  }
+  

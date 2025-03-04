@@ -1,13 +1,14 @@
 import React from "react";
 import HorizontalCardList from "../utils/components/Home/cardLayout.jsx";
 import "./Styles/Home.css";
+import ReviewComponent from "../utils/components/Home/Review.jsx"
 
 const Home = () => {
   return (
     <div className="home-container">
       {/* Hero Video Section */}
       <section className="hero-video-section">
-        <div className="video-overlay" />
+        <div className="video-overlay overflow-hidden p-5" />
         <video
           autoPlay
           loop
@@ -16,7 +17,7 @@ const Home = () => {
           className="hero-video"
         >
           <source
-            src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740808238/Background_videos/fkxhvipt0ssctcockk1l.mp4"
+            src="https://res.cloudinary.com/dufxj1sau/video/upload/v1741068132/skillup_institute_of_learning_5_1_online-video-cutter.com_ylonqx.mp4"
             type="video/mp4"
           />
           Your browser does not support the video tag.
@@ -24,7 +25,7 @@ const Home = () => {
       </section>
 
       {/* Featured Courses Section */}
-      <section className="featured-courses">
+      <section className="featured-courses p-6">
         <div className="section-header animate-fade-in">
           <h2 className="section-title">Featured Courses</h2>
           <p className="section-subtitle">Explore our most popular learning paths curated by industry experts</p>
@@ -53,7 +54,7 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="features-section">
+      <section className="features-section p-6">
         <div className="section-header animate-fade-in">
           <h2 className="section-title">Why Choose Us?</h2>
           <p className="section-subtitle">Discover the unique benefits of our learning platform</p>
@@ -90,8 +91,13 @@ const Home = () => {
           ))}
         </div>
       </section>
- 
-      
+      <section className="features-section">
+      <div className="section-header animate-fade-in">
+          <h2 className="section-title">Review Us</h2>
+          <p className="section-subtitle">Shear Your Thoughs about Skillup</p>
+        </div>
+        <ReviewComponent/>
+      </section>
     </div>
   );
 };
