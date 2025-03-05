@@ -4,6 +4,8 @@
 #root {
  min-width: 100vw;
  min-height: 100vh;
+ background-color: rgb(195, 230, 230);
+
 }
 .main-heading{
     text-align: center;

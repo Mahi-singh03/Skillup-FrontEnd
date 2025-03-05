@@ -20,9 +20,15 @@ export default function Navbar() {
 
   const dropdowns = [
     { 
+      name: "Online Courses", 
+      options: [
+        { name: "Register", path: "/Online-Exam/Register" },
+        { name: "Course Videos", path: "/Online-Exam/Course-Videos" }
+      ]
+    },
+    { 
       name: "Exams", 
       options: [
-        { name: "Exam Instruction", path: "/Exams/Exam-Instruction" },
         { name: "Exam Result", path: "/Exams/Exam-Result" },
         { name: "Weekly Exam", path: "/Exams/Weekly-Exam" },
         { name: "Final Exam", path: "/Exams/Final-Exam" }

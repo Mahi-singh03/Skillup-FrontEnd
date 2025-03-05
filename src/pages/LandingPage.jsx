@@ -12,30 +12,75 @@ import {
   FaSignInAlt,
   FaGraduationCap,
 } from "react-icons/fa";
+import { MdCastForEducation } from "react-icons/md";
 import "./Styles/Landing-page.css";
+
+const videos = [
+  { className: "desktop", src: "https://res.cloudinary.com/dufxj1sau/video/upload/v1740031225/Background_videos/fpkv1rwjhmuhixhaven0.mp4" },
+  { className: "tablet", src: "https://res.cloudinary.com/dufxj1sau/video/upload/v1740031225/Background_videos/fpkv1rwjhmuhixhaven0.mp4" },
+  { className: "mobile", src: "https://res.cloudinary.com/dufxj1sau/video/upload/v1740038221/Background_videos/p3e102ttunokguxhceih.mp4" },
+];
+
+const dropdowns = [
+  {
+    icon: <MdCastForEducation />,
+    label: "Online Courses",
+    links: [
+      { path: "/Online-Exam/Register", text: "Register" },
+      { path: "/Online-Exam/Course-Videos", text: "Course Videos" },
+    ],
+  },
+  {
+    icon: <FaGraduationCap />,
+    label: "Exam",
+    links: [
+      { path: "/Exams/Weekly-Exam", text: "Weekly Exam" },
+      { path: "/Exams/Exam-Result", text: "Exam Result" },
+      { path: "/Exams/Final-Exam", text: "Final Exams" },
+    ],
+  },
+  {
+    icon: <FaUserCheck />,
+    label: "Verification",
+    links: [
+      { path: "/Verification/Verify-Student", text: "Student Verification" },
+      { path: "/Verification/Verify-Staff", text: "Staff Verification" },
+    ],
+  },
+  {
+    icon: <FaBriefcase />,
+    label: "Job",
+    links: [
+      { path: "/Job/Job-Apply", text: "Apply Job" },
+      { path: "/Job/Career-Guidance", text: "Career Guidance" },
+    ],
+  },
+  {
+    icon: <FaSignInAlt />,
+    label: "Login",
+    links: [
+      { path: "/StudentLogin", text: "Student Login" },
+      { path: "/Staff/Login", text: "Staff Login" },
+    ],
+  },
+];
+
+const buttons = [
+  { path: "/Courses", icon: <FaBook />, text: "Courses" },
+  { path: "/Gallery", icon: <FaImage />, text: "Gallery" },
+  { path: "/Register", icon: <FaUserPlus />, text: "Register" },
+  { path: "/About", icon: <FaInfoCircle />, text: "About" }
+];
 
 const LandingPage = () => {
   return (
     <div className="Landing-container">
-      {/* Background Video */}
-      <video autoPlay muted loop playsInline className="background-video desktop">
-        <source
-          src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740031225/Background_videos/fpkv1rwjhmuhixhaven0.mp4"
-          type="video/mp4"
-        />
-      </video>
-      <video autoPlay muted loop playsInline className="background-video tablet">
-        <source
-          src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740031225/Background_videos/fpkv1rwjhmuhixhaven0.mp4"
-          type="video/mp4"
-        />
-      </video>
-      <video autoPlay muted loop playsInline className="background-video mobile">
-        <source
-          src="https://res.cloudinary.com/dufxj1sau/video/upload/v1740038221/Background_videos/p3e102ttunokguxhceih.mp4"
-          type="video/mp4"
-        />
-      </video>
+      {/* Background Videos */}
+      {videos.map((video, index) => (
+        <video key={index} autoPlay muted loop playsInline className={`background-video ${video.className}`}>
+          <source src={video.src} type="video/mp4" />
+        </video>
+      ))}
 
       {/* Buttons and Menu */}
       <div className="content">
@@ -44,61 +89,32 @@ const LandingPage = () => {
             <FaHome className="icon" /> Home
           </Link>
         </div>
+
+     
+
+        {/* Single Buttons */}
         <div className="row multi-row">
-          <div className="dropdown">
-            <button className="btn">
-              <FaGraduationCap className="icon" /> Exam
-            </button>
-            <div className="dropdown-content">
-              <Link to="/Exams/Weekly-Exam">Weekly Exam</Link>
-              <Link to="/Exams/Exam-Result">Exam Result</Link>
-              <Link to="/Exams/Final-Exam">Final Exams</Link>
-            </div>
-          </div>
-          <div className="dropdown">
-            <button className="btn">
-              <FaUserCheck className="icon" /> Verification
-            </button>
-            <div className="dropdown-content">
-              <Link to="/Verification/Verify-Student">Student Verification</Link>
-              <Link to="/Verification/Verify-Staff">Staff Verification</Link>
-            </div>
-          </div>
-          <div className="dropdown">
-            <button className="btn">
-              <FaBriefcase className="icon" /> Job
-            </button>
-            <div className="dropdown-content">
-              <Link to="/Job/Job-Apply">Apply Job</Link>
-              <Link to="/Job/Career-Guidance">Career Guidance</Link>
-            </div>
-          </div>
-          <div className="dropdown">
-            <button className="btn">
-              <FaSignInAlt className="icon" /> Login
-            </button>
-            <div className="dropdown-content">
-              <Link to="/StudentLogin">Student Login</Link>
-              <Link to="Staff/Login">Staff Login</Link>
-            </div>
-          </div>
+          {buttons.map((btn, index) => (
+            <Link key={index} to={btn.path} className="btn">
+              {btn.icon} {btn.text}
+            </Link>
+          ))}
         </div>
-        <div className="row multi-row">
-          <Link to="/Courses" className="btn">
-            <FaBook className="icon" /> Courses
-          </Link>
-          <Link to="/Gallery" className="btn">
-            <FaImage className="icon" /> Gallery
-          </Link>
-          <Link to="/Register" className="btn">
-            <FaUserPlus className="icon" /> Register
-          </Link>
-          <Link to="/About" className="btn">
-            <FaInfoCircle className="icon" /> About
-          </Link>
-          <Link to="/Contact" className="btn">
-            <FaPhoneAlt className="icon" /> Contact
-          </Link>
+
+           {/* Dropdown Menus */}
+           <div className="row multi-row">
+          {dropdowns.map((dropdown, index) => (
+            <div key={index} className="dropdown">
+              <button className="btn">
+                {dropdown.icon} {dropdown.label}
+              </button>
+              <div className="dropdown-content">
+                {dropdown.links.map((link, idx) => (
+                  <Link key={idx} to={link.path}>{link.text}</Link>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

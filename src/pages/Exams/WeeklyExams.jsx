@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { questions } from "./Question/Question.jsx";
+import { questions as WE_1 } from "./Question/WE_1.jsx";
+import { questions as WE_2 } from "./Question/WE_2.jsx";
 import "./Question/Question.css";
 
-const WeeklyExam = () => {
+const WeeklyExam = ({ examId }) => {
+  const questions = examId === "WE_1" ? WE_1 : WE_2;
+
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
   const [timeLeft, setTimeLeft] = useState(45 * 60);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
+
 
   useEffect(() => {
     if (timeLeft > 0 && !isSubmitted) {

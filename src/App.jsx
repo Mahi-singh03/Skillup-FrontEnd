@@ -4,20 +4,19 @@ import ScrollToTop from "./utils/components/ScrollToTop.jsx";
 import Loader from "./utils/loader.jsx";
 import MainLayout from "./Layouts/MainLayout.jsx";
 import { UserProvider } from "./utils/components/UserContext.jsx";
+import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 import Profile from "./pages/Profile.jsx";
 import Login from "./pages/Login.jsx";
 import "./App.css";
 
-import ProtectedRoute from "./utils/ProtectedRoute.jsx";
-
 // Lazy Load Components
 const LandingPage = lazy(() => import("./pages/LandingPage.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
-const StudentRegistrationForm = lazy(() => import("./pages/Register.jsx"));
-const WeeklyExams = lazy(() => import("./pages/Exams/WeeklyExams.jsx"));
-const CardGrid = lazy(() => import("./pages/Courses.jsx"));
+const Register = lazy(() => import("./pages/Register.jsx"));
+const Courses = lazy(() => import("./pages/Courses.jsx"));
 const Gallery = lazy(() => import("./pages/Gallery.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
+const ExamList = lazy(() => import("./pages/WeeklyExamList.jsx"));
 
 function App() {
   return (
@@ -27,133 +26,53 @@ function App() {
         <Suspense fallback={<Loader />}>
           <Routes>
             {/* Landing Page (No Navbar) */}
-            <Route path="/" element={<LandingPage />} key="landing-page" />
+            <Route path="/" element={<LandingPage />} />
 
             {/* Routes with Navbar inside MainLayout */}
-            <Route element={<MainLayout />} key="main-layout">
-              <Route path="/Home" element={<Home />} key="home" />
-              <Route path="/Courses" element={<CardGrid />} key="courses" />
-              <Route
-                path="/Register"
-                element={<StudentRegistrationForm />}
-                key="register"
-              />
-              <Route path="/About" element={<About />} key="about" />
-              <Route path="/Gallery" element={<Gallery />} key="gallery" />
-              <Route path="/Profile" element={<Profile />} key="profile" />
-              <Route path="/Logout" element={<h1>Logout</h1>} key="logout" />
+            <Route element={<MainLayout />}>
+              <Route path="/Home" element={<Home />} />
+              <Route path="/Courses" element={<Courses />} />
+              <Route path="/Register" element={<Register />} />
+              <Route path="/About" element={<About />} />
+              <Route path="/Gallery" element={<Gallery />} />
+              <Route path="/Profile" element={<Profile />} />
+              <Route path="/Logout" element={<h1>Logout</h1>} />
+              <Route path="/StudentLogin" element={<Login />} />
 
-              {/* Login sections */}
-              <Route path="/StudentLogin" element={<Login />} key="Login" />
+              {/* Online Exams */}
+              <Route path="/Online-Exam/Register" element={<h1>Online Exam Register</h1>} />
+              <Route path="/Online-Exam/Course-Videos" element={<h1>Course Videos</h1>} />
 
               {/* Exams Section */}
-              <Route path="/Exams/Exam-Instruction" element={
-                  <ProtectedRoute>
-                    <h1>Exam Instruction</h1>
-                  </ProtectedRoute>
-                }
-                key="exam-instruction"
-              />
-              <Route
-                path="/Exams/Exam-Result"
-                element={
-                  <ProtectedRoute>
-                    <h1>Exam Result</h1>
-                  </ProtectedRoute>
-                }
-                key="exam-result"
-              />
-              <Route
-                path="/Exams/Weekly-Exam"
-                element={
-                  <ProtectedRoute>
-                    <WeeklyExams />
-                  </ProtectedRoute>
-                }
-                key="weekly-exam"
-              />
-              <Route
-                path="/Exams/Final-Exam"
-                element={
-                  <ProtectedRoute>
-                    <h1>Final Exam</h1>
-                  </ProtectedRoute>
-                }
-                key="final-exam"
-              />
+              <Route path="/Exams/Weekly-Exam" element={<ProtectedRoute><ExamList /></ProtectedRoute>} />
+              <Route path="/Exams/Weekly-Exam/:examId" element={<ProtectedRoute><h1>Weekly Exam Detail</h1></ProtectedRoute>} />
+              <Route path="/Exams/Final-Exam" element={<ProtectedRoute><h1>Final Exam</h1></ProtectedRoute>} />
+              <Route path="/Exams/Exam-Result" element={<ProtectedRoute><h1>Exam Result</h1></ProtectedRoute>} />
+              <Route path="/Exams/Exam-Instruction" element={<ProtectedRoute><h1>Exam Instruction</h1></ProtectedRoute>} />
 
-              {/* Verification Section */}
-              <Route
-                path="/Verification/Verify-Student"
-                element={<h1>Verify Student</h1>}
-                key="verify-student"
-              />
-              <Route
-                path="/Verification/Verify-Staff"
-                element={<h1>Verify Staff</h1>}
-                key="verify-staff"
-              />
+              {/* Verification */}
+              <Route path="/Verification/Verify-Student" element={<h1>Verify Student</h1>} />
+              <Route path="/Verification/Verify-Staff" element={<h1>Verify Staff</h1>} />
 
-              {/* Resources Section */}
-              <Route
-                path="/Resources/Syllabus"
-                element={<h1>Syllabus</h1>}
-                key="syllabus"
-              />
-              <Route
-                path="/Resources/Study-Material"
-                element={<h1>Study Material</h1>}
-                key="study-material"
-              />
+              {/* Resources */}
+              <Route path="/Resources/Syllabus" element={<h1>Syllabus</h1>} />
+              <Route path="/Resources/Study-Material" element={<h1>Study Material</h1>} />
 
               {/* Job Section */}
-              <Route
-                path="/Job/Career-Guidance"
-                element={<h1>Career Guidance</h1>}
-                key="career-guidance"
-              />
-              <Route
-                path="/Job/Job-Apply"
-                element={<h1>Job Apply</h1>}
-                key="job-apply"
-              />
+              <Route path="/Job/Career-Guidance" element={<h1>Career Guidance</h1>} />
+              <Route path="/Job/Job-Apply" element={<h1>Job Apply</h1>} />
 
               {/* Admin Section */}
-              <Route
-                path="/Admin/Dashboard"
-                element={<h1>Dashboard</h1>}
-                key="dashboard"
-              />
-              <Route
-                path="/Admin/Manage-Users"
-                element={<h1>Manage Users</h1>}
-                key="manage-users"
-              />
-              <Route
-                path="/Admin/Manage-Courses"
-                element={<h1>Manage Courses</h1>}
-                key="manage-courses"
-              />
-              <Route
-                path="/Admin/Manage-Exams"
-                element={<h1>Manage Exams</h1>}
-                key="manage-exams"
-              />
-              <Route
-                path="/Admin/Manage-Resources"
-                element={<h1>Manage Resources</h1>}
-                key="manage-resources"
-              />
-              <Route
-                path="/Admin/Student-Attendence"
-                element={<h1>Student Attendance</h1>}
-                key="student-attendance"
-              />
-              <Route
-                path="/Admin/Staff-Attendence"
-                element={<h1>Staff Attendance</h1>}
-                key="staff-attendance"
-              />
+              <Route path="/Admin/Dashboard" element={<h1>Dashboard</h1>} />
+              <Route path="/Admin/Manage-Users" element={<h1>Manage Users</h1>} />
+              <Route path="/Admin/Manage-Courses" element={<h1>Manage Courses</h1>} />
+              <Route path="/Admin/Manage-Exams" element={<h1>Manage Exams</h1>} />
+              <Route path="/Admin/Manage-Resources" element={<h1>Manage Resources</h1>} />
+              <Route path="/Admin/Student-Attendance" element={<h1>Student Attendance</h1>} />
+              <Route path="/Admin/Staff-Attendance" element={<h1>Staff Attendance</h1>} />
+
+              {/* Catch-all route */}
+              <Route path="*" element={<Navigate to="/" />} />
             </Route>
           </Routes>
         </Suspense>
