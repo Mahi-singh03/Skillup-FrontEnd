@@ -9,6 +9,8 @@ import Profile from "./pages/Profile.jsx";
 import Login from "./pages/Login.jsx";
 import "./App.css";
 
+import ComingSoon from "./pages/CommingSoon.jsx"
+
 // Lazy Load Components
 const LandingPage = lazy(() => import("./pages/LandingPage.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
@@ -40,27 +42,27 @@ function App() {
               <Route path="/StudentLogin" element={<Login />} />
 
               {/* Online Exams */}
-              <Route path="/Online-Exam/Register" element={<h1>Online Exam Register</h1>} />
-              <Route path="/Online-Exam/Course-Videos" element={<h1>Course Videos</h1>} />
+              <Route path="/Online-Exam/Register" element={<ComingSoon/>} />
+              <Route path="/Online-Exam/Course-Videos" element={<ComingSoon/>} />
 
               {/* Exams Section */}
               <Route path="/Exams/Weekly-Exam" element={<ProtectedRoute><ExamList /></ProtectedRoute>} />
-              <Route path="/Exams/Weekly-Exam/:examId" element={<ProtectedRoute><h1>Weekly Exam Detail</h1></ProtectedRoute>} />
-              <Route path="/Exams/Final-Exam" element={<ProtectedRoute><h1>Final Exam</h1></ProtectedRoute>} />
-              <Route path="/Exams/Exam-Result" element={<ProtectedRoute><h1>Exam Result</h1></ProtectedRoute>} />
-              <Route path="/Exams/Exam-Instruction" element={<ProtectedRoute><h1>Exam Instruction</h1></ProtectedRoute>} />
+              <Route path="/Exams/Weekly-Exam/:examId" element={<ProtectedRoute><ComingSoon/></ProtectedRoute>} />
+              <Route path="/Exams/Final-Exam" element={<ProtectedRoute><ComingSoon/></ProtectedRoute>} />
+              <Route path="/Exams/Exam-Result" element={<ProtectedRoute><ComingSoon/></ProtectedRoute>} />
+              <Route path="/Exams/Exam-Instruction" element={<ProtectedRoute><ComingSoon/></ProtectedRoute>} />
 
               {/* Verification */}
               <Route path="/Verification/Verify-Student" element={<h1>Verify Student</h1>} />
               <Route path="/Verification/Verify-Staff" element={<h1>Verify Staff</h1>} />
 
               {/* Resources */}
-              <Route path="/Resources/Syllabus" element={<h1>Syllabus</h1>} />
-              <Route path="/Resources/Study-Material" element={<h1>Study Material</h1>} />
+              <Route path="/Resources/Syllabus" element={<ComingSoon/>} />
+              <Route path="/Resources/Study-Material" element={<ComingSoon/>} />
 
               {/* Job Section */}
-              <Route path="/Job/Career-Guidance" element={<h1>Career Guidance</h1>} />
-              <Route path="/Job/Job-Apply" element={<h1>Job Apply</h1>} />
+              <Route path="/Job/Career-Guidance" element={<ComingSoon/>} />
+              <Route path="/Job/Job-Apply" element={<ComingSoon/>} />
 
               {/* Admin Section */}
               <Route path="/Admin/Dashboard" element={<h1>Dashboard</h1>} />

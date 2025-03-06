@@ -56,8 +56,8 @@ const coursesData = [
     },
     {
         id : 10,
-        CourseName : "Telly",
-        CourseDescription : " Covers all the concepts of telly",
+        CourseName : "Tally",
+        CourseDescription : " Covers all the concepts of Tally",
         CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/dbbtp9rwyom4vjjxn2x5.png"
     },
     {
