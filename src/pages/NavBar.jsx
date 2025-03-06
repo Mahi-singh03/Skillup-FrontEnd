@@ -22,8 +22,8 @@ export default function Navbar() {
     { 
       name: "Online Courses", 
       options: [
-        { name: "Register", path: "/Online-Exam/Register" },
-        { name: "Course Videos", path: "/Online-Exam/Course-Videos" }
+        { name: "Register", path: "/OnlineCourse/Register" },
+        { name: "Course Videos", path: "/OnlineCourse/Course-Videos" }
       ]
     },
     { 

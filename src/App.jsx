@@ -8,6 +8,9 @@ import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 import Profile from "./pages/Profile.jsx";
 import Login from "./pages/Login.jsx";
 import "./App.css";
+import  StudentVerification from "./pages/StudentVarification.jsx"
+import StaffVerification from "./pages/staffVarification.jsx"
+import  OnlineCourseRegistration from "./pages/onlineCourseRegister.jsx"
 
 import ComingSoon from "./pages/CommingSoon.jsx"
 
@@ -19,6 +22,7 @@ const Courses = lazy(() => import("./pages/Courses.jsx"));
 const Gallery = lazy(() => import("./pages/Gallery.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
 const ExamList = lazy(() => import("./pages/WeeklyExamList.jsx"));
+
 
 function App() {
   return (
@@ -42,8 +46,8 @@ function App() {
               <Route path="/StudentLogin" element={<Login />} />
 
               {/* Online Exams */}
-              <Route path="/Online-Exam/Register" element={<ComingSoon/>} />
-              <Route path="/Online-Exam/Course-Videos" element={<ComingSoon/>} />
+              <Route path="/OnlineCourse/Register" element={<OnlineCourseRegistration/>} />
+              <Route path="/OnlineCourse/Course-Videos" element={<ComingSoon/>} />
 
               {/* Exams Section */}
               <Route path="/Exams/Weekly-Exam" element={<ProtectedRoute><ExamList /></ProtectedRoute>} />
@@ -53,8 +57,8 @@ function App() {
               <Route path="/Exams/Exam-Instruction" element={<ProtectedRoute><ComingSoon/></ProtectedRoute>} />
 
               {/* Verification */}
-              <Route path="/Verification/Verify-Student" element={<h1>Verify Student</h1>} />
-              <Route path="/Verification/Verify-Staff" element={<h1>Verify Staff</h1>} />
+              <Route path="/Verification/Verify-Student" element={<StudentVerification/>} />
+              <Route path="/Verification/Verify-Staff" element={<StaffVerification/>} />
 
               {/* Resources */}
               <Route path="/Resources/Syllabus" element={<ComingSoon/>} />
