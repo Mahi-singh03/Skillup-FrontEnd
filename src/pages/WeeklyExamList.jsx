@@ -1,18 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Assuming you are using React Router for navigation
 import "./Styles/WeeklyExanList.css";
-
 const exams = [
-  { id: "WE_1", title: "Weekly Exam 1", path: "/exam/WE_1" },
-  { id: "WE_2", title: "Weekly Exam 2", path: "/exam/WE_2" },
-  
+  { id: "Weekly Exam 1 ( 22-02-2025 )", title: "Weekly Exam 1 ( 22-02-2025 ) ", path: "/Exams/Weekly-Exam/WE_1" },
+  { id: "Weekly Exam 2 ( 01-03-2025 )", title: "Weekly Exam 2 ( 01-03-2025 )", path: "/Exams/Weekly-Exam/WE_2" },
 ];
 
 const ExamList = () => {
   return (
     <div className="exam-list-container">
-      <h1>Available Exams</h1>
-      <ul className="exam-list">
+      <h1 className="main-heading">Available Exams</h1>
+      <ul className="exam-list pt-12">
         {exams.map((exam) => (
           <li key={exam.id} className="exam-item">
             <Link to={exam.path} className="exam-link">
