@@ -4,6 +4,7 @@ import "./Styles/WeeklyExanList.css";
 const exams = [
   { id: "Weekly Exam 1 ( 22-02-2025 )", title: "Weekly Exam 1 ( 22-02-2025 ) ", path: "/Exams/Weekly-Exam/WE_1" },
   { id: "Weekly Exam 2 ( 01-03-2025 )", title: "Weekly Exam 2 ( 01-03-2025 )", path: "/Exams/Weekly-Exam/WE_2" },
+  { id: "Weekly Exam 3 ( 08-03-2025 )", title: "Weekly Exam 3 ( 08-03-2025 )", path: "/Exams/Weekly-Exam/WE_3" },
 ];
 
 const ExamList = () => {

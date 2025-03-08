@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { questions as WE_1 } from "./Question/WE_1";
 import { questions as WE_2 } from "./Question/WE_2";
+import { questions as WE_3 } from "./Question/WE_3";
 import "./Question/Question.css";
 
 const WeeklyExam = () => {
@@ -16,7 +17,7 @@ const WeeklyExam = () => {
     error: ""
   });
 
-  const questionsMap = { WE_1, WE_2 };
+  const questionsMap = { WE_1, WE_2, WE_3 };
   const questions = questionsMap[examId] || [];
   
   useEffect(() => {
