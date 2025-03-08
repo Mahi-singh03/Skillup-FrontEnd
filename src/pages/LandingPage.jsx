@@ -26,8 +26,8 @@ const dropdowns = [
     icon: <MdCastForEducation />,
     label: "Online Courses",
     links: [
-      { path: "/Online-Exam/Register", text: "Register" },
-      { path: "/Online-Exam/Course-Videos", text: "Course Videos" },
+      { path: "/OnlineCourse/Register", text: "Register" },
+      { path: "/OnlineCourse/Course-Videos", text: "Course Videos" },
     ],
   },
   {

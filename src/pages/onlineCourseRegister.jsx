@@ -8,8 +8,7 @@ const OnlineCourseRegistration = () => {
     emailAddress: '',
     course: '',
     fatherName: '',
-    userID: '',
-    password: '',
+    
   });
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -32,9 +31,8 @@ const OnlineCourseRegistration = () => {
       !formData.phoneNumber ||
       !formData.emailAddress ||
       !formData.course ||
-      !formData.fatherName ||
-      !formData.userID ||
-      !formData.password
+      !formData.fatherName 
+
     ) {
       setMessage('Please fill in all fields.');
       return;
@@ -45,7 +43,7 @@ const OnlineCourseRegistration = () => {
 
     try {
       // Simulate backend registration (replace with actual API call)
-      const response = await fetch('https://your-backend-url/api/online-course/register', {
+      const response = await fetch('https://skillup-backend-production.up.railway.app/api/online-course/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,8 +65,7 @@ const OnlineCourseRegistration = () => {
         emailAddress: '',
         course: '',
         fatherName: '',
-        userID: '',
-        password: '',
+        
       });
     } catch (error) {
       setMessage(error.message || 'Failed to register for the course.');
@@ -96,8 +93,125 @@ const OnlineCourseRegistration = () => {
       >
         <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">Online Course Registration</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Form fields remain the same as before */}
+          {/* Name */}
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+
+          {/* Phone Number */}
+          <div>
+            <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+              Phone Number:
+            </label>
+            <input
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+
+          {/* Email Address */}
+          <div>
+            <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700">
+              Email Address:
+            </label>
+            <input
+              type="email"
+              id="emailAddress"
+              name="emailAddress"
+              value={formData.emailAddress}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+
+          {/* Father's Name */}
+          <div>
+            <label htmlFor="fatherName" className="block text-sm font-medium text-gray-700">
+              Father's Name:
+            </label>
+            <input
+              type="text"
+              id="fatherName"
+              name="fatherName"
+              value={formData.fatherName}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              required
+            />
+          </div>
+
+          {/* Course Selection */}
+          <div>
+            <label htmlFor="course" className="block text-sm font-medium text-gray-700">
+              Course:
+            </label>
+            <select
+              id="course"
+              name="course"
+              value={formData.course}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              required
+            >
+              <option value="">Select a course</option>
+              <option value="VN Video editing">VN Video Editing</option>
+              {/* Add more courses here if needed */}
+            </select>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95"
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  className="animate-spin h-5 w-5 mr-3 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Registering...
+              </div>
+            ) : (
+              'Register'
+            )}
+          </button>
         </form>
+
 
         {message && (
           <motion.p
@@ -123,7 +237,7 @@ const OnlineCourseRegistration = () => {
             >
               <h3 className="text-2xl font-bold mb-4 text-blue-600">Registration Successful!</h3>
               <p className="mb-6 text-gray-700">
-                To get your UserID and Password, message us on WhatsApp with the phone number:
+                To get your UserID and Password, message us on WhatsApp with the phone number +91 94639-26371:
               </p>
               <button
                 onClick={openWhatsApp}
