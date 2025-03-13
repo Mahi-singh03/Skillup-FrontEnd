@@ -43,6 +43,7 @@ function App() {
               <Route path="/Profile" element={<Profile />} />
               <Route path="/Logout" element={<h1>Logout</h1>} />
               <Route path="/StudentLogin" element={<Login />} />
+              <Route path="/Shining_Stars" element={<ComingSoon />} />
 
               {/* Online Exams */}
               <Route path="/OnlineCourse/Register" element={<OnlineCourseRegistration />} />

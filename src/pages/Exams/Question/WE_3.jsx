@@ -44,8 +44,7 @@ const questions = [
       options: ["Insert shapes", "Search/reorganize document sections", "Change margins", "Print documents"],
       answer: "Search/reorganize document sections"
     },
-  
-    // MS Excel (10 Questions)
+
     {
       question: "Which symbol starts every Excel formula?",
       options: ["=", "#", "$", "&"],
@@ -87,9 +86,7 @@ const questions = [
       options: ["Create slideshows", "Summarize large datasets", "Insert images", "Write macros"],
       answer: "Summarize large datasets"
     },
-    
-  
-    // MS PowerPoint (10 Questions)
+
     {
       question: "What is the shortcut to start a slideshow from the current slide?",
       options: ["F5", "Shift + F5", "Ctrl + F5", "Alt + F5"],
@@ -100,9 +97,6 @@ const questions = [
       options: ["Gridlines", "Ruler", "Guides", "All of the above"],
       answer: "All of the above"
     },
-    
-    
- 
     
     {
       question: "What is the default slide layout for a new presentation?",
@@ -116,7 +110,6 @@ const questions = [
     },
 
   
-    // Basic Tech/Telly (10 Questions)
     {
       question: "What does 'HTTP' stand for?",
       options: ["HyperText Transfer Protocol", "High-Tech Text Process", "Home Terminal Transfer Program", "Hyperlink Text Type"],

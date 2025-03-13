@@ -66,6 +66,7 @@ export default function Navbar() {
     ]),
     { name: "About", path: "/About" },
     { name: "Gallery", path: "/Gallery" },
+    { name: "Stars ", path: "/Shining_Stars"},
     ...(isAuthenticated ? [{ name: "Logout", path: "#" }] : []),
   ];
 
