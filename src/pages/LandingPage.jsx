@@ -6,7 +6,6 @@ import {
   FaImage,
   FaUserPlus,
   FaInfoCircle,
-  FaPhoneAlt,
   FaUserCheck,
   FaBriefcase,
   FaSignInAlt,
@@ -75,46 +74,47 @@ const buttons = [
 const LandingPage = () => {
   return (
     <div className="Landing-container">
-      {/* Background Videos */}
       {videos.map((video, index) => (
         <video key={index} autoPlay muted loop playsInline className={`background-video ${video.className}`}>
           <source src={video.src} type="video/mp4" />
         </video>
       ))}
 
-      {/* Buttons and Menu */}
       <div className="content">
+        <div className="iso-banner">
+          ISO 9001 : 2015, 
+          Certificate Number: E20250319772
+        </div>
+
         <div className="row single-row">
           <Link to="/Home" className="btn">
             <FaHome className="icon" /> Home
           </Link>
         </div>
 
-     
+        <div className="hidden-on-mobile">
+          <div className="row multi-row">
+            {buttons.map((btn, index) => (
+              <Link key={index} to={btn.path} className="btn">
+                {btn.icon} {btn.text}
+              </Link>
+            ))}
+          </div>
 
-        {/* Single Buttons */}
-        <div className="row multi-row">
-          {buttons.map((btn, index) => (
-            <Link key={index} to={btn.path} className="btn">
-              {btn.icon} {btn.text}
-            </Link>
-          ))}
-        </div>
-
-           {/* Dropdown Menus */}
-           <div className="row multi-row">
-          {dropdowns.map((dropdown, index) => (
-            <div key={index} className="dropdown">
-              <button className="btn">
-                {dropdown.icon} {dropdown.label}
-              </button>
-              <div className="dropdown-content">
-                {dropdown.links.map((link, idx) => (
-                  <Link key={idx} to={link.path}>{link.text}</Link>
-                ))}
+          <div className="row multi-row">
+            {dropdowns.map((dropdown, index) => (
+              <div key={index} className="dropdown">
+                <button className="btn">
+                  {dropdown.icon} {dropdown.label}
+                </button>
+                <div className="dropdown-content">
+                  {dropdown.links.map((link, idx) => (
+                    <Link key={idx} to={link.path}>{link.text}</Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
