@@ -70,7 +70,7 @@ const coursesData = [
         id : 12,
         CourseName : "Adobe Premier Pro",
         CourseDescription  : "Covers all the copncepts of Premier Pro",
-        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1740822798/Course-logo/wohubwesdiazaqi4cfze.jpg"
+        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1741855471/65e09abf952724557f01e3b7_Premier_eip8zp.png"
     }
 ]
 

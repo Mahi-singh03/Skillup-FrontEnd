@@ -34,7 +34,6 @@ const dropdowns = [
     label: "Exam",
     links: [
       { path: "/Exams/Weekly-Exam", text: "Weekly Exam" },
-      { path: "/Exams/Exam-Result", text: "Exam Result" },
       { path: "/Exams/Final-Exam", text: "Final Exams" },
     ],
   },
@@ -82,8 +81,7 @@ const LandingPage = () => {
 
       <div className="content">
         <div className="iso-banner">
-          ISO 9001 : 2015 Certified, 
-          (Number: E20250319772) 
+          ISO 9001 : 2015 Certified & IAF Certified 
         </div>
 
         <div className="row single-row">

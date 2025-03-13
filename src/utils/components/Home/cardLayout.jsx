@@ -82,7 +82,7 @@ export default function HorizontalCardList({ cards = [], className = "", contain
       title: "Adobe Premiere Pro",
       category: "Video Editing",
       description: "With AI-driven insights, businesses can tailor their marketing strategies with unprecedented precision and effectiveness.",
-      image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1740822798/Course-logo/wohubwesdiazaqi4cfze.jpg",
+      image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1741855471/65e09abf952724557f01e3b7_Premier_eip8zp.png",
     },
     {
       title: "Autocad",
