@@ -82,8 +82,8 @@ const LandingPage = () => {
 
       <div className="content">
         <div className="iso-banner">
-          ISO 9001 : 2015, 
-          Certificate Number: E20250319772
+          ISO 9001 : 2015 Certified, 
+          (Number: E20250319772) 
         </div>
 
         <div className="row single-row">
