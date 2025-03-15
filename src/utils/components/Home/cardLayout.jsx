@@ -70,13 +70,13 @@ export default function HorizontalCardList({ cards = [], className = "", contain
       title: "MERN (MongoDB, Express, React, Node)",
       category: "Web Development",
       description: "Learn full-stack web development with MongoDB, Express, React, and Node.js to build modern web applications.",
-      image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/ipyhmia3qx5e2ykcy9ep.jpg",
+      image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1742026643/ipyhmia3qx5e2ykcy9ep-removebg-preview_k1hkxr.png",
     },
     {
       title: "DCA ( Diploma in Computer Applications )",
       category: "Computer course",
       description: "Master essential computer skills, including MS Office, programming basics, and database management for office and business needs.",
-      image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/ubra8mifjr9kdlzs4rht.jpg",
+      image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1742027236/qlgtheupsgvqq0vg1ca9-removebg-preview_bvzlbh.png",
     },
     {
       title: "Adobe Premiere Pro",

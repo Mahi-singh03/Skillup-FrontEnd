@@ -9,19 +9,19 @@ const coursesData = [
         id: 2,
         CourseName: "React",
         CourseDescription : "Frontend course covering all the concepts of React",
-        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/dddsvpwl1d7uycgdkasq.jpg"
+        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1742026110/dddsvpwl1d7uycgdkasq-removebg-preview_lgnjdz.png"
     },
     {
         id: 3,
         CourseNmae : "MERN Full Stack Development",
         CourseDescription : "Full Stack course covering all the concepts of MERN stack",
-        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/ipyhmia3qx5e2ykcy9ep.jpg"
+        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1742026643/ipyhmia3qx5e2ykcy9ep-removebg-preview_k1hkxr.png"
     },
     {
         id: 4,
         CourseName : " Autocad",
         CourseDescription : "Autocad course covering all the concepts of Autocad",
-        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/wxqkfh8qi3pcdzuhqjga.jpg"
+        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1742027118/wxqkfh8qi3pcdzuhqjga-removebg-preview_lgmw7j.png"
     },
     {
         id: 5,
@@ -39,7 +39,7 @@ const coursesData = [
         id: 7,
         COurseName: "Computer Fundamentals",
         CourseDescription : "Computer Fundamentals course covering all the concepts of Computer Fundamentals",
-        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439664/Course-logo/qlgtheupsgvqq0vg1ca9.jpg"
+        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1742027236/qlgtheupsgvqq0vg1ca9-removebg-preview_bvzlbh.png"
     },
     {
         id: 8,
@@ -64,7 +64,7 @@ const coursesData = [
         id : 11,
         CourseName : "Wordpress",
         CourseDescription : "Cover all the concepts of Wordpress",
-        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1740821352/Course-logo/oflds6wit4dszjsspyfe.jpg"
+        CourseImaage : "https://res.cloudinary.com/dufxj1sau/image/upload/v1742026887/oflds6wit4dszjsspyfe-removebg-preview_gxqziq.png"
     },
     {
         id : 12,
