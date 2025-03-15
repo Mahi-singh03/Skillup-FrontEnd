@@ -2,6 +2,8 @@ import React from "react";
 import HorizontalCardList from "../utils/components/Home/cardLayout.jsx";
 import "./Styles/Home.css";
 import ReviewComponent from "../utils/components/Home/Review.jsx"
+import Distance_learning from  "../utils/components/Home/distance_learning.jsx"
+
 
 const Home = () => {
   return (
@@ -53,6 +55,8 @@ const Home = () => {
         </div>
       </section>
 
+
+
       {/* Features Section */}
       <section className="features-section p-6">
         <div className="section-header animate-fade-in">
@@ -91,11 +95,15 @@ const Home = () => {
           ))}
         </div>
       </section>
+
+      <Distance_learning/>
+
       <section className="features-section">
       <div className="section-header animate-fade-in">
           <h2 className="section-title">Review Us</h2>
           <p className="section-subtitle">Shear Your Thoughs about Skillup</p>
         </div>
+
         <ReviewComponent/>
       </section>
     </div>

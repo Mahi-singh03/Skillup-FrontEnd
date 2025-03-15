@@ -15,7 +15,7 @@ export function HorizontalCard({ title, category, description, image }) {
           <motion.img
             src={image}
             alt={title}
-            className="h-48 md:h-full w-full object-cover"
+            className="h-full md:h-full w-full object-fit"
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3 }}
           />
@@ -69,25 +69,25 @@ export default function HorizontalCardList({ cards = [], className = "", contain
     {
       title: "MERN (MongoDB, Express, React, Node)",
       category: "Web Development",
-      description: "Like so many organizations tpany selling licenses. Yet its own business model disruption is only part of the story.",
+      description: "Learn full-stack web development with MongoDB, Express, React, and Node.js to build modern web applications.",
       image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/ipyhmia3qx5e2ykcy9ep.jpg",
     },
     {
       title: "DCA ( Diploma in Computer Applications )",
       category: "Computer course",
-      description: "Tesla's new battery technology aims to improve efficiency and reduce costs, making electric vehicles more accessible to a wider audience.",
+      description: "Master essential computer skills, including MS Office, programming basics, and database management for office and business needs.",
       image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/ubra8mifjr9kdlzs4rht.jpg",
     },
     {
       title: "Adobe Premiere Pro",
       category: "Video Editing",
-      description: "With AI-driven insights, businesses can tailor their marketing strategies with unprecedented precision and effectiveness.",
+      description: "Edit like a pro with transitions, effects, and color grading, enhancing your storytelling and video production skills.",
       image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1741855471/65e09abf952724557f01e3b7_Premier_eip8zp.png",
     },
     {
       title: "Autocad",
       category: "Architecture",
-      description: "Tesla's new battery technology aims to improve efficiency and reduce costs, making electric vehicles more accessible to a wider audience.",
+      description: "Learn 2D & 3D drafting, blueprint creation, and industry-standard design techniques for architecture and engineering.",
       image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/wxqkfh8qi3pcdzuhqjga.jpg",
     }
   ];
