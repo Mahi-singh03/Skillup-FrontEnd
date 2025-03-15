@@ -1,11 +1,10 @@
-
 // WeeklyExam.jsx
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { questions as WE_1 } from "./Question/WE_1";
 import { questions as WE_2 } from "./Question/WE_2";
 import { questions as WE_3 } from "./Question/WE_3";
-import { questions as WE_4 } from "./Question/WE_4"
+import { questions as WE_4 } from "./Question/WE_4";
 import "./Question/Question.css";
 
 const WeeklyExam = () => {
@@ -20,7 +19,15 @@ const WeeklyExam = () => {
 
   const questionsMap = { WE_1, WE_2, WE_3, WE_4 };
   const questions = questionsMap[examId] || [];
-  
+
+  // Scroll to top after submission
+  useEffect(() => {
+    if (state.isSubmitted) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [state.isSubmitted]);
+
+  // Timer effect
   useEffect(() => {
     if (!questions.length) return;
     
@@ -57,8 +64,6 @@ const WeeklyExam = () => {
       score: totalScore,
       isSubmitted: true
     }));
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const formatTime = (seconds) => {
@@ -74,7 +79,7 @@ const WeeklyExam = () => {
   return (
     <div className="exam-container">
       <div className="exam-header">
-        <h1 className="exam-title">Weely Exams</h1>
+        <h1 className="exam-title">Weekly Exams</h1>
         <div className="timer">⏳ {formatTime(state.timeLeft)}</div>
       </div>
 
@@ -123,7 +128,7 @@ const WeeklyExam = () => {
                         checked={isSelected}
                         disabled={state.isSubmitted}
                       />
-                      {option}
+                      <span className="option-text">{option}</span>
                     </label>
                   );
                 })}
