@@ -42,11 +42,11 @@ const CardGrid = () => {
         >
           <Card className="h-full flex flex-col justify-between shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white rounded-2xl overflow-hidden">
             <motion.div whileHover={{ scale: 1.1 }} className="relative">
-              <CardHeader className="relative h-60 md:h-70 overflow-hidden p-5">
+              <CardHeader className="relative h-full md:h-full overflow-hidden p-10">
                 <img
                   src={card.image}
                   alt={card.title}
-                  className="w-full h-full object-cover transition-transform duration-300"
+                  className="w-full h-full object-fit transition-transform duration-300"
                 />
               </CardHeader>
             </motion.div>
