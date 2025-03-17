@@ -2,7 +2,7 @@ import React from "react";
 import HorizontalCardList from "../utils/components/Home/cardLayout.jsx";
 import "./Styles/Home.css";
 import ReviewComponent from "../utils/components/Home/Review.jsx"
-import Distance_learning from  "../utils/components/Home/distance_learning.jsx"
+import Distance_learning from "../utils/components/Home/distance_learning.jsx"
 
 
 const Home = () => {
@@ -18,6 +18,13 @@ const Home = () => {
           playsInline
           className="hero-video"
         >
+          {/* Mobile-first video source */}
+          <source
+            src="https://res.cloudinary.com/dufxj1sau/video/upload/v1741854732/Welcome_to_our_1_knuiea.mp4"
+            type="video/mp4"
+            media="(max-width: 768px)"
+          />
+          {/* Default video source for larger screens */}
           <source
             src="https://res.cloudinary.com/dufxj1sau/video/upload/v1741068132/skillup_institute_of_learning_5_1_online-video-cutter.com_ylonqx.mp4"
             type="video/mp4"
@@ -96,15 +103,15 @@ const Home = () => {
         </div>
       </section>
 
-      <Distance_learning/>
+      <Distance_learning />
 
       <section className="features-section">
-      <div className="section-header animate-fade-in">
+        <div className="section-header animate-fade-in">
           <h2 className="section-title">Review Us</h2>
           <p className="section-subtitle">Shear Your Thoughs about Skillup</p>
         </div>
 
-        <ReviewComponent/>
+        <ReviewComponent />
       </section>
     </div>
   );
