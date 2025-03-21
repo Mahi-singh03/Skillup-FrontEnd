@@ -88,7 +88,7 @@ export default function HorizontalCardList({ cards = [], className = "", contain
       title: "Autocad",
       category: "Architecture",
       description: "Learn 2D & 3D drafting, blueprint creation, and industry-standard design techniques for architecture and engineering.",
-      image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1739439665/Course-logo/wxqkfh8qi3pcdzuhqjga.jpg",
+      image: "https://res.cloudinary.com/dufxj1sau/image/upload/v1742027118/wxqkfh8qi3pcdzuhqjga-removebg-preview_lgmw7j.png",
     }
   ];
 
