@@ -5,6 +5,7 @@ import { questions as WE_1 } from "./Question/WE_1";
 import { questions as WE_2 } from "./Question/WE_2";
 import { questions as WE_3 } from "./Question/WE_3";
 import { questions as WE_4 } from "./Question/WE_4";
+import { questions as WE_5 } from "./Question/WE_5";
 import "./Question/Question.css";
 
 const WeeklyExam = () => {
@@ -17,7 +18,7 @@ const WeeklyExam = () => {
     error: ""
   });
 
-  const questionsMap = { WE_1, WE_2, WE_3, WE_4 };
+  const questionsMap = { WE_1, WE_2, WE_3, WE_4,WE_5 };
   const questions = questionsMap[examId] || [];
 
   // Scroll to top after submission

@@ -11,7 +11,7 @@
     text-align: center;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 8vh;
-    color: rgb(150, 186, 221);
+    color: rgb(30, 144, 255)
 }
 /* Hide scrollbar for Chrome, Safari, and Edge */
 ::-webkit-scrollbar {
@@ -28,3 +28,11 @@
     -ms-overflow-style: none;
   }
   
+  @media (max-width: 768px) {
+    .main-heading{
+      text-align: center;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      font-size: 4vh;
+      color: rgb(150, 186, 221);
+  }
+}

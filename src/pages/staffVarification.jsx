@@ -63,7 +63,7 @@ const StaffVerification = () => {
               Staff ID:
             </label>
             <input
-              type="text"
+              type="Number"
               id="staffID"
               value={staffID}
               onChange={(e) => setStaffID(e.target.value)}

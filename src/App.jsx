@@ -22,6 +22,7 @@ const Gallery = lazy(() => import("./pages/Gallery.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
 const ExamList = lazy(() => import("./pages/WeeklyExamList.jsx"));
 const WeeklyExam = lazy(() => import("./pages/Exams/WeeklyExams.jsx")); 
+const AddStaff = lazy(()=> import("./pages/Admin/addStaff.jsx"));
 
 function App() {
   return (
@@ -43,7 +44,7 @@ function App() {
               <Route path="/Profile" element={<Profile />} />
               <Route path="/Logout" element={<h1>Logout</h1>} />
               <Route path="/StudentLogin" element={<Login />} />
-              <Route path="/Shining_Stars" element={<ComingSoon />} />
+              <Route path="/Achievements" element={<ComingSoon />} />
 
               {/* Online Exams */}
               <Route path="/OnlineCourse/Register" element={<OnlineCourseRegistration />} />
@@ -73,12 +74,10 @@ function App() {
 
               {/* Admin Section */}
               <Route path="/Admin/Dashboard" element={<h1>Dashboard</h1>} />
-              <Route path="/Admin/Manage-Users" element={<h1>Manage Users</h1>} />
-              <Route path="/Admin/Manage-Courses" element={<h1>Manage Courses</h1>} />
-              <Route path="/Admin/Manage-Exams" element={<h1>Manage Exams</h1>} />
-              <Route path="/Admin/Manage-Resources" element={<h1>Manage Resources</h1>} />
-              <Route path="/Admin/Student-Attendance" element={<h1>Student Attendance</h1>} />
-              <Route path="/Admin/Staff-Attendance" element={<h1>Staff Attendance</h1>} />
+              <Route path="/Admin/Student_Detail" element = {<h1> Student Details</h1>} />
+              <Route path="/Admin/Add_Staff" element = {<AddStaff/>} />
+              <Route path="/Admin/Add_Onine_course_student_ID&Password" element={<h1>Add_Onine_course_student_ID&Password</h1>} />
+
 
               {/* Catch-all route */}
               <Route path="*" element={<Navigate to="/" />} />
