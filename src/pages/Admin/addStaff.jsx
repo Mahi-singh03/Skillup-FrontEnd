@@ -75,7 +75,7 @@ const AddStaff = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 px-4 sm:px-1 py-6 main">
       <div className="w-800 max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg content">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-blue-600 text-center mb-6">
           Add New Staff Member
         </h1>
         
