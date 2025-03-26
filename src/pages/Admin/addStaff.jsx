@@ -36,7 +36,7 @@ const AddStaff = () => {
       if (!payload.LeavingDate) delete payload.LeavingDate;
 
       const response = await fetch(
-        "https://skillup-backend-production.up.railway.app/api/staff/verify",
+        "https://skillup-backend-production.up.railway.app/api/staff/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
