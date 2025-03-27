@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Button, DatePicker, Form, Input, Select, Radio, message } from 'antd';
+// Frontend (StudentRegistrationForm.jsx)
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { Button, Form, Input, Select, Radio, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { UserContext } from "../utils/components/UserContext";
@@ -11,7 +12,8 @@ const StudentRegistrationForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { login } = useContext(UserContext); // Changed to login
+  const { login } = useContext(UserContext);
+  const formRef = useRef(null);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -40,7 +42,7 @@ const StudentRegistrationForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login(data); // Use context login method
+        login(data);
         message.success('Registration successful!');
         navigate('/profile', { replace: true });
       } else {
@@ -54,11 +56,38 @@ const StudentRegistrationForm = () => {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const form = formRef.current;
+      const inputs = form.getElementsByTagName('input');
+      const selects = form.getElementsByTagName('select');
+      const textareas = form.getElementsByTagName('textarea');
+      const allFields = [...inputs, ...selects, ...textareas];
+      const currentIndex = Array.from(allFields).indexOf(e.target);
+      
+      if (currentIndex === allFields.length - 1) {
+        form.submit();
+      } else {
+        const nextField = allFields[currentIndex + 1];
+        if (nextField) {
+          nextField.focus();
+        }
+      }
+    }
+  };
 
   return (
     <div className="form-container">
-      <h1 className=" main-heading"> Register Yourself</h1>
-      <Form layout="vertical" form={form} onFinish={onFinish} className="custom-form">
+      <h1 className="main-heading">Register Yourself</h1>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+        className="custom-form"
+        ref={formRef}
+        onKeyPress={handleKeyPress}
+      >
         <Form.Item label="Full Name" name="fullName" rules={[{ required: true, message: 'Enter full name' }]}>
           <Input spellCheck={false} autoCorrect="off" autoCapitalize="none" placeholder="John Doe" />
         </Form.Item>
@@ -87,21 +116,29 @@ const StudentRegistrationForm = () => {
           <Input placeholder="1234567890" />
         </Form.Item>
 
-        <Form.Item label="Date of Birth" name="dateOfBirth" rules={[{ required: true, message: 'Select date of birth' }]}>
-          <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
+        <Form.Item label="Date of Birth" name="dateOfBirth" rules={[{ required: true, message: 'Select or enter date of birth' }]}>
+          <Input
+            type="date"
+            className="w-full px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="YYYY-MM-DD"
+            disabled={loading}
+          />
         </Form.Item>
 
         <Form.Item label="Aadhar Number" name="aadharNumber" rules={[{ required: true, pattern: /^[0-9]{12}$/, message: 'Enter 12-digit Aadhar number' }]}>
-          <Input placeholder="0000 0000 0000" />
+          <Input placeholder="000000000000" />
         </Form.Item>
+
+
 
         <Form.Item label="Course" name="selectedCourse" rules={[{ required: true, message: 'Select course' }]}>
           <Select placeholder="Select a course">
-            {['HTML, CSS, JS', 'React', 'MERN FullStack', 'Autocad', 'CorelDRAW', 'Tally', 'Premier Pro', 'WordPress', 'Computer Course', 'MS Office', 'PTE'].map((course) => (
+            {['HTML, CSS, JS', 'React','Computer Course', , 'Tally', 'MERN FullStack', 'Autocad', 'CorelDRAW', 'Premier Pro', 'WordPress', 'MS Office', 'PTE'].map((course) => (
               <Option key={course} value={course}>{course}</Option>
             ))}
           </Select>
         </Form.Item>
+
 
         <Form.Item label="Course Duration" name="courseDuration" rules={[{ required: true, message: 'Select course duration' }]}>
           <Select placeholder="Select duration">
