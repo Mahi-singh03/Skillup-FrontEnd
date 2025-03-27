@@ -23,6 +23,7 @@ const About = lazy(() => import("./pages/About.jsx"));
 const ExamList = lazy(() => import("./pages/WeeklyExamList.jsx"));
 const WeeklyExam = lazy(() => import("./pages/Exams/WeeklyExams.jsx")); 
 const AddStaff = lazy(()=> import("./pages/Admin/addStaff.jsx"));
+const AddAdmin = lazy(()=> import ("./pages/Admin/addAdmin.jsx"))
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
               {/* Admin Section */}
               <Route path="/Admin/Dashboard" element={<h1>Dashboard</h1>} />
               <Route path="/Admin/Student_Detail" element = {<h1> Student Details</h1>} />
+              <Route path="/Admin/AddAdmine" element = { <AddAdmin/>} />
               <Route path="/Admin/Add_Staff" element = {<AddStaff/>} />
               <Route path="/Admin/Add_Onine_course_student_ID&Password" element={<h1>Add_Onine_course_student_ID&Password</h1>} />
 
