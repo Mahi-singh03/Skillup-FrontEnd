@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AdminRegister = () => {
+const AdminLogin = () => {
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: ''
   });
@@ -12,7 +11,7 @@ const AdminRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { name, email, password } = formData;
+  const { email, password } = formData;
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,13 +24,12 @@ const AdminRegister = () => {
     setError('');
 
     try {
-      const response = await fetch("https://skillup-backend-production.up.railway.app/api/admin/register", {
+      const response = await fetch("https://skillup-backend-production.up.railway.app/api/admin/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name,
           email,
           password
         }),
@@ -39,15 +37,14 @@ const AdminRegister = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Registration failed');
+        throw new Error(errorData.message || 'Login failed');
       }
 
       const data = await response.json();
       localStorage.setItem('adminToken', data.token);
-      setMessage('Admin registered successfully! Redirecting to dashboard...');
-      setFormData({ name: '', email: '', password: '' });
+      setMessage('Login successful! Redirecting to dashboard...');
       setTimeout(() => {
-        navigate('/admin/dashboard');
+        navigate('/skillup');
       }, 1500);
     } catch (err) {
       setError(err.message);
@@ -57,10 +54,10 @@ const AdminRegister = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-7">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Register New Admin
+          Admin Login
         </h2>
 
         {message && (
@@ -75,23 +72,6 @@ const AdminRegister = () => {
         )}
 
         <form onSubmit={onSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={name}
-              onChange={onChange}
-              required
-              placeholder="Enter admin name"
-              disabled={isLoading}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50"
-            />
-          </div>
-
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email
@@ -132,17 +112,17 @@ const AdminRegister = () => {
             disabled={isLoading}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 disabled:bg-blue-400 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Registering...' : 'Register Admin'}
+            {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
         <p className="mt-2 text-sm text-center text-gray-600">
-          Already have an account?{' '}
+          Don't have an account?{' '}
           <button 
-            onClick={() => navigate('/admin/login')}
+            onClick={() => navigate('/admin/register')}
             className="text-blue-600 hover:underline"
           >
-            Login
+            Register
           </button>
         </p>
       </div>
@@ -150,4 +130,4 @@ const AdminRegister = () => {
   );
 };
 
-export default AdminRegister;
+export default AdminLogin;

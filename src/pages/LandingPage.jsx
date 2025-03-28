@@ -58,7 +58,7 @@ const dropdowns = [
     label: "Login",
     links: [
       { path: "/StudentLogin", text: "Student Login" },
-      { path: "/Staff/Login", text: "Staff Login" },
+      { path: "/Admin/login", text: "Admin Login" },
     ],
   },
 ];
@@ -79,13 +79,14 @@ const LandingPage = () => {
         </video>
       ))}
 
-      <div className="content">
+      
+<div className="content">
         <div className="iso-banner">
           ISO 9001 : 2015 Certified & IAF Certified 
         </div>
 
         <div className="row single-row">
-          <Link to="/Home" className="btn">
+          <Link to="/Home" className="nav-btn">
             <FaHome className="icon" /> Home
           </Link>
         </div>
@@ -93,7 +94,7 @@ const LandingPage = () => {
         <div className="hidden-on-mobile">
           <div className="row multi-row">
             {buttons.map((btn, index) => (
-              <Link key={index} to={btn.path} className="btn">
+              <Link key={index} to={btn.path} className="nav-btn">
                 {btn.icon} {btn.text}
               </Link>
             ))}
@@ -101,13 +102,15 @@ const LandingPage = () => {
 
           <div className="row multi-row">
             {dropdowns.map((dropdown, index) => (
-              <div key={index} className="dropdown">
-                <button className="btn">
+              <div key={index} className="dropdown-container">
+                <button className="dropdown-btn">
                   {dropdown.icon} {dropdown.label}
                 </button>
-                <div className="dropdown-content">
+                <div className="dropdown-menu">
                   {dropdown.links.map((link, idx) => (
-                    <Link key={idx} to={link.path}>{link.text}</Link>
+                    <Link key={idx} to={link.path} className="dropdown-link">
+                      {link.text}
+                    </Link>
                   ))}
                 </div>
               </div>
