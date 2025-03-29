@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import api from "../utils/api";
 
 const StaffVerification = () => {
   const [staffID, setStaffID] = useState('');
@@ -23,30 +24,16 @@ const StaffVerification = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `https://skillup-backend-production.up.railway.app/api/staff/verify?staffId=${staffID}&dob=${DOB}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await api.get(`/api/staff/verify?staffId=${staffID}&dob=${DOB}`);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to verify staff');
-      }
-
-      if (!data) {
+      if (!response.data) {
         throw new Error('No staff member found with these credentials');
       }
 
-      setStaffDetails(data);
+      setStaffDetails(response.data);
       setMessage('Staff verified successfully!');
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
       console.error('Verification error:', err);
     } finally {
       setIsLoading(false);

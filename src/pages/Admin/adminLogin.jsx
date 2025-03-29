@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from "../../utils/api";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -24,30 +25,18 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const response = await fetch("https://skillup-backend-production.up.railway.app/api/admin/login", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password
-        }),
+      const response = await api.post('/api/admin/login', {
+        email,
+        password
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
-      }
-
-      const data = await response.json();
-      localStorage.setItem('adminToken', data.token);
+      localStorage.setItem('adminToken', response.data.token);
       setMessage('Login successful! Redirecting to dashboard...');
       setTimeout(() => {
         navigate('/skillup');
       }, 1500);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || 'Login failed');
     } finally {
       setIsLoading(false);
     }
@@ -116,15 +105,6 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        <p className="mt-2 text-sm text-center text-gray-600">
-          Don't have an account?{' '}
-          <button 
-            onClick={() => navigate('/admin/register')}
-            className="text-blue-600 hover:underline"
-          >
-            Register
-          </button>
-        </p>
       </div>
     </div>
   );

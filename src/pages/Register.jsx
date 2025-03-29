@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { UserContext } from "../utils/components/UserContext";
 import './Styles/StudentRegistrationForm.css';
+import api from "../utils/api";
 
 const { Option } = Select;
 
@@ -30,27 +31,14 @@ const StudentRegistrationForm = () => {
         dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null,
       };
 
-      const response = await fetch(
-        'https://skillup-backend-production.up.railway.app/api/students/register',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formattedValues),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        login(data);
-        message.success('Registration successful!');
-        navigate('/profile', { replace: true });
-      } else {
-        message.error(data.message || 'Registration failed.');
-      }
+      const response = await api.post('/api/students/register', formattedValues);
+      
+      login(response.data);
+      message.success('Registration successful!');
+      navigate('/profile', { replace: true });
     } catch (error) {
       console.error('Error:', error);
-      message.error('An error occurred. Try again.');
+      message.error(error.response?.data?.message || 'An error occurred. Try again.');
     } finally {
       setLoading(false);
     }
@@ -129,8 +117,6 @@ const StudentRegistrationForm = () => {
           <Input placeholder="000000000000" />
         </Form.Item>
 
-
-
         <Form.Item label="Course" name="selectedCourse" rules={[{ required: true, message: 'Select course' }]}>
           <Select placeholder="Select a course">
             {['HTML, CSS, JS', 'React','Computer Course', , 'Tally', 'MERN FullStack', 'Autocad', 'CorelDRAW', 'Premier Pro', 'WordPress', 'MS Office', 'PTE'].map((course) => (
@@ -138,7 +124,6 @@ const StudentRegistrationForm = () => {
             ))}
           </Select>
         </Form.Item>
-
 
         <Form.Item label="Course Duration" name="courseDuration" rules={[{ required: true, message: 'Select course duration' }]}>
           <Select placeholder="Select duration">

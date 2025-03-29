@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import "./styles/addStaff.css";
+import api from "../../utils/api";
 
 const AddStaff = () => {
   const navigate = useNavigate();
@@ -31,26 +32,11 @@ const AddStaff = () => {
     setError("");
 
     try {
-      // Remove empty LeavingDate before sending
       const payload = { ...formData };
       if (!payload.LeavingDate) delete payload.LeavingDate;
 
-      const response = await fetch(
-        "https://skillup-backend-production.up.railway.app/api/staff/",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Failed to add staff");
-      }
-
-      const responseData = await response.json();
-      setGeneratedStaffId(responseData.StaffID);
+      const response = await api.post("/api/staff/", payload);
+      setGeneratedStaffId(response.data.StaffID);
       setShowPopup(true);
       setFormData({
         Name: "",
@@ -63,7 +49,7 @@ const AddStaff = () => {
         LeavingDate: ""
       });
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message || "Failed to add staff");
       console.error("Error adding staff:", error);
     } finally {
       setLoading(false);

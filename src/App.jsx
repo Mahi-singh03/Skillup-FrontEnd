@@ -84,9 +84,9 @@ function App() {
               
               <Route path="/Admin/login" element={<AdminLogin/>} />
               <Route path="/skillup" element={<AdminDashboard/>} />
-              <Route path="/Admin/AddAdmine" element = { <AddAdmin/>} />
-              <Route path="/Admin/Add_Staff" element = {<AddStaff/>} />
-              <Route path="/Admin/Add_Onine_course_student_ID&Password" element={<h1>Add_Onine_course_student_ID&Password</h1>} />
+              <Route path="/Admin/Add-Admine" element = { <AddAdmin/>} />
+              <Route path="/Admin/Add-Staff" element = {<AddStaff/>} />
+              <Route path="/Admin/Add-Onine-course-student-ID&Password" element={<h1>Add_Onine_course_student_ID&Password</h1>} />
 
 
               {/* Catch-all route */}

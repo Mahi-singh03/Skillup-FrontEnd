@@ -5,6 +5,7 @@ import {
   FaDesktop, FaMoneyBillWave, FaBook, FaSignOutAlt, 
   FaClipboardCheck 
 } from 'react-icons/fa';
+import api from "../../utils/api";
 
 const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -18,23 +19,10 @@ const AdminDashboard = () => {
         const token = localStorage.getItem('adminToken');
         if (!token) throw new Error('Please login first');
 
-        const response = await fetch("https://skillup-backend-production.up.railway.app/api/admin/dashboard", {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch dashboard data');
-        }
-
-        const data = await response.json();
-        setDashboardData(data);
+        const response = await api.get('/api/admin/dashboard');
+        setDashboardData(response.data);
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.message || err.message);
       } finally {
         setIsLoading(false);
       }
@@ -50,8 +38,8 @@ const AdminDashboard = () => {
 
   const dashboardButtons = [
     { icon: <FaUserPlus />, text: 'Add Student', path: '/admin/add-student', color: 'bg-gradient-to-r from-blue-500 to-blue-600' },
-    { icon: <FaChalkboardTeacher />, text: 'Add Staff', path: '/admin/add-staff', color: 'bg-gradient-to-r from-green-500 to-green-600' },
-    { icon: <FaUserTie />, text: 'Add Admin', path: '/admin/add-admin', color: 'bg-gradient-to-r from-purple-500 to-purple-600' },
+    { icon: <FaChalkboardTeacher />, text: 'Add Staff', path: '/Admin/Add-Staff', color: 'bg-gradient-to-r from-green-500 to-green-600' },
+    { icon: <FaUserTie />, text: 'Add Admin', path: '/Admin/Add-Admine', color: 'bg-gradient-to-r from-purple-500 to-purple-600' },
     { icon: <FaUsers />, text: 'View PTE Students', path: '/admin/pte-students', color: 'bg-gradient-to-r from-indigo-500 to-indigo-600' },
     { icon: <FaDesktop />, text: 'View Computer Students', path: '/admin/computer-students', color: 'bg-gradient-to-r from-teal-500 to-teal-600' },
     { icon: <FaUsers />, text: 'View Staff', path: '/admin/staff', color: 'bg-gradient-to-r from-orange-500 to-orange-600' },

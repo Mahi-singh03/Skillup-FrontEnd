@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import "./Styles/Gallery.css";
+import api from "../utils/api";
 
 const SkeletonItem = () => (
   <div className="aspect-square overflow-hidden animate-pulse">
@@ -18,13 +19,11 @@ const Gallery = () => {
             setLoading(true);
             setError(null);
             
-            const response = await fetch("https://skillup-backend-production.up.railway.app/api/cloudinary-images");
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = await response.json();
+            const response = await api.get("/api/cloudinary-images");
             
-            if (!data?.images?.length) throw new Error("No images found");
+            if (!response.data?.images?.length) throw new Error("No images found");
             
-            const sortedImages = data.images
+            const sortedImages = response.data.images
                 .map(img => ({
                     ...img,
                     sortKey: parseInt((img.publicId.match(/\d+/) || [0])[0])
@@ -35,7 +34,7 @@ const Gallery = () => {
             setImages(sortedImages);
         } catch (error) {
             console.error("Fetch error:", error);
-            setError(error.message);
+            setError(error.response?.data?.message || error.message);
         } finally {
             setLoading(false);
         }

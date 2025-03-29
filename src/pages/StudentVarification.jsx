@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion'; // For animations
+import api from "../utils/api";
 
 const StudentVerification = () => {
   const [rollNo, setRollNo] = useState('');
@@ -22,27 +23,17 @@ const StudentVerification = () => {
     setStudentDetails(null);
 
     try {
-      // Send request to the backend to verify the student
-      const response = await fetch('https://skillup-backend-production.up.railway.app/api/students/verify-student', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ rollNo, dateOfBirth: dob }),
+      const response = await api.post('/api/students/verify-student', {
+        rollNo,
+        dateOfBirth: dob
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to verify student.');
-      }
-
-      if (data) {
-        setStudentDetails(data);
+      if (response.data) {
+        setStudentDetails(response.data);
         setMessage('Student verified successfully!');
       }
     } catch (error) {
-      setMessage(error.message || 'Failed to verify student.');
+      setMessage(error.response?.data?.message || 'Failed to verify student.');
     } finally {
       setIsLoading(false);
     }

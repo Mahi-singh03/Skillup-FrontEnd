@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion'; // For animations
+import api from "../utils/api";
 
 const OnlineCourseRegistration = () => {
   const [formData, setFormData] = useState({
@@ -42,23 +43,10 @@ const OnlineCourseRegistration = () => {
     setMessage('');
 
     try {
-      // Simulate backend registration (replace with actual API call)
-      const response = await fetch('https://skillup-backend-production.up.railway.app/api/online-course/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to register for the course.');
-      }
-
+      const response = await api.post('/api/online-course/register', formData);
+      
       setMessage('Registration successful!');
-      setShowPopup(true); // Show popup on successful registration
+      setShowPopup(true);
       setFormData({
         name: '',
         phoneNumber: '',
@@ -68,7 +56,7 @@ const OnlineCourseRegistration = () => {
         
       });
     } catch (error) {
-      setMessage(error.message || 'Failed to register for the course.');
+      setMessage(error.response?.data?.message || 'Failed to register for the course.');
     } finally {
       setIsLoading(false);
     }

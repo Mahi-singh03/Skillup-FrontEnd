@@ -4,9 +4,10 @@ import { UserContext } from "../utils/components/UserContext";
 import { BeatLoader } from "react-spinners";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import "./Styles/LoginForm.css"
+import api from "../utils/api";
 
 const Login = () => {
-  const { login } = useContext(UserContext); // Changed to login
+  const { login } = useContext(UserContext);
   const navigate = useNavigate();
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -20,23 +21,15 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch(
-        "https://skillup-backend-production.up.railway.app/api/students/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ emailAddress, password }),
-        }
-      );
+      const response = await api.post("/api/students/login", {
+        emailAddress,
+        password,
+      });
 
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.message || "Login failed");
-
-      login(data); // Use context login method
+      login(response.data);
       navigate("/profile");
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }

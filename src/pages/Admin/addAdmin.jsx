@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from "../../utils/api";
 
 const AdminRegister = () => {
   const [formData, setFormData] = useState({
@@ -25,32 +26,20 @@ const AdminRegister = () => {
     setError('');
 
     try {
-      const response = await fetch("https://skillup-backend-production.up.railway.app/api/admin/register", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password
-        }),
+      const response = await api.post('/api/admin/register', {
+        name,
+        email,
+        password
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Registration failed');
-      }
-
-      const data = await response.json();
-      localStorage.setItem('adminToken', data.token);
+      localStorage.setItem('adminToken', response.data.token);
       setMessage('Admin registered successfully! Redirecting to dashboard...');
       setFormData({ name: '', email: '', password: '' });
       setTimeout(() => {
         navigate('/admin/dashboard');
       }, 1500);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || 'Registration failed');
     } finally {
       setIsLoading(false);
     }
