@@ -79,10 +79,10 @@ const LandingPage = () => {
         </video>
       ))}
 
-      
-<div className="content">
+
+      <div className="content">
         <div className="iso-banner">
-          ISO 9001 : 2015 Certified & IAF Certified 
+          ISO 9001 : 2015 Certified & IAF Certified
         </div>
 
         <div className="row single-row">
@@ -95,10 +95,12 @@ const LandingPage = () => {
           <div className="row multi-row">
             {buttons.map((btn, index) => (
               <Link key={index} to={btn.path} className="nav-btn">
-                {btn.icon} {btn.text}
+                <span className="icon-class">{btn.icon}</span> {btn.text}
               </Link>
             ))}
           </div>
+
+
 
           <div className="row multi-row">
             {dropdowns.map((dropdown, index) => (
@@ -118,7 +120,7 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

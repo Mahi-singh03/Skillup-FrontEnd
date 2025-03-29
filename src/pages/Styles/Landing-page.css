@@ -58,7 +58,6 @@
 .nav-btn {
   display: inline-flex;
   align-items: center;
- 
   padding: 1rem 2rem;
   background: #007bff;
   color: white;
@@ -69,6 +68,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
 }
 
 .nav-btn:hover {
@@ -79,6 +79,11 @@
 
 .nav-btn .icon {
   font-size: 1.25rem;
+  margin:7px;
+
+}
+.icon-class{
+  margin: 5px;
 }
 
 .dropdown-container {
