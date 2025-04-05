@@ -20,16 +20,12 @@ const Register = lazy(() => import("./pages/Register.jsx"));
 const Courses = lazy(() => import("./pages/Courses.jsx"));
 const Gallery = lazy(() => import("./pages/Gallery.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
-
-
 const ExamList = lazy(() => import("./pages/WeeklyExamList.jsx"));
-const WeeklyExam = lazy(() => import("./pages/Exams/WeeklyExams.jsx")); 
-
-
-const AddStaff = lazy(()=> import("./pages/Admin/addStaff.jsx"));
-const AddAdmin = lazy(()=> import ("./pages/Admin/addAdmin.jsx"))
-const AdminLogin = lazy(()=> import ("./pages/Admin/adminLogin.jsx"))
-const AdminDashboard = lazy(()=> import("./pages/Admin/Dashboard.jsx"))
+const WeeklyExam = lazy(() => import("./pages/Exams/WeeklyExams.jsx"));
+const AddStaff = lazy(() => import("./pages/Admin/addStaff.jsx"));
+const AddAdmin = lazy(() => import("./pages/Admin/addAdmin.jsx"));
+const AdminLogin = lazy(() => import("./pages/Admin/adminLogin.jsx"));
+const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard.jsx"));
 
 function App() {
   return (
@@ -57,11 +53,11 @@ function App() {
               <Route path="/OnlineCourse/Register" element={<OnlineCourseRegistration />} />
               <Route path="/OnlineCourse/Course-Videos" element={<ComingSoon />} />
 
-              {/* Exams Section - Only changed the WeeklyExam route */}
+              {/* Exams Section */}
               <Route path="/Exams/Weekly-Exam" element={<ProtectedRoute><ExamList /></ProtectedRoute>} />
-              <Route 
-                path="/Exams/Weekly-Exam/:examId" 
-                element={<ProtectedRoute><WeeklyExam /></ProtectedRoute>} // Changed this line
+              <Route
+                path="/Exams/Weekly-Exam/:examId"
+                element={<ProtectedRoute><WeeklyExam /></ProtectedRoute>}
               />
               <Route path="/Exams/Final-Exam" element={<ProtectedRoute><ComingSoon /></ProtectedRoute>} />
               <Route path="/Exams/Exam-Result" element={<ProtectedRoute><ComingSoon /></ProtectedRoute>} />
@@ -79,14 +75,45 @@ function App() {
               <Route path="/Job/Career-Guidance" element={<ComingSoon />} />
               <Route path="/Job/Job-Apply" element={<ComingSoon />} />
 
+
+
+
+
+
+
+
+
               {/* Admin Section */}
-              
-              
-              <Route path="/Admin/login" element={<AdminLogin/>} />
-              <Route path="/skillup" element={<AdminDashboard/>} />
-              <Route path="/Admin/Add-Admine" element = { <AddAdmin/>} />
-              <Route path="/Admin/Add-Staff" element = {<AddStaff/>} />
-              <Route path="/Admin/Add-Onine-course-student-ID&Password" element={<h1>Add_Onine_course_student_ID&Password</h1>} />
+              <Route path="/Admin/login" element={<AdminLogin />} />
+              <Route
+                path="/skillup"
+                element={<ProtectedRoute isAdminRoute><AdminDashboard /></ProtectedRoute>}
+              />
+              <Route
+                path="/Admin/Add-Admine"
+                element={<ProtectedRoute isAdminRoute><AddAdmin /></ProtectedRoute>}
+              />
+              <Route
+                path="/Admin/Add-Staff"
+                element={<ProtectedRoute isAdminRoute><AddStaff /></ProtectedRoute>}
+              />
+              <Route
+                path="/Admin/Add-Onine-course-student-ID&Password"
+                element={<ProtectedRoute isAdminRoute><h1>Add_Onine_course_student_ID&Password</h1></ProtectedRoute>}
+              />
+              <Route
+                path="/Admin/Add-Photo"
+                element={<ProtectedRoute isAdminRoute><h1>Add_Onine_course_student_ID&Password</h1></ProtectedRoute>}
+              />
+
+
+              <Route
+                path="/Admin/Final-Exam"
+                element={<ProtectedRoute isAdminRoute><h1>Final Exam</h1></ProtectedRoute>}
+              />
+
+
+
 
 
               {/* Catch-all route */}

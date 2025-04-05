@@ -1,14 +1,16 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../utils/components/UserContext";
 import api from "../../utils/api";
 
 const AdminLogin = () => {
+  const { login } = useContext(UserContext);
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -21,22 +23,26 @@ const AdminLogin = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
 
     try {
-      const response = await api.post('/api/admin/login', {
+      const response = await api.post("/api/admin/login", {
         email,
-        password
+        password,
       });
 
-      localStorage.setItem('adminToken', response.data.token);
-      setMessage('Login successful! Redirecting to dashboard...');
+      console.log("AdminLogin API Response:", response.data);
+
+      const { token, ...userData } = response.data;
+      login(userData || { email }, true, token); // Fallback to { email } if no userData
+      setMessage("Login successful! Redirecting to dashboard...");
       setTimeout(() => {
-        navigate('/skillup');
+        navigate("/skillup");
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      console.error("Login error:", err.response?.data);
+      setError(err.response?.data?.message || "Login failed");
     } finally {
       setIsLoading(false);
     }
@@ -101,10 +107,9 @@ const AdminLogin = () => {
             disabled={isLoading}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 disabled:bg-blue-400 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Logging in...' : 'Login'}
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
-
       </div>
     </div>
   );
