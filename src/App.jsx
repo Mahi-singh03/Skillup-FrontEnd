@@ -26,6 +26,9 @@ const AddStaff = lazy(() => import("./pages/Admin/addStaff.jsx"));
 const AddAdmin = lazy(() => import("./pages/Admin/addAdmin.jsx"));
 const AdminLogin = lazy(() => import("./pages/Admin/adminLogin.jsx"));
 const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard.jsx"));
+const RollnoPage = lazy (()=>import("./pages/Admin/CertificateExam/RollnoPage.jsx.jsx"))
+const AddPhoto = lazy (() => import("./pages/Admin/addPhoto.jsx"))
+const Certificate = lazy (() =>import("./pages/Admin/getCertificate.jsx"))
 
 function App() {
   return (
@@ -103,13 +106,18 @@ function App() {
               />
               <Route
                 path="/Admin/Add-Photo"
-                element={<ProtectedRoute isAdminRoute><h1>Add_Onine_course_student_ID&Password</h1></ProtectedRoute>}
+                element={<ProtectedRoute isAdminRoute><AddPhoto/></ProtectedRoute>}
               />
 
 
               <Route
+                path="/Admin/Get-Certificate"
+                element={<ProtectedRoute isAdminRoute><Certificate/></ProtectedRoute>}
+              />
+
+              <Route
                 path="/Admin/Final-Exam"
-                element={<ProtectedRoute isAdminRoute><h1>Final Exam</h1></ProtectedRoute>}
+                element={<ProtectedRoute isAdminRoute><RollnoPage/></ProtectedRoute>}
               />
 
 

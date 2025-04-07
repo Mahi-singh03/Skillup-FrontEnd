@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   FaUserPlus, FaChalkboardTeacher, FaUserTie, FaUsers, 
   FaDesktop, FaMoneyBillWave, FaBook, FaSignOutAlt, 
-  FaClipboardCheck 
+  FaClipboardCheck, FaCamera, FaCertificate 
 } from 'react-icons/fa';
 import api from "../../utils/api";
 
@@ -44,7 +44,9 @@ const AdminDashboard = () => {
     { icon: <FaDesktop />, text: 'View Computer Students', path: '/admin/computer-students', color: 'bg-gradient-to-r from-teal-500 to-teal-600' },
     { icon: <FaUsers />, text: 'View Staff', path: '/admin/staff', color: 'bg-gradient-to-r from-orange-500 to-orange-600' },
     { icon: <FaMoneyBillWave />, text: 'Manage Fees', path: '/admin/fees', color: 'bg-gradient-to-r from-yellow-500 to-yellow-600' },
-    { icon: <FaClipboardCheck />, text: 'Final Exam', path: '/admin/final-exam', color: 'bg-gradient-to-r from-red-500 to-red-600' },
+    { icon: <FaClipboardCheck />, text: 'Final Exam', path: '/Admin/Final-Exam', color: 'bg-gradient-to-r from-red-500 to-red-600' },
+    { icon: <FaCamera />, text: 'Add Student Photo', path: '/Admin/Add-Photo', color: 'bg-gradient-to-r from-pink-500 to-pink-600' },
+    { icon: <FaCertificate />, text: 'Get Certificate', path: '/admin/get-certificate', color: 'bg-gradient-to-r from-amber-500 to-amber-600' },
   ];
 
   if (isLoading) {
