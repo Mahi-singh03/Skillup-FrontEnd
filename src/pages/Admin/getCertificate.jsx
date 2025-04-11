@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Document, Page } from 'react-pdf';
-import api from '../../utils/api'; // Your Axios instance
+import api from '../../utils/api';
 import { motion } from 'framer-motion';
-import { FaDownload, FaSpinner, FaCertificate, FaFileAlt } from 'react-icons/fa';
+import { FaDownload, FaSpinner, FaFileAlt } from 'react-icons/fa';
 
 const Certificate = () => {
   const [rollNo, setRollNo] = useState('');
   const [message, setMessage] = useState('');
-  const [completionPdfUrl, setCompletionPdfUrl] = useState(null);
   const [marksPdfUrl, setMarksPdfUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -19,35 +18,27 @@ const Certificate = () => {
 
     setLoading(true);
     setMessage('');
-    setCompletionPdfUrl(null);
     setMarksPdfUrl(null);
 
     try {
       // Call the generate certificate endpoint
       const response = await api.get(`/api/certificates/generate-certificate/${rollNo}`);
-      const { completionUrl, marksUrl } = response.data;
+      const { marksUrl } = response.data;
 
-      // Fetch PDFs as blobs for preview
-      const completionResponse = await api.get(completionUrl.substring(completionUrl.indexOf('/api')), {
-        responseType: 'blob',
-      });
+      // Fetch PDF as blob for preview
       const marksResponse = await api.get(marksUrl.substring(marksUrl.indexOf('/api')), {
         responseType: 'blob',
       });
 
-      const completionBlob = new Blob([completionResponse.data], { type: 'application/pdf' });
       const marksBlob = new Blob([marksResponse.data], { type: 'application/pdf' });
-
-      setCompletionPdfUrl(URL.createObjectURL(completionBlob));
       setMarksPdfUrl(URL.createObjectURL(marksBlob));
-      setMessage('Certificates generated successfully! Preview below.');
+      setMessage('Statement of Marks generated successfully! Preview below.');
     } catch (error) {
       const errorMsg =
-        error.response?.data?.message || 'Error generating certificates. Please try again.';
+        error.response?.data?.message || 'Error generating certificate. Please try again.';
       setMessage(errorMsg);
       console.error('Certificate generation error:', error);
       if (error.response?.status === 401) {
-        // The interceptor will handle redirection to /login
         setMessage('Session expired. Redirecting to login...');
       }
     } finally {
@@ -96,8 +87,8 @@ const Certificate = () => {
           className="text-3xl font-bold text-gray-800 mb-6 text-center"
           variants={itemVariants}
         >
-          <FaCertificate className="inline-block mr-2 text-blue-500" />
-          Certificate Generator
+          <FaFileAlt className="inline-block mr-2 text-blue-500" />
+          Statement of Marks Generator
         </motion.h2>
 
         <motion.div
@@ -125,7 +116,7 @@ const Certificate = () => {
                 Generating...
               </>
             ) : (
-              'Generate Certificates'
+              'Generate Statement'
             )}
           </motion.button>
         </motion.div>
@@ -143,43 +134,14 @@ const Certificate = () => {
         )}
       </motion.div>
 
-      {completionPdfUrl && marksPdfUrl && (
+      {marksPdfUrl && (
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          className="flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <motion.div
-            className="bg-white rounded-xl shadow-md border border-gray-100"
-            variants={cardVariants}
-            whileHover="hover"
-          >
-            <div className="bg-blue-50 p-4 border-b border-gray-200 flex items-center">
-              <FaCertificate className="text-blue-500 mr-2" />
-              <h4 className="text-lg font-semibold text-gray-700">Completion Certificate</h4>
-            </div>
-            <div className="p-4 flex justify-center">
-              <Document file={completionPdfUrl}>
-                <Page pageNumber={1} width={300} />
-              </Document>
-            </div>
-            <div className="p-4 bg-gray-50 border-t border-gray-200">
-              <motion.button
-                onClick={() =>
-                  handleDownload(completionPdfUrl, `completion_certificate_${rollNo}.pdf`)
-                }
-                className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center justify-center"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <FaDownload className="mr-2" />
-                Download
-              </motion.button>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="bg-white rounded-xl shadow-md border border-gray-100"
+            className="bg-white rounded-xl shadow-md border border-gray-100 w-full max-w-xl"
             variants={cardVariants}
             whileHover="hover"
           >
@@ -189,7 +151,7 @@ const Certificate = () => {
             </div>
             <div className="p-4 flex justify-center">
               <Document file={marksPdfUrl}>
-                <Page pageNumber={1} width={300} />
+                <Page pageNumber={1} width={400} />
               </Document>
             </div>
             <div className="p-4 bg-gray-50 border-t border-gray-200">
