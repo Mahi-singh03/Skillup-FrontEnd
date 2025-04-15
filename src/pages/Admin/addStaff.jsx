@@ -12,7 +12,6 @@ const AddStaff = () => {
     Designation: "",
     DOB: "",
     FatherName: "",
-    MotherName: "",
     Address: "",
     LeavingDate: ""
   });
@@ -44,7 +43,6 @@ const AddStaff = () => {
         Designation: "",
         DOB: "",
         FatherName: "",
-        MotherName: "",
         Address: "",
         LeavingDate: ""
       });
@@ -56,12 +54,12 @@ const AddStaff = () => {
     }
   };
 
-  const handleGoToHome = () => navigate("/");
+  const handleGoToHome = () => navigate("/skillup");
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200 px-4 sm:px-1 py-6 main">
       <div className="w-800 max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg content">
-        <h1 className="text-2xl sm:text-3xl font-bold text-blue-600 text-center mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-blue-300 text-center mb-6">
           Add New Staff Member
         </h1>
         
@@ -73,7 +71,6 @@ const AddStaff = () => {
             { label: "Designation", name: "Designation", type: "text", required: true },
             { label: "Date of Birth", name: "DOB", type: "date", required: true },
             { label: "Father's Name", name: "FatherName", type: "text", required: true },
-            { label: "Mother's Name", name: "MotherName", type: "text", required: true },
             { label: "Address", name: "Address", type: "text", required: true },
           ].map((field) => (
             <div key={field.name}>
@@ -113,7 +110,7 @@ const AddStaff = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 sm:py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm sm:text-base"
+            className="w-full bg-blue-600 text-white py-2 sm:py-3 px-4 rounded-lg font-semibold hover:bg-blue-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm sm:text-base"
           >
             {loading ? <BeatLoader color="#ffffff" size={10} /> : "Add Staff"}
           </button>
