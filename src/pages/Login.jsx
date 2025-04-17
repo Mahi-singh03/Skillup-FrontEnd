@@ -26,24 +26,10 @@ const Login = () => {
         password,
       });
 
-      if (response.data && response.data.token) {
-        login(response.data);
-        navigate("/Profile");
-      } else {
-        throw new Error("Invalid response from server");
-      }
+      login(response.data);
+      navigate("/profile");
     } catch (error) {
-      console.error("Login error:", error);
-      if (error.response) {
-        // Server responded with an error
-        setError(error.response.data?.message || "Login failed. Please check your credentials.");
-      } else if (error.request) {
-        // Request was made but no response received
-        setError("Network error. Please check your connection.");
-      } else {
-        // Something else happened
-        setError("An unexpected error occurred. Please try again.");
-      }
+      setError(error.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }

@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom"; // Assuming you are using React Router for navigation
 import "./Styles/WeeklyExanList.css";
 const exams = [
-  { id: "Weekly Exam 8 ( 11-03-2025 )", title: "Weekly Exam 8 ( 11-04-2025 )", path: "/Exams/Weekly-Exam/WE_8" },
   { id: "Weekly Exam 7 ( 05-03-2025 )", title: "Weekly Exam 7 ( 05-04-2025 )", path: "/Exams/Weekly-Exam/WE_7" },
   { id: "Weekly Exam 6 ( 29-03-2025 )", title: "Weekly Exam 6 ( 29-03-2025 )", path: "/Exams/Weekly-Exam/WE_6" },
   { id: "Weekly Exam 5 ( 22-03-2025 )", title: "Weekly Exam 5 ( 22-03-2025 )", path: "/Exams/Weekly-Exam/WE_5" },
