@@ -31,7 +31,6 @@ export default function Navbar() {
       options: [
         { name: "Exam Result", path: "/Exams/Exam-Result" },
         { name: "Weekly Exam", path: "/Exams/Weekly-Exam" },
-        { name: "Final Exam", path: "/Exams/Final-Exam" }
       ]
     },
     {

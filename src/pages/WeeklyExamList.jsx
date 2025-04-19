@@ -16,7 +16,7 @@ const ExamList = () => {
   return (
     <div className="exam-list-container">
       <h1 className="main-heading">Available Exams</h1>
-      <ul className="exam-list pt-12">
+      <ul className="exam-list ">
         {exams.map((exam) => (
           <li key={exam.id} className="exam-item">
             <Link to={exam.path} className="exam-link">
