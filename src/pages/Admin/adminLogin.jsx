@@ -31,9 +31,6 @@ const AdminLogin = () => {
         email,
         password,
       });
-
-      console.log("AdminLogin API Response:", response.data);
-
       const { token, ...userData } = response.data;
       login(userData || { email }, true, token); // Fallback to { email } if no userData
       setMessage("Login successful! Redirecting to dashboard...");

@@ -5,8 +5,6 @@ import { UserContext } from "./components/UserContext";
 const ProtectedRoute = ({ children, isAdminRoute = false }) => {
   const { isAuthenticated, isAdmin, loading } = useContext(UserContext);
 
-  console.log("ProtectedRoute:", { isAuthenticated, isAdmin, isAdminRoute, loading });
-
   if (loading) {
     return <div>Loading...</div>; // Wait until context is initialized
   }

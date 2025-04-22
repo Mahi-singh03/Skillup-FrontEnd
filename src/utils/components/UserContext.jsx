@@ -13,7 +13,6 @@ export function UserProvider({ children }) {
       const storedUser = localStorage.getItem("user");
       const adminToken = localStorage.getItem("adminToken");
 
-      console.log("Initializing UserContext:", { storedUser, adminToken });
 
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
@@ -34,7 +33,6 @@ export function UserProvider({ children }) {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   const login = (userData, isAdminLogin = false, token = null) => {
-    console.log("Login:", { userData, isAdminLogin, token });
     if (isAdminLogin && token) {
       localStorage.setItem("adminToken", token);
       setIsAdmin(true);
@@ -55,8 +53,6 @@ export function UserProvider({ children }) {
     setIsAuthenticated(false);
     setIsAdmin(false);
   };
-
-  console.log("UserContext state:", { user, isAuthenticated, isAdmin, loading });
 
   return (
     <UserContext.Provider value={{ user, isAuthenticated, isAdmin, login, logout, loading }}>

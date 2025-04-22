@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Assuming you are using React Router for navigation
+import { Link } from "react-router-dom"; 
 import "./Styles/WeeklyExanList.css";
 const exams = [
   { id: "Weekly Exam 8 ( 19-04-2025 )", title: "Weekly Exam 8 ( 19-04-2025 )", path: "/Exams/Weekly-Exam/WE_8" },
