@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import api from '../../utils/api';
 
-
 const StudentPhotoManager = () => {
   const [rollNo, setRollNo] = useState('');
   const [studentName, setStudentName] = useState('');
+  const [currentPhoto, setCurrentPhoto] = useState(null);
   const [showNamePopup, setShowNamePopup] = useState(false);
   const [showUploadPopup, setShowUploadPopup] = useState(false);
   const [photo, setPhoto] = useState(null);
@@ -22,6 +22,7 @@ const StudentPhotoManager = () => {
     try {
       const response = await api.get(`/api/students/rollno/${rollNo.trim()}`);
       setStudentName(response.data.student.fullName);
+      setCurrentPhoto(response.data.student.photo?.url || null);
       setShowNamePopup(true);
     } catch (err) {
       setError(err.response?.data?.error || 'Student not found. Please check the roll number.');
@@ -34,23 +35,39 @@ const StudentPhotoManager = () => {
   const handlePhotoChange = useCallback((e) => {
     const file = e.target.files[0];
     setError('');
-
+  
     if (!file) return;
-
+  
     const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (!validTypes.includes(file.type)) {
       setError('Please upload a JPEG, JPG, or PNG image only.');
       return;
     }
-
-    if (file.size > 50 * 1024) {
-      setError('File size must not exceed 50KB');
+  
+    if (file.size > 2 * 1024 * 1024) {
+      setError('File size must not exceed 2MB');
       return;
     }
-
-    if (preview) URL.revokeObjectURL(preview);
-    setPhoto(file);
-    setPreview(URL.createObjectURL(file));
+  
+    // Check image dimensions
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+      if (img.width < 500 || img.height < 500) {
+        setError('Image should be at least 500x500 pixels for best results');
+        URL.revokeObjectURL(img.src);
+        return;
+      }
+      
+      if (preview) URL.revokeObjectURL(preview);
+      setPhoto(file);
+      setPreview(URL.createObjectURL(file));
+      URL.revokeObjectURL(img.src);
+    };
+    img.onerror = () => {
+      setError('Invalid image file');
+      URL.revokeObjectURL(img.src);
+    };
   }, [preview]);
 
   const handlePhotoUpload = useCallback(async (e) => {
@@ -66,7 +83,7 @@ const StudentPhotoManager = () => {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem('adminToken'); // Assuming admin token is stored
+      const token = localStorage.getItem('adminToken');
       if (!token) throw new Error('Please login to upload photo');
 
       const formData = new FormData();
@@ -80,15 +97,14 @@ const StudentPhotoManager = () => {
         },
       };
 
-      await api.post('/api/students/student/photo', formData, config);
+      const response = await api.post('/api/students/student/photo', formData, config);
 
       setMessage('Photo uploaded successfully!');
+      setCurrentPhoto(response.data.photo.url);
       setShowUploadPopup(false);
       setPhoto(null);
       if (preview) URL.revokeObjectURL(preview);
       setPreview(null);
-      setRollNo('');
-      setStudentName('');
     } catch (err) {
       console.error('Upload error:', err);
       setError(err.response?.data?.error || 'Upload failed. Please try again.');
@@ -106,6 +122,8 @@ const StudentPhotoManager = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
       <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md border border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Student Photo Manager</h2>
+        
         <form onSubmit={handleRollNoSubmit} className="mb-6">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-medium mb-2">
@@ -134,6 +152,19 @@ const StudentPhotoManager = () => {
         {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg border-l-4 border-red-500">{error}</div>}
         {message && <div className="mb-4 p-3 bg-green-50 text-green-700 rounded-lg border-l-4 border-green-500">{message}</div>}
 
+        {currentPhoto && (
+          <div className="mb-6 p-4 border border-gray-200 rounded-lg">
+            <h3 className="text-lg font-medium text-gray-800 mb-3">Current Photo</h3>
+            <div className="flex justify-center">
+              <img 
+                src={currentPhoto} 
+                alt="Current student photo" 
+                className="max-w-full h-48 object-contain rounded-lg"
+              />
+            </div>
+          </div>
+        )}
+
         {showNamePopup && (
           <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm animate-pop-in">
@@ -156,7 +187,7 @@ const StudentPhotoManager = () => {
                   }}
                   className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg"
                 >
-                  Continue
+                  {currentPhoto ? 'Update Photo' : 'Upload Photo'}
                 </button>
               </div>
             </div>
@@ -170,7 +201,7 @@ const StudentPhotoManager = () => {
               <form onSubmit={handlePhotoUpload}>
                 <div className="mb-5">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Photo (JPEG/PNG, max 50KB)
+                    Select Photo (JPEG/PNG, max 2MB)
                   </label>
                   <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
                     <div className="flex flex-col items-center pt-5 pb-6">
@@ -201,6 +232,8 @@ const StudentPhotoManager = () => {
                     />
                   </div>
                 )}
+
+                {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg border-l-4 border-red-500">{error}</div>}
 
                 <div className="flex gap-3 justify-end">
                   <button

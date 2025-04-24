@@ -1,35 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import defaultProfilePic from '../../public/tom-and-jerry.gif'; 
 
 const Profile = () => {
     const [studentData, setStudentData] = useState({});
-    const [profilePic, setProfilePic] = useState('/placeholder-profile.png');
+    const [profilePic, setProfilePic] = useState(defaultProfilePic);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('personal');
     const navigate = useNavigate();
 
+    // Format date in Indian format
+    const formatDate = (dateString) => {
+        if (!dateString) return 'N/A';
+        
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        } catch {
+            return dateString;
+        }
+    };
+
+    // Load student data from localStorage
     useEffect(() => {
         const loadData = async () => {
             try {
                 const storedUser = localStorage.getItem('user');
                 if (storedUser) {
                     const parsedUser = JSON.parse(storedUser);
-                    if (parsedUser.student) {
-                        // Format dates and process data
-                        const formattedData = {
-                            ...parsedUser.student,
-                            dateOfBirth: formatDate(parsedUser.student.dateOfBirth),
-                            createdAt: formatDate(parsedUser.student.createdAt),
-                            updatedAt: formatDate(parsedUser.student.updatedAt)
-                        };
-                        
-                        setStudentData(formattedData);
-                        
-                        // Load profile picture if available
-                        if (parsedUser.student.photo && parsedUser.student.photo.url) {
-                            setProfilePic(parsedUser.student.photo.url);
-                        }
+                    const userData = parsedUser.student || parsedUser;
+                    
+                    // Format dates and process data
+                    const formattedData = {
+                        ...userData,
+                        dateOfBirth: formatDate(userData.dateOfBirth),
+                        createdAt: formatDate(userData.createdAt),
+                        updatedAt: formatDate(userData.updatedAt)
+                    };
+                    
+                    setStudentData(formattedData);
+                    
+                    // Set profile picture - use Cloudinary URL if available
+                    if (userData.photo?.url) {
+                        setProfilePic(userData.photo.url);
                     }
                 }
             } catch (error) {
@@ -42,21 +60,12 @@ const Profile = () => {
         loadData();
     }, []);
 
-    const formatDate = (dateString) => {
-        if (!dateString) return 'N/A';
-        
-        try {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-IN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        } catch {
-            return dateString; // Return original if parsing fails
-        }
+    // Handle image loading errors
+    const handleImageError = (e) => {
+        e.target.src = defaultProfilePic;
     };
 
+    // Render personal details section
     const renderPersonalDetails = () => (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
@@ -81,6 +90,7 @@ const Profile = () => {
         </div>
     );
 
+    // Render course details section
     const renderCourseDetails = () => (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
@@ -101,6 +111,7 @@ const Profile = () => {
         </div>
     );
 
+    // Render exam results section
     const renderExamResults = () => {
         if (!studentData.examResults || studentData.examResults.length === 0) {
             return (
@@ -159,7 +170,7 @@ const Profile = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen bg-blue-250 py-8 px-4 sm:px-6 lg:px-8 pt-36"
+            className="min-h-screen bg-blue-50 py-8 px-4 sm:px-6 lg:px-8 pt-36"
         >
             <div className="max-w-4xl mx-auto">
                 <motion.div 
@@ -168,7 +179,7 @@ const Profile = () => {
                     className="bg-white shadow-xl rounded-lg overflow-hidden"
                 >
                     {/* Profile Header */}
-                    <div className="bg-gradient-to-r from-blue-400 p-6 to-yellow-100 text-white">
+                    <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-6 text-white">
                         <div className="flex flex-col md:flex-row items-center">
                             <motion.div 
                                 whileHover={{ scale: 1.05 }}
@@ -178,18 +189,23 @@ const Profile = () => {
                                     src={profilePic} 
                                     alt="Profile" 
                                     className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
+                                    onError={handleImageError}
                                 />
-                                <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2">
+                                <button
+                                    onClick={() => navigate('/update-photo')}
+                                    className="absolute bottom-0 right-0 bg-blue-600 rounded-full p-2 hover:bg-blue-700 transition-colors"
+                                    aria-label="Update profile photo"
+                                >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
                                     </svg>
-                                </div>
+                                </button>
                             </motion.div>
                             <div>
                                 <h1 className="text-2xl md:text-3xl font-bold">{studentData.fullName || 'Student Profile'}</h1>
-                                <p className="text-blue-900 mt-1">{studentData.selectedCourse || 'Course not specified'}</p>
+                                <p className="text-blue-100 mt-1">{studentData.selectedCourse || 'Course not specified'}</p>
                                 <div className="flex items-center mt-2">
-                                    <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                    <span className="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded">
                                         Roll No: {studentData.rollNo || 'N/A'}
                                     </span>
                                 </div>

@@ -19,17 +19,24 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
+  
     try {
       const response = await api.post("/api/students/login", {
         emailAddress,
         password,
       });
-
+  
+      // Store user data in localStorage including photo
+      const userData = {
+        ...response.data.student,
+        token: response.data.token
+      };
+      localStorage.setItem('user', JSON.stringify(userData));
+      
       login(response.data);
       navigate("/profile");
     } catch (error) {
-      setError(error.response?.data?.message || "Login failed");
+      setError(error.response?.data?.error || "Login failed");
     } finally {
       setLoading(false);
     }
