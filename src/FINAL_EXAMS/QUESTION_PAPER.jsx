@@ -1018,4 +1018,8 @@ const Windows_Application_MS_Office = [
           "answer": "Creates a new table from query results"
         }
       ]
+  ];
+
+const Operating_System = [
+  
 ]

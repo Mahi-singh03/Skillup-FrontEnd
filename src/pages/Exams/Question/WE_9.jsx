@@ -503,6 +503,205 @@ const allQuestions = [
         "Formats text"
       ],
       "answer": "Calculates aggregates like sum or average for filtered data"
+    },{
+      "question": "What does the `VLOOKUP` function do in Excel?",
+      "options": [
+        "Searches for a value in the first column of a table",
+        "Counts cells with numbers",
+        "Formats cells as percentages",
+        "Creates a pie chart"
+      ],
+      "answer": "Searches for a value in the first column of a table"
+    },
+    {
+      "question": "Which Excel shortcut key copies a selected cell?",
+      "options": [
+        "Ctrl + C",
+        "Ctrl + V",
+        "Ctrl + X",
+        "Ctrl + P"
+      ],
+      "answer": "Ctrl + C"
+    },
+    {
+      "question": "What does 'HTTP' stand for?",
+      "options": [
+        "HyperText Transfer Protocol",
+        "High-Speed Text Processor",
+        "Hosted Terminal Platform",
+        "Hybrid Transport Protocol"
+      ],
+      "answer": "HyperText Transfer Protocol"
+    },
+    {
+      "question": "What is the purpose of the `COUNTIF` function in Excel?",
+      "options": [
+        "Counts cells based on a condition",
+        "Sums numbers in a range",
+        "Finds the minimum value",
+        "Joins text strings"
+      ],
+      "answer": "Counts cells based on a condition"
+    },
+    {
+      "question": "What does 'Wi-Fi' stand for?",
+      "options": [
+        "Wireless Fidelity",
+        "Wired File Interface",
+        "Web Frequency Integration",
+        "Wide Field Internet"
+      ],
+      "answer": "Wireless Fidelity"
+    },
+    {
+      "question": "Which Excel feature highlights cells based on their values?",
+      "options": [
+        "Conditional Formatting",
+        "Data Validation",
+        "AutoFilter",
+        "PivotChart"
+      ],
+      "answer": "Conditional Formatting"
+    },
+    {
+      "question": "What is a 'firewall' in networking?",
+      "options": [
+        "A security system to protect networks",
+        "A data storage device",
+        "A type of router",
+        "A graphic design tool"
+      ],
+      "answer": "A security system to protect networks"
+    },
+    {
+      "question": "What does the `AVERAGE` function in Excel do?",
+      "options": [
+        "Calculates the mean of a range",
+        "Counts non-empty cells",
+        "Joins text strings",
+        "Rounds numbers"
+      ],
+      "answer": "Calculates the mean of a range"
+    },
+    {
+      "question": "What does 'MAC' stand for in 'MAC address'?",
+      "options": [
+        "Media Access Control",
+        "Main Application Code",
+        "Memory Allocation Channel",
+        "Multi-Access Computer"
+      ],
+      "answer": "Media Access Control"
+    },
+    {
+      "question": "What is the purpose of the `TEXT` function in Excel?",
+      "options": [
+        "Formats numbers as text",
+        "Counts characters",
+        "Merges cells",
+        "Sums numbers"
+      ],
+      "answer": "Formats numbers as text"
+    },
+    {
+      "question": "What is 'phishing' in cybersecurity?",
+      "options": [
+        "A type of scam to steal sensitive information",
+        "A cloud storage service",
+        "A programming language",
+        "A hardware component"
+      ],
+      "answer": "A type of scam to steal sensitive information"
+    },
+    {
+      "question": "Which Excel shortcut key saves a workbook?",
+      "options": [
+        "Ctrl + S",
+        "Ctrl + P",
+        "Ctrl + Z",
+        "Ctrl + Y"
+      ],
+      "answer": "Ctrl + S"
+    },
+    {
+      "question": "What does 'HTML' stand for?",
+      "options": [
+        "HyperText Markup Language",
+        "High-Tech Media Link",
+        "Hosted Text Management Layer",
+        "Hybrid Terminal Module"
+      ],
+      "answer": "HyperText Markup Language"
+    },
+    {
+      "question": "What does the `MIN` function in Excel do?",
+      "options": [
+        "Finds the smallest value in a range",
+        "Counts empty cells",
+        "Formats text as bold",
+        "Merges text strings"
+      ],
+      "answer": "Finds the smallest value in a range"
+    },
+    {
+      "question": "What is a 'server' in networking?",
+      "options": [
+        "A computer that provides data to other computers",
+        "A type of monitor",
+        "A graphic design tool",
+        "A programming language"
+      ],
+      "answer": "A computer that provides data to other computers"
+    },
+    {
+      "question": "What does the `RIGHT` function in Excel do?",
+      "options": [
+        "Extracts characters from the end of a text string",
+        "Aligns text to the right",
+        "Counts non-empty cells",
+        "Rounds numbers"
+      ],
+      "answer": "Extracts characters from the end of a text string"
+    },
+    {
+      "question": "What does 'SaaS' stand for?",
+      "options": [
+        "Software as a Service",
+        "System Access Security",
+        "Storage and Analysis Service",
+        "Simple Application Software"
+      ],
+      "answer": "Software as a Service"
+    },
+    {
+      "question": "Which Excel tool is used to summarize large datasets?",
+      "options": [
+        "PivotTable",
+        "Conditional Formatting",
+        "AutoFilter",
+        "Data Validation"
+      ],
+      "answer": "PivotTable"
+    },
+    {
+      "question": "What is a 'byte' in computing?",
+      "options": [
+        "A unit of digital information (8 bits)",
+        "A type of processor",
+        "A graphic file format",
+        "A security protocol"
+      ],
+      "answer": "A unit of digital information (8 bits)"
+    },
+    {
+      "question": "What does the `UPPER` function in Excel do?",
+      "options": [
+        "Converts text to uppercase",
+        "Counts characters",
+        "Sums numbers",
+        "Formats cells as currency"
+      ],
+      "answer": "Converts text to uppercase"
     }
   ];
 

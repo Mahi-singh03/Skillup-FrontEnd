@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom"; 
 import "./Styles/WeeklyExanList.css";
 const exams = [
-
-  { id: "Weekly Exam 9 ( 36-04-2025 )", title: "Weekly Exam 9 ( 26-04-2025 )", path: "/Exams/Weekly-Exam/WE_9" },
+  { id: "Weekly Exam 10 ( 02-05-2025 )", title: "WORD + BASIC", path: "/Exams/Weekly-Exam/WE_10"},
+  { id: "Weekly Exam 9 ( 02-05-2025 )", title: "EXCEL + WORD + BASIC", path: "/Exams/Weekly-Exam/WE_9" },
   { id: "Weekly Exam 8 ( 19-04-2025 )", title: "Weekly Exam 8 ( 19-04-2025 )", path: "/Exams/Weekly-Exam/WE_8" },
   { id: "Weekly Exam 7 ( 05-03-2025 )", title: "Weekly Exam 7 ( 05-04-2025 )", path: "/Exams/Weekly-Exam/WE_7" },
   { id: "Weekly Exam 6 ( 29-03-2025 )", title: "Weekly Exam 6 ( 29-03-2025 )", path: "/Exams/Weekly-Exam/WE_6" },
