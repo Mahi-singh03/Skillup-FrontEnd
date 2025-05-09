@@ -104,6 +104,10 @@ const StudentRegistrationForm = () => {
           <Input placeholder="1234567890" />
         </Form.Item>
 
+        <Form.Item label="Parents Phone Number" name="parentsPhoneNumber" rules={[{ required: true, message: 'Enter phone number' }]}>
+          <Input placeholder="1234567890" />
+        </Form.Item>
+
         <Form.Item label="Date of Birth" name="dateOfBirth" rules={[{ required: true, message: 'Select or enter date of birth' }]}>
           <Input
             type="date"
