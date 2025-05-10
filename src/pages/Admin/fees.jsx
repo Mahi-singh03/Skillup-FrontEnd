@@ -183,7 +183,7 @@ const FeeManagement = () => {
     <ErrorBoundary>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <Toaster position="top-right" />
-        <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md overflow-hidden my-35">
           {/* Header */}
           <div className="bg-indigo-600 text-white p-6">
             <h1 className="text-2xl md:text-3xl font-bold">Student Fees Management</h1>
