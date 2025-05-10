@@ -2,16 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom"; 
 import "./Styles/WeeklyExanList.css";
 const exams = [
-  { id: "Weekly Exam 10 ( 02-05-2025 )", title: "WORD + BASIC ( 03-05-2025 )", path: "/Exams/Weekly-Exam/WE_10"},
-  { id: "Weekly Exam 9 ( 02-05-2025 )", title: "EXCEL + WORD + BASIC ( 03-05-2025 )", path: "/Exams/Weekly-Exam/WE_9" },
-  { id: "Weekly Exam 8 ( 19-04-2025 )", title: "Weekly Exam 8 ( 19-04-2025 )", path: "/Exams/Weekly-Exam/WE_8" },
-  { id: "Weekly Exam 7 ( 05-03-2025 )", title: "Weekly Exam 7 ( 05-04-2025 )", path: "/Exams/Weekly-Exam/WE_7" },
-  { id: "Weekly Exam 6 ( 29-03-2025 )", title: "Weekly Exam 6 ( 29-03-2025 )", path: "/Exams/Weekly-Exam/WE_6" },
-  { id: "Weekly Exam 5 ( 22-03-2025 )", title: "Weekly Exam 5 ( 22-03-2025 )", path: "/Exams/Weekly-Exam/WE_5" },
-  { id: "Weekly Exam 4 ( 15-03-2025 )", title: "Weekly Exam 4 ( 15-03-2025 )", path: "/Exams/Weekly-Exam/WE_4" },
-  { id: "Weekly Exam 3 ( 08-03-2025 )", title: "Weekly Exam 3 ( 08-03-2025 )", path: "/Exams/Weekly-Exam/WE_3" },
-  { id: "Weekly Exam 2 ( 01-03-2025 )", title: "Weekly Exam 2 ( 01-03-2025 )", path: "/Exams/Weekly-Exam/WE_2" },
-  { id: "Weekly Exam 1 ( 22-02-2025 )", title: "Weekly Exam 1 ( 22-02-2025 )", path: "/Exams/Weekly-Exam/WE_1" },
+
+  { id: "Weekly Exam 11 ( 10-05-2025 )", title: "Weekly Exam 11 ( 10-05-2025 )", path: "/Exams/Weekly-Exam/WE_11"},
+  { id: "Weekly Exam 10 ( 02-05-2025 )", title: "Weekly Exam 10 ( 03-05-2025 )", path: "/Exams/Weekly-Exam/WE_10"},
+  { id: "Weekly Exam 09 ( 02-05-2025 )", title: "Weekly Exam 09 ( 03-05-2025 )", path: "/Exams/Weekly-Exam/WE_9" },
+  { id: "Weekly Exam 08 ( 19-04-2025 )", title: "Weekly Exam 08 ( 19-04-2025 )", path: "/Exams/Weekly-Exam/WE_8" },
+  { id: "Weekly Exam 07 ( 05-03-2025 )", title: "Weekly Exam 07 ( 05-04-2025 )", path: "/Exams/Weekly-Exam/WE_7" },
+  { id: "Weekly Exam 06 ( 29-03-2025 )", title: "Weekly Exam 06 ( 29-03-2025 )", path: "/Exams/Weekly-Exam/WE_6" },
+  { id: "Weekly Exam 05 ( 22-03-2025 )", title: "Weekly Exam 05 ( 22-03-2025 )", path: "/Exams/Weekly-Exam/WE_5" },
+  { id: "Weekly Exam 04 ( 15-03-2025 )", title: "Weekly Exam 04 ( 15-03-2025 )", path: "/Exams/Weekly-Exam/WE_4" },
+  { id: "Weekly Exam 03 ( 08-03-2025 )", title: "Weekly Exam 03 ( 08-03-2025 )", path: "/Exams/Weekly-Exam/WE_3" },
+  { id: "Weekly Exam 02 ( 01-03-2025 )", title: "Weekly Exam 02 ( 01-03-2025 )", path: "/Exams/Weekly-Exam/WE_2" },
+  { id: "Weekly Exam 01 ( 22-02-2025 )", title: "Weekly Exam 01 ( 22-02-2025 )", path: "/Exams/Weekly-Exam/WE_1" },
 
 ];
 

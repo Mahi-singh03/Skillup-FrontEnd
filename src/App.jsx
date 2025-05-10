@@ -13,6 +13,7 @@ import StaffVerification from "./pages/staffVarification.jsx";
 import OnlineCourseRegistration from "./pages/onlineCourseRegister.jsx";
 import ComingSoon from "./pages/CommingSoon.jsx";
 
+
 // Lazy Load Components
 const LandingPage = lazy(() => import("./pages/LandingPage.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
@@ -29,6 +30,7 @@ const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard.jsx"));
 const RollnoPage = lazy (()=>import("./pages/Admin/CertificateExam/RollnoPage.jsx.jsx"))
 const AddPhoto = lazy (() => import("./pages/Admin/addPhoto.jsx"))
 const Certificate = lazy (() =>import("./pages/Admin/getCertificate.jsx"))
+const FeeManagement = lazy (() =>import('./pages/Admin/fees.jsx'))
 
 function App() {
   return (
@@ -119,6 +121,11 @@ function App() {
                 path="/Admin/Final-Exam"
                 element={<ProtectedRoute isAdminRoute><RollnoPage/></ProtectedRoute>}
               />
+
+              <Route
+                path="/Admin/FeeManager"
+                element={<ProtectedRoute isAdminRoute><FeeManagement/></ProtectedRoute>}
+              />            
 
 
 
