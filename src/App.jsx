@@ -31,6 +31,7 @@ const RollnoPage = lazy (()=>import("./pages/Admin/CertificateExam/RollnoPage.js
 const AddPhoto = lazy (() => import("./pages/Admin/addPhoto.jsx"))
 const Certificate = lazy (() =>import("./pages/Admin/getCertificate.jsx"))
 const FeeManagement = lazy (() =>import('./pages/Admin/fees.jsx'))
+const Editstudent = lazy (()=>import("./pages/Admin/editstudent.jsx"))
 
 function App() {
   return (
@@ -106,11 +107,16 @@ function App() {
                 path="/Admin/Add-Onine-course-student-ID&Password"
                 element={<ProtectedRoute isAdminRoute><h1>Add_Onine_course_student_ID&Password</h1></ProtectedRoute>}
               />
+              
               <Route
                 path="/Admin/Add-Photo"
                 element={<ProtectedRoute isAdminRoute><AddPhoto/></ProtectedRoute>}
               />
 
+              <Route
+                path="/Admin/editstudent"
+                element={<ProtectedRoute isAdminRoute><Editstudent/></ProtectedRoute>}
+              />
 
               <Route
                 path="/Admin/Get-Certificate"

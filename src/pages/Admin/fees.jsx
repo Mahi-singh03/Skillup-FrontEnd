@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
-import { FaSpinner, FaUserGraduate, FaRupeeSign, FaSearch, FaFilter, FaCheckCircle } from 'react-icons/fa';
+import { FaSpinner, FaUserGraduate, FaRupeeSign, FaSearch, FaFilter, FaCheckCircle, FaCalendarAlt } from 'react-icons/fa';
 import api from '../../utils/api'; 
 
 // Error Boundary Component
@@ -33,13 +33,24 @@ const FeeManagement = () => {
   const [activeTab, setActiveTab] = useState('lookup');
   const [search, setSearch] = useState({ phoneNumber: '', rollNo: '' });
   const [student, setStudent] = useState(null);
-  const [feesForm, setFeesForm] = useState({ total: 0, paid: 0 });
+  const [feesForm, setFeesForm] = useState({ total: 0, installmentAmount: '', installmentDate: '' });
+  const [joiningDate, setJoiningDate] = useState('');
   const [allStudents, setAllStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Format date for display
+  const formatDate = (date) => {
+    if (!date) return 'N/A';
+    return new Date(date).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
 
   // Fetch student details
   const fetchStudent = async () => {
@@ -63,8 +74,10 @@ const FeeManagement = () => {
         setStudent(studentData);
         setFeesForm({
           total: studentData.fees?.total || 0,
-          paid: studentData.fees?.paid || 0,
+          installmentAmount: '',
+          installmentDate: '',
         });
+        setJoiningDate(studentData.joiningDate ? new Date(studentData.joiningDate).toISOString().split('T')[0] : '');
         toast.success('Student found!');
       } else {
         throw new Error('No student data found');
@@ -79,27 +92,45 @@ const FeeManagement = () => {
     }
   };
 
-  // Update fees
+  // Update fees and/or joining date
   const updateFees = async () => {
     if (!student) {
       toast.error('No student selected');
       return;
     }
 
-    if (feesForm.paid > feesForm.total) {
-      toast.error('Paid amount cannot exceed total amount');
+    const payload = {
+      rollNo: student.rollNo,
+      phoneNumber: student.phoneNumber,
+    };
+
+    // Include total if provided
+    if (feesForm.total !== undefined && feesForm.total >= 0) {
+      payload.total = feesForm.total;
+    }
+
+    // Include installment if provided
+    if (feesForm.installmentAmount && parseFloat(feesForm.installmentAmount) > 0) {
+      payload.installmentAmount = parseFloat(feesForm.installmentAmount);
+      if (feesForm.installmentDate) {
+        payload.installmentDate = feesForm.installmentDate;
+      }
+    }
+
+    // Include joining date if provided
+    if (joiningDate) {
+      payload.joiningDate = joiningDate;
+    }
+
+    if (!payload.total && !payload.installmentAmount && !payload.joiningDate) {
+      toast.error('Please provide total, installment amount, or joining date');
       return;
     }
 
     setLoading(true);
     setError(null);
     try {
-      await api.put('/api/fees/update', {
-        rollNo: student.rollNo,
-        phoneNumber: student.phoneNumber,
-        total: feesForm.total,
-        paid: feesForm.paid,
-      });
+      await api.put('/api/fees/update', payload);
 
       // Refresh student data
       const response = await api.get('/api/fees/student', {
@@ -111,16 +142,18 @@ const FeeManagement = () => {
         setStudent(updatedStudent);
         setFeesForm({
           total: updatedStudent.fees?.total || 0,
-          paid: updatedStudent.fees?.paid || 0,
+          installmentAmount: '',
+          installmentDate: '',
         });
-        toast.success('Fees updated successfully!');
+        setJoiningDate(updatedStudent.joiningDate ? new Date(updatedStudent.joiningDate).toISOString().split('T')[0] : '');
+        toast.success('Fees and/or joining date updated successfully!');
       } else {
         throw new Error('Invalid response after update');
       }
     } catch (err) {
       console.error('Update fees error:', err);
-      toast.error(err.response?.data?.message || 'Failed to update fees');
-      setError('Failed to update fees');
+      toast.error(err.response?.data?.message || 'Failed to update fees or joining date');
+      setError('Failed to update fees or joining date');
     } finally {
       setLoading(false);
     }
@@ -310,6 +343,14 @@ const FeeManagement = () => {
                         <p className="text-sm text-gray-500">Contact</p>
                         <p className="font-medium">{student.phoneNumber || 'N/A'}</p>
                       </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Joining Date</p>
+                        <p className="font-medium">{formatDate(student.joiningDate)}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Farewell Date</p>
+                        <p className="font-medium">{formatDate(student.farewellDate)}</p>
+                      </div>
                     </div>
 
                     {/* Fees Update Form */}
@@ -317,7 +358,7 @@ const FeeManagement = () => {
                       <h3 className="text-lg font-semibold mb-4 flex items-center">
                         <FaRupeeSign className="mr-2" /> Update Fees
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Total Fees (₹)
@@ -337,48 +378,113 @@ const FeeManagement = () => {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Amount Paid (₹)
+                            Installment Amount (₹)
                           </label>
                           <input
                             type="number"
-                            value={feesForm.paid}
+                            value={feesForm.installmentAmount}
                             onChange={(e) =>
                               setFeesForm({
                                 ...feesForm,
-                                paid: parseFloat(e.target.value) || 0,
+                                installmentAmount: e.target.value,
                               })
                             }
+                            placeholder="Enter installment amount"
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                             min="0"
                           />
                         </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Installment Date
+                          </label>
+                          <input
+                            type="date"
+                            value={feesForm.installmentDate}
+                            onChange={(e) =>
+                              setFeesForm({
+                                ...feesForm,
+                                installmentDate: e.target.value,
+                              })
+                            }
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
                       </div>
 
+                      {/* Joining Date Input */}
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Joining Date
+                        </label>
+                        <div className="relative">
+                          <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <input
+                            type="date"
+                            value={joiningDate}
+                            onChange={(e) => setJoiningDate(e.target.value)}
+                            className="w-full pl-10 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Current Fees Status */}
                       <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                        <h4 className="font-medium text-blue-800 mb-2">Current Status</h4>
+                        <h4 className="font-medium text-blue-800 mb-2">Current Fees Status</h4>
                         <div className="grid grid-cols-3 gap-4 text-center">
                           <div className="bg-white p-3 rounded-lg shadow-sm">
                             <p className="text-sm text-gray-500">Total</p>
-                            <p className="font-bold">₹{feesForm.total}</p>
+                            <p className="font-bold">₹{student.fees?.total || 0}</p>
                           </div>
                           <div className="bg-white p-3 rounded-lg shadow-sm">
                             <p className="text-sm text-gray-500">Paid</p>
-                            <p className="font-bold text-green-600">₹{feesForm.paid}</p>
+                            <p className="font-bold text-green-600">₹{student.fees?.paid || 0}</p>
                           </div>
                           <div className="bg-white p-3 rounded-lg shadow-sm">
                             <p className="text-sm text-gray-500">Balance</p>
                             <p
                               className={`font-bold ${
-                                feesForm.total - feesForm.paid > 0
-                                  ? 'text-red-600'
-                                  : 'text-green-600'
+                                (student.fees?.unpaid || 0) > 0 ? 'text-red-600' : 'text-green-600'
                               }`}
                             >
-                              ₹{feesForm.total - feesForm.paid}
+                              ₹{student.fees?.unpaid || 0}
                             </p>
                           </div>
                         </div>
                       </div>
+
+                      {/* Installments History */}
+                      {student.fees?.installments?.length > 0 && (
+                        <div className="mb-6">
+                          <h4 className="font-medium text-gray-800 mb-2">Installment History</h4>
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                              <thead className="bg-gray-50">
+                                <tr>
+                                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Amount (₹)
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody className="bg-white divide-y divide-gray-200">
+                                {student.fees.installments.map((inst, index) => (
+                                  <tr key={index}>
+                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                                      ₹{inst.amount}
+                                    </td>
+                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
+                                      {formatDate(inst.date)}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
 
                       <button
                         onClick={updateFees}
@@ -390,7 +496,7 @@ const FeeManagement = () => {
                         ) : (
                           <FaCheckCircle className="mr-2" />
                         )}
-                        Update Fees
+                        Update Fees / Joining Date
                       </button>
                     </div>
                   </div>
@@ -460,6 +566,9 @@ const FeeManagement = () => {
                             Contact
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Dates
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Fees Status
                           </th>
                         </tr>
@@ -484,6 +593,10 @@ const FeeManagement = () => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                               {s.phoneNumber || 'N/A'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <div>Join: {formatDate(s.joiningDate)}</div>
+                              <div>Farewell: {formatDate(s.farewellDate)}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span

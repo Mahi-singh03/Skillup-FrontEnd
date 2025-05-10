@@ -37,7 +37,7 @@ const AdminDashboard = () => {
   };
 
   const dashboardButtons = [
-    { icon: <FaUserPlus />, text: 'Add Student', path: '/admin/add-student', color: 'bg-gradient-to-r from-blue-500 to-blue-600' },
+    { icon: <FaUserPlus />, text: 'Edit Student', path: '/admin/editstudent', color: 'bg-gradient-to-r from-blue-500 to-blue-600' },
     { icon: <FaChalkboardTeacher />, text: 'Add Staff', path: '/Admin/Add-Staff', color: 'bg-gradient-to-r from-green-500 to-green-600' },
     { icon: <FaUserTie />, text: 'Add Admin', path: '/Admin/Add-Admine', color: 'bg-gradient-to-r from-purple-500 to-purple-600' },
     { icon: <FaUsers />, text: 'View PTE Students', path: '/admin/pte-students', color: 'bg-gradient-to-r from-indigo-500 to-indigo-600' },
