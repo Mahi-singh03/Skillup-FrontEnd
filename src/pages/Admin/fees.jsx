@@ -1,7 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
 import { FaSpinner, FaUserGraduate, FaRupeeSign, FaSearch, FaFilter, FaCheckCircle, FaCalendarAlt } from 'react-icons/fa';
-import api from '../../utils/api'; 
+import api from '../../utils/api';
+
+// Custom debounce function
+const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -32,14 +41,16 @@ const FeeManagement = () => {
   // State management
   const [activeTab, setActiveTab] = useState('lookup');
   const [search, setSearch] = useState({ phoneNumber: '', rollNo: '' });
+  const [searchErrors, setSearchErrors] = useState({ phoneNumber: '', rollNo: '' });
   const [student, setStudent] = useState(null);
-  const [feesForm, setFeesForm] = useState({ total: 0, installmentAmount: '', installmentDate: '' });
+  const [feesForm, setFeesForm] = useState({ totalFees: "", paidAmount: '', installmentIndex: '' });
+  const [feesErrors, setFeesErrors] = useState({ totalFees: '', paidAmount: '', installmentIndex: '' });
   const [joiningDate, setJoiningDate] = useState('');
   const [allStudents, setAllStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState({ search: false, update: false, all: false });
   const [error, setError] = useState(null);
 
   // Format date for display
@@ -52,14 +63,58 @@ const FeeManagement = () => {
     });
   };
 
+  // Validate search inputs
+  const validateSearch = () => {
+    const errors = { phoneNumber: '', rollNo: '' };
+    let isValid = true;
+
+    if (search.phoneNumber && !/^\d{10}$/.test(search.phoneNumber)) {
+      errors.phoneNumber = 'Phone number must be 10 digits';
+      isValid = false;
+    }
+
+    if (!search.phoneNumber && !search.rollNo) {
+      errors.phoneNumber = 'Provide either phone number or roll number';
+      errors.rollNo = 'Provide either phone number or roll number';
+      isValid = false;
+    }
+
+    setSearchErrors(errors);
+    return isValid;
+  };
+
+  // Validate fees form
+  const validateFeesForm = () => {
+    const errors = { totalFees: '', paidAmount: '', installmentIndex: '' };
+    let isValid = true;
+
+    if (feesForm.totalFees < 0) {
+      errors.totalFees = 'Total fees cannot be negative';
+      isValid = false;
+    }
+
+    if (feesForm.paidAmount && feesForm.paidAmount < 0) {
+      errors.paidAmount = 'Paid amount cannot be negative';
+      isValid = false;
+    }
+
+    if (feesForm.paidAmount && !feesForm.installmentIndex) {
+      errors.installmentIndex = 'Select an installment';
+      isValid = false;
+    }
+
+    setFeesErrors(errors);
+    return isValid;
+  };
+
   // Fetch student details
   const fetchStudent = async () => {
-    if (!search.phoneNumber.trim() && !search.rollNo.trim()) {
-      toast.error('Please provide either phone number or roll number');
+    if (!validateSearch()) {
+      toast.error('Please fix the input errors');
       return;
     }
 
-    setLoading(true);
+    setLoading((prev) => ({ ...prev, search: true }));
     setError(null);
     try {
       const response = await api.get('/api/fees/student', {
@@ -73,9 +128,9 @@ const FeeManagement = () => {
       if (studentData) {
         setStudent(studentData);
         setFeesForm({
-          total: studentData.fees?.total || 0,
-          installmentAmount: '',
-          installmentDate: '',
+          totalFees: studentData.feeDetails?.totalFees || 0,
+          paidAmount: '',
+          installmentIndex: '',
         });
         setJoiningDate(studentData.joiningDate ? new Date(studentData.joiningDate).toISOString().split('T')[0] : '');
         toast.success('Student found!');
@@ -86,16 +141,21 @@ const FeeManagement = () => {
       console.error('Fetch student error:', err);
       toast.error(err.response?.data?.message || 'Student not found');
       setStudent(null);
-      setError('Failed to fetch student details');
+      setError(err.response?.data?.message || 'Failed to fetch student details');
     } finally {
-      setLoading(false);
+      setLoading((prev) => ({ ...prev, search: false }));
     }
   };
 
-  // Update fees and/or joining date
+  // Update fees
   const updateFees = async () => {
     if (!student) {
       toast.error('No student selected');
+      return;
+    }
+
+    if (!validateFeesForm()) {
+      toast.error('Please fix the input errors');
       return;
     }
 
@@ -104,35 +164,25 @@ const FeeManagement = () => {
       phoneNumber: student.phoneNumber,
     };
 
-    // Include total if provided
-    if (feesForm.total !== undefined && feesForm.total >= 0) {
-      payload.total = feesForm.total;
+    if (feesForm.totalFees >= 0) {
+      payload.totalFees = parseFloat(feesForm.totalFees);
     }
 
-    // Include installment if provided
-    if (feesForm.installmentAmount && parseFloat(feesForm.installmentAmount) > 0) {
-      payload.installmentAmount = parseFloat(feesForm.installmentAmount);
-      if (feesForm.installmentDate) {
-        payload.installmentDate = feesForm.installmentDate;
-      }
+    if (feesForm.paidAmount && feesForm.installmentIndex !== '') {
+      payload.paidAmount = parseFloat(feesForm.paidAmount);
+      payload.installmentIndex = parseInt(feesForm.installmentIndex);
     }
 
-    // Include joining date if provided
-    if (joiningDate) {
-      payload.joiningDate = joiningDate;
-    }
-
-    if (!payload.total && !payload.installmentAmount && !payload.joiningDate) {
-      toast.error('Please provide total, installment amount, or joining date');
+    if (!payload.totalFees && !payload.paidAmount) {
+      toast.error('Please provide total fees or paid amount with installment index');
       return;
     }
 
-    setLoading(true);
+    setLoading((prev) => ({ ...prev, update: true }));
     setError(null);
     try {
       await api.put('/api/fees/update', payload);
 
-      // Refresh student data
       const response = await api.get('/api/fees/student', {
         params: { rollNo: student.rollNo },
       });
@@ -141,27 +191,27 @@ const FeeManagement = () => {
       if (updatedStudent) {
         setStudent(updatedStudent);
         setFeesForm({
-          total: updatedStudent.fees?.total || 0,
-          installmentAmount: '',
-          installmentDate: '',
+          totalFees: updatedStudent.feeDetails?.totalFees || 0,
+          paidAmount: '',
+          installmentIndex: '',
         });
         setJoiningDate(updatedStudent.joiningDate ? new Date(updatedStudent.joiningDate).toISOString().split('T')[0] : '');
-        toast.success('Fees and/or joining date updated successfully!');
+        toast.success('Fees updated successfully!');
       } else {
         throw new Error('Invalid response after update');
       }
     } catch (err) {
       console.error('Update fees error:', err);
-      toast.error(err.response?.data?.message || 'Failed to update fees or joining date');
-      setError('Failed to update fees or joining date');
+      toast.error(err.response?.data?.message || 'Failed to update fees');
+      setError(err.response?.data?.message || 'Failed to update fees');
     } finally {
-      setLoading(false);
+      setLoading((prev) => ({ ...prev, update: false }));
     }
   };
 
   // Fetch all students
   const fetchAllStudents = async () => {
-    setLoading(true);
+    setLoading((prev) => ({ ...prev, all: true }));
     setError(null);
     try {
       const response = await api.get('/api/fees/getAll', {
@@ -177,26 +227,35 @@ const FeeManagement = () => {
       }
     } catch (err) {
       console.error('Fetch all students error:', err);
-      toast.error('Failed to fetch students');
-      setError('Failed to fetch students list');
+      toast.error(err.response?.data?.message || 'Failed to fetch students');
+      setError(err.response?.data?.message || 'Failed to fetch students list');
       setAllStudents([]);
       setFilteredStudents([]);
     } finally {
-      setLoading(false);
+      setLoading((prev) => ({ ...prev, all: false }));
     }
   };
 
-  // Filter students based on search term
+  // Search handler for all students
+  const handleSearch = useCallback(
+    (term) => {
+      const filtered = allStudents.filter(
+        (s) =>
+          s.fullName?.toLowerCase().includes(term.toLowerCase()) ||
+          s.rollNo?.toLowerCase().includes(term.toLowerCase()) ||
+          s.phoneNumber?.includes(term)
+      );
+      setFilteredStudents(filtered);
+    },
+    [allStudents]
+  );
+
+  // Debounced search
+  const debouncedSearch = useCallback(debounce(handleSearch, 300), [handleSearch]);
+
   useEffect(() => {
-    const term = searchTerm.toLowerCase();
-    const filtered = allStudents.filter(
-      (s) =>
-        s.fullName?.toLowerCase().includes(term) ||
-        s.rollNo?.toLowerCase().includes(term) ||
-        s.phoneNumber?.includes(term)
-    );
-    setFilteredStudents(filtered);
-  }, [searchTerm, allStudents]);
+    debouncedSearch(searchTerm);
+  }, [searchTerm, debouncedSearch]);
 
   // Fetch all students when tab or filter changes
   useEffect(() => {
@@ -206,9 +265,9 @@ const FeeManagement = () => {
   }, [activeTab, showIncompleteOnly]);
 
   // Payment status color helper
-  const getPaymentStatusColor = (unpaid, total) => {
-    if (unpaid === 0) return 'bg-green-100 text-green-800';
-    if (unpaid === total) return 'bg-red-100 text-red-800';
+  const getPaymentStatusColor = (remainingFees, totalFees) => {
+    if (remainingFees === 0) return 'bg-green-100 text-green-800';
+    if (remainingFees === totalFees) return 'bg-red-100 text-red-800';
     return 'bg-yellow-100 text-yellow-800';
   };
 
@@ -216,11 +275,11 @@ const FeeManagement = () => {
     <ErrorBoundary>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <Toaster position="top-right" />
-        <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md overflow-hidden my-35">
+        <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
           {/* Header */}
           <div className="bg-indigo-600 text-white p-6">
             <h1 className="text-2xl md:text-3xl font-bold">Student Fees Management</h1>
-            <p className="mt-2 opacity-90">Track and manage student fee payments</p>
+            <p className="mt-2 opacity-90">Efficiently track and manage student fee payments</p>
           </div>
 
           {/* Error Message */}
@@ -242,7 +301,7 @@ const FeeManagement = () => {
           {/* Tabs */}
           <div className="flex border-b">
             <button
-              className={`px-6 py-3 font-medium ${
+              className={`px-6 py-3 font-medium text-sm md:text-base ${
                 activeTab === 'lookup'
                   ? 'text-indigo-600 border-b-2 border-indigo-600'
                   : 'text-gray-500 hover:text-gray-700'
@@ -252,7 +311,7 @@ const FeeManagement = () => {
               Student Lookup
             </button>
             <button
-              className={`px-6 py-3 font-medium ${
+              className={`px-6 py-3 font-medium text-sm md:text-base ${
                 activeTab === 'all'
                   ? 'text-indigo-600 border-b-2 border-indigo-600'
                   : 'text-gray-500 hover:text-gray-700'
@@ -280,10 +339,18 @@ const FeeManagement = () => {
                       <input
                         type="text"
                         value={search.phoneNumber}
-                        onChange={(e) => setSearch({ ...search, phoneNumber: e.target.value })}
-                        placeholder="Enter phone number"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                        onChange={(e) => {
+                          setSearch({ ...search, phoneNumber: e.target.value });
+                          setSearchErrors({ ...searchErrors, phoneNumber: '' });
+                        }}
+                        placeholder="Enter 10-digit phone number"
+                        className={`w-full px-4 py-2 border ${
+                          searchErrors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+                        } rounded-lg focus:ring-2 focus:ring-indigo-500`}
                       />
+                      {searchErrors.phoneNumber && (
+                        <p className="mt-1 text-xs text-red-500">{searchErrors.phoneNumber}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -292,18 +359,26 @@ const FeeManagement = () => {
                       <input
                         type="text"
                         value={search.rollNo}
-                        onChange={(e) => setSearch({ ...search, rollNo: e.target.value })}
+                        onChange={(e) => {
+                          setSearch({ ...search, rollNo: e.target.value });
+                          setSearchErrors({ ...searchErrors, rollNo: '' });
+                        }}
                         placeholder="Enter roll number"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                        className={`w-full px-4 py-2 border ${
+                          searchErrors.rollNo ? 'border-red-500' : 'border-gray-300'
+                        } rounded-lg focus:ring-2 focus:ring-indigo-500`}
                       />
+                      {searchErrors.rollNo && (
+                        <p className="mt-1 text-xs text-red-500">{searchErrors.rollNo}</p>
+                      )}
                     </div>
                     <div className="flex items-end">
                       <button
                         onClick={fetchStudent}
-                        disabled={loading}
+                        disabled={loading.search}
                         className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 flex items-center justify-center"
                       >
-                        {loading ? (
+                        {loading.search ? (
                           <FaSpinner className="animate-spin mr-2" />
                         ) : (
                           <FaSearch className="mr-2" />
@@ -315,14 +390,14 @@ const FeeManagement = () => {
                 </div>
 
                 {/* Student Details */}
-                {loading ? (
+                {loading.search ? (
                   <div className="flex justify-center items-center py-12">
                     <FaSpinner className="animate-spin text-4xl text-indigo-600" />
                   </div>
                 ) : student ? (
                   <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                     <h3 className="text-lg font-semibold mb-4">Student Details</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                       <div>
                         <p className="text-sm text-gray-500">Full Name</p>
                         <p className="font-medium">{student.fullName || 'N/A'}</p>
@@ -358,103 +433,113 @@ const FeeManagement = () => {
                       <h3 className="text-lg font-semibold mb-4 flex items-center">
                         <FaRupeeSign className="mr-2" /> Update Fees
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Total Fees (₹)
                           </label>
                           <input
                             type="number"
-                            value={feesForm.total}
-                            onChange={(e) =>
+                            value={feesForm.totalFees}
+                            onChange={(e) => {
                               setFeesForm({
                                 ...feesForm,
-                                total: parseFloat(e.target.value) || 0,
-                              })
-                            }
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                                totalFees: e.target.value,
+                              });
+                              setFeesErrors({ ...feesErrors, totalFees: '' });
+                            }}
+                            className={`w-full px-4 py-2 border ${
+                              feesErrors.totalFees ? 'border-red-500' : 'border-gray-300'
+                            } rounded-lg focus:ring-2 focus:ring-indigo-500`}
                             min="0"
                           />
+                          {feesErrors.totalFees && (
+                            <p className="mt-1 text-xs text-red-500">{feesErrors.totalFees}</p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Installment Amount (₹)
+                            Paid Amount (₹)
                           </label>
                           <input
                             type="number"
-                            value={feesForm.installmentAmount}
-                            onChange={(e) =>
+                            value={feesForm.paidAmount}
+                            onChange={(e) => {
                               setFeesForm({
                                 ...feesForm,
-                                installmentAmount: e.target.value,
-                              })
-                            }
-                            placeholder="Enter installment amount"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                                paidAmount: e.target.value,
+                              });
+                              setFeesErrors({ ...feesErrors, paidAmount: '' });
+                            }}
+                            placeholder="Enter paid amount"
+                            className={`w-full px-4 py-2 border ${
+                              feesErrors.paidAmount ? 'border-red-500' : 'border-gray-300'
+                            } rounded-lg focus:ring-2 focus:ring-indigo-500`}
                             min="0"
                           />
+                          {feesErrors.paidAmount && (
+                            <p className="mt-1 text-xs text-red-500">{feesErrors.paidAmount}</p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Installment Date
+                            Installment
                           </label>
-                          <input
-                            type="date"
-                            value={feesForm.installmentDate}
-                            onChange={(e) =>
+                          <select
+                            value={feesForm.installmentIndex}
+                            onChange={(e) => {
                               setFeesForm({
                                 ...feesForm,
-                                installmentDate: e.target.value,
-                              })
-                            }
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Joining Date Input */}
-                      <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Joining Date
-                        </label>
-                        <div className="relative">
-                          <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                          <input
-                            type="date"
-                            value={joiningDate}
-                            onChange={(e) => setJoiningDate(e.target.value)}
-                            className="w-full pl-10 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                          />
+                                installmentIndex: e.target.value,
+                              });
+                              setFeesErrors({ ...feesErrors, installmentIndex: '' });
+                            }}
+                            className={`w-full px-4 py-2 border ${
+                              feesErrors.installmentIndex ? 'border-red-500' : 'border-gray-300'
+                            } rounded-lg focus:ring-2 focus:ring-indigo-500`}
+                          >
+                            <option value="">Select Installment</option>
+                            {student.feeDetails?.installmentDetails?.map((_, index) => (
+                              <option key={index} value={index}>
+                                Installment {index + 1} (₹{student.feeDetails.installmentDetails[index].amount})
+                              </option>
+                            ))}
+                          </select>
+                          {feesErrors.installmentIndex && (
+                            <p className="mt-1 text-xs text-red-500">{feesErrors.installmentIndex}</p>
+                          )}
                         </div>
                       </div>
 
                       {/* Current Fees Status */}
                       <div className="bg-blue-50 p-4 rounded-lg mb-6">
                         <h4 className="font-medium text-blue-800 mb-2">Current Fees Status</h4>
-                        <div className="grid grid-cols-3 gap-4 text-center">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                           <div className="bg-white p-3 rounded-lg shadow-sm">
                             <p className="text-sm text-gray-500">Total</p>
-                            <p className="font-bold">₹{student.fees?.total || 0}</p>
+                            <p className="font-bold">₹{student.feeDetails?.totalFees || 0}</p>
                           </div>
                           <div className="bg-white p-3 rounded-lg shadow-sm">
                             <p className="text-sm text-gray-500">Paid</p>
-                            <p className="font-bold text-green-600">₹{student.fees?.paid || 0}</p>
+                            <p className="font-bold text-green-600">
+                              ₹{student.feeDetails?.totalFees - student.feeDetails?.remainingFees || 0}
+                            </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg shadow-sm">
                             <p className="text-sm text-gray-500">Balance</p>
                             <p
                               className={`font-bold ${
-                                (student.fees?.unpaid || 0) > 0 ? 'text-red-600' : 'text-green-600'
+                                (student.feeDetails?.remainingFees || 0) > 0 ? 'text-red-600' : 'text-green-600'
                               }`}
                             >
-                              ₹{student.fees?.unpaid || 0}
+                              ₹{student.feeDetails?.remainingFees || 0}
                             </p>
                           </div>
                         </div>
                       </div>
 
                       {/* Installments History */}
-                      {student.fees?.installments?.length > 0 && (
+                      {student.feeDetails?.installmentDetails?.length > 0 && (
                         <div className="mb-6">
                           <h4 className="font-medium text-gray-800 mb-2">Installment History</h4>
                           <div className="overflow-x-auto">
@@ -462,21 +547,41 @@ const FeeManagement = () => {
                               <thead className="bg-gray-50">
                                 <tr>
                                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Installment
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Amount (₹)
                                   </th>
                                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Date
+                                    Due Date
+                                  </th>
+                                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
                                   </th>
                                 </tr>
                               </thead>
                               <tbody className="bg-white divide-y divide-gray-200">
-                                {student.fees.installments.map((inst, index) => (
+                                {student.feeDetails.installmentDetails.map((inst, index) => (
                                   <tr key={index}>
+                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                                      {index + 1}
+                                    </td>
                                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
                                       ₹{inst.amount}
                                     </td>
                                     <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
-                                      {formatDate(inst.date)}
+                                      {formatDate(inst.submissionDate)}
+                                    </td>
+                                    <td className="px-4 py-2 whitespace-nowrap text-sm">
+                                      <span
+                                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                          inst.paid
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-red-100 text-red-800'
+                                        }`}
+                                      >
+                                        {inst.paid ? 'Paid' : 'Unpaid'}
+                                      </span>
                                     </td>
                                   </tr>
                                 ))}
@@ -488,15 +593,15 @@ const FeeManagement = () => {
 
                       <button
                         onClick={updateFees}
-                        disabled={loading}
+                        disabled={loading.update}
                         className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center"
                       >
-                        {loading ? (
+                        {loading.update ? (
                           <FaSpinner className="animate-spin mr-2" />
                         ) : (
                           <FaCheckCircle className="mr-2" />
                         )}
-                        Update Fees / Joining Date
+                        Update Fees
                       </button>
                     </div>
                   </div>
@@ -520,7 +625,7 @@ const FeeManagement = () => {
                       </div>
                       <input
                         type="text"
-                        placeholder="Search students..."
+                        placeholder="Search by name, roll no, or phone..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 w-full"
@@ -540,7 +645,7 @@ const FeeManagement = () => {
                   </div>
                 </div>
 
-                {loading ? (
+                {loading.all ? (
                   <div className="flex justify-center items-center py-12">
                     <FaSpinner className="animate-spin text-4xl text-indigo-600" />
                   </div>
@@ -601,15 +706,15 @@ const FeeManagement = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span
                                 className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getPaymentStatusColor(
-                                  s.fees?.unpaid || 0,
-                                  s.fees?.total || 0
+                                  s.feeDetails?.remainingFees || 0,
+                                  s.feeDetails?.totalFees || 0
                                 )}`}
                               >
-                                ₹{s.fees?.paid || 0} / ₹{s.fees?.total || 0}
+                                ₹{(s.feeDetails?.totalFees - s.feeDetails?.remainingFees) || 0} / ₹{s.feeDetails?.totalFees || 0}
                               </span>
-                              {(s.fees?.unpaid || 0) > 0 && (
+                              {(s.feeDetails?.remainingFees || 0) > 0 && (
                                 <div className="mt-1 text-xs text-red-600">
-                                  ₹{s.fees.unpaid} unpaid
+                                  ₹{s.feeDetails.remainingFees} unpaid
                                 </div>
                               )}
                             </td>
@@ -628,4 +733,4 @@ const FeeManagement = () => {
   );
 };
 
-export default FeeManagement;
+export default FeeManagement; 

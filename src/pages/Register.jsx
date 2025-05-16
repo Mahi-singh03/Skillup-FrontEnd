@@ -137,6 +137,16 @@ const StudentRegistrationForm = () => {
           </Select>
         </Form.Item>
 
+        
+        <Form.Item label=" Joining Date" name="joiningDate" rules={[{ required: true, message: 'Select or enter Joining Date' }]}>
+          <Input
+            type="date"
+            className="w-full px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="YYYY-MM-DD"
+            disabled={loading}
+          />
+        </Form.Item>
+
         <Form.Item label="Address" name="address" rules={[{ required: true, message: 'Enter address' }]}>
           <Input.TextArea spellCheck={false} rows={2} placeholder="Enter full address" />
         </Form.Item>
