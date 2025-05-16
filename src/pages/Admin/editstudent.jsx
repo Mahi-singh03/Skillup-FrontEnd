@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import api from '../../utils/api.js';
-import { toast } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 import {
   Container,
   Typography,
@@ -26,10 +26,23 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
+  IconButton,
+  Tooltip,
+  ThemeProvider,
+  createTheme,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import SaveIcon from '@mui/icons-material/Save';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CancelIcon from '@mui/icons-material/Cancel';
+
+// Create a theme instance
+const theme = createTheme();
 
 // Subject code mappings
 const CERTIFICATION_IN_COMPUTER_APPLICATION = {
@@ -78,8 +91,21 @@ const certificationSubjectMap = {
   'DIPLOMA IN COMPUTER ACCOUNTANCY': DIPLOMA_IN_COMPUTER_ACCOUNTANCY,
 };
 
+const SUBJECT_DETAILS = {
+  'CS-01': { MaxTheoryMarks: 100, MaxPracticalMarks: 0 },
+  'CS-02': { MaxTheoryMarks: 40, MaxPracticalMarks: 60 },
+  'CS-03': { MaxTheoryMarks: 40, MaxPracticalMarks: 60 },
+  'CS-04': { MaxTheoryMarks: 40, MaxPracticalMarks: 60 },
+  'CS-05': { MaxTheoryMarks: 40, MaxPracticalMarks: 60 },
+  'CS-06': { MaxTheoryMarks: 40, MaxPracticalMarks: 60 },
+  'CS-07': { MaxTheoryMarks: 40, MaxPracticalMarks: 60 },
+  'CS-08': { MaxTheoryMarks: 40, MaxPracticalMarks: 60 },
+  'CS-09': { MaxTheoryMarks: 40, MaxPracticalMarks: 60 }
+};
+
 const EditStudentForm = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [student, setStudent] = useState(null);
   const [searchMode, setSearchMode] = useState('phone');
   const [activeStep, setActiveStep] = useState(0);
@@ -87,7 +113,8 @@ const EditStudentForm = () => {
   const [installments, setInstallments] = useState([]);
   const [newInstallment, setNewInstallment] = useState({
     amount: '',
-    date: new Date(),
+    submissionDate: new Date(),
+    paid: false,
   });
   const [newExamResult, setNewExamResult] = useState({
     subjectCode: '',
@@ -95,6 +122,9 @@ const EditStudentForm = () => {
     practicalMarks: '',
     examDate: new Date(),
   });
+  const [editingResultIndex, setEditingResultIndex] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const {
     register,
@@ -121,10 +151,11 @@ const EditStudentForm = () => {
       qualification: '',
       password: '',
       joiningDate: null,
-      fees: {
-        total: 0,
-        paid: 0,
-        unpaid: 0,
+      feeDetails: {
+        totalFees: 0,
+        remainingFees: 0,
+        installments: 0,
+        installmentDetails: [],
       },
       examResults: [],
       finalGrade: 'Pending',
@@ -139,25 +170,38 @@ const EditStudentForm = () => {
   const genders = ['Male', 'Female', 'Other'];
   const grades = ['A', 'B', 'C', 'D', 'F', 'Pending'];
 
+  useEffect(() => {
+    console.log('EditStudentForm mounted');
+    // Check if we have admin token
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      console.error('No admin token found');
+      setError('Authentication required');
+    }
+  }, []);
+
   const handleSearch = async (data) => {
     try {
       setLoading(true);
       const searchParam = searchMode === 'phone' ? { phoneNumber: data.phoneNumber } : { rollNo: data.rollNo };
 
-      const response = await api.get('/api/students/search', { params: searchParam });
+      const response = await api.get('/api/students/edit', { params: searchParam });
 
-      if (response.data.success) {
+      if (response.data.data) {
         const studentData = response.data.data;
         setStudent(studentData);
 
         Object.keys(studentData).forEach((key) => {
           if (key === 'dateOfBirth' || key === 'joiningDate') {
             setValue(key, studentData[key] ? new Date(studentData[key]) : null);
-          } else if (key === 'fees' && studentData.fees?.length > 0) {
-            setValue('fees.total', studentData.fees[0].total);
-            setValue('fees.paid', studentData.fees[0].paid);
-            setValue('fees.unpaid', studentData.fees[0].unpaid);
-            setInstallments(studentData.fees[0].installments || []);
+          } else if (key === 'feeDetails') {
+            setValue('feeDetails', {
+              totalFees: studentData.feeDetails?.totalFees || 0,
+              remainingFees: studentData.feeDetails?.remainingFees || 0,
+              installments: studentData.feeDetails?.installments || 0,
+              installmentDetails: studentData.feeDetails?.installmentDetails || [],
+            });
+            setInstallments(studentData.feeDetails?.installmentDetails || []);
           } else if (key === 'examResults') {
             setValue('examResults', studentData.examResults || []);
           } else if (key !== 'password') {
@@ -181,8 +225,7 @@ const EditStudentForm = () => {
       setLoading(true);
 
       const payload = {
-        phoneNumber: searchMode === 'phone' ? data.phoneNumber : student.phoneNumber,
-        rollNo: searchMode === 'roll' ? data.rollNo : student.rollNo,
+        [searchMode === 'phone' ? 'phoneNumber' : 'rollNo']: searchMode === 'phone' ? data.phoneNumber : data.rollNo,
         fullName: data.fullName,
         gender: data.gender,
         fatherName: data.fatherName,
@@ -198,20 +241,21 @@ const EditStudentForm = () => {
         password: data.password || undefined,
         certificate: certificateIssued,
         joiningDate: data.joiningDate?.toISOString(),
-        fees: {
-          total: parseFloat(data.fees.total) || 0,
-          paid: installments.reduce((sum, inst) => sum + parseFloat(inst.amount), 0),
-          unpaid: (parseFloat(data.fees.total) || 0) - installments.reduce((sum, inst) => sum + parseFloat(inst.amount), 0),
-          installments: installments.map((inst) => ({
+        feeDetails: {
+          totalFees: parseFloat(data.feeDetails.totalFees) || 0,
+          remainingFees: parseFloat(data.feeDetails.remainingFees) || 0,
+          installments: parseInt(data.feeDetails.installments) || 0,
+          installmentDetails: installments.map((inst) => ({
             amount: parseFloat(inst.amount),
-            date: inst.date.toISOString(),
+            submissionDate: inst.submissionDate.toISOString(),
+            paid: inst.paid,
           })),
         },
         examResults: data.examResults.map((result) => ({
           subjectCode: result.subjectCode,
-          subjectName: validSubjects[result.subjectCode] || result.subjectName,
-          theoryMarks: parseFloat(result.theoryMarks) || null,
-          practicalMarks: parseFloat(result.practicalMarks) || null,
+          subjectName: certificationSubjectMap[data.certificationTitle]?.[result.subjectCode] || result.subjectName,
+          theoryMarks: parseFloat(result.theoryMarks) || 0,
+          practicalMarks: parseFloat(result.practicalMarks) || 0,
           examDate: result.examDate?.toISOString() || new Date().toISOString(),
           totalMarks: (parseFloat(result.theoryMarks) || 0) + (parseFloat(result.practicalMarks) || 0),
         })),
@@ -220,7 +264,7 @@ const EditStudentForm = () => {
 
       const response = await api.put('/api/students/edit', payload);
 
-      if (response.data.success) {
+      if (response.data.data) {
         setStudent(response.data.data);
         toast.success('Student updated successfully!');
       } else {
@@ -241,70 +285,126 @@ const EditStudentForm = () => {
     }
 
     const amount = parseFloat(newInstallment.amount);
-    const totalFees = parseFloat(watch('fees.total')) || 0;
-    const paidAmount = installments.reduce((sum, inst) => sum + parseFloat(inst.amount), 0);
+    const totalFees = parseFloat(watch('feeDetails.totalFees')) || 0;
+    const paidAmount = installments.reduce((sum, inst) => sum + (inst.paid ? parseFloat(inst.amount) : 0), 0);
 
     if (amount > totalFees - paidAmount) {
       toast.error(`Amount exceeds remaining balance of ₹${(totalFees - paidAmount).toFixed(2)}`);
       return;
     }
 
-    setInstallments([...installments, {
-      amount: amount,
-      date: newInstallment.date,
-    }]);
+    const newInstallments = [...installments, { ...newInstallment, amount }];
+    setInstallments(newInstallments);
+    setValue('feeDetails.installmentDetails', newInstallments);
+    setValue('feeDetails.remainingFees', totalFees - newInstallments.reduce((sum, inst) => sum + (inst.paid ? parseFloat(inst.amount) : 0), 0));
 
     setNewInstallment({
       amount: '',
-      date: new Date(),
+      submissionDate: new Date(),
+      paid: false,
     });
-
-    setValue('fees.paid', paidAmount + amount);
-    setValue('fees.unpaid', totalFees - (paidAmount + amount));
 
     toast.success('Installment recorded');
   };
 
-  const handleAddExamResult = async () => {
-    if (!newExamResult.subjectCode || !newExamResult.theoryMarks || !newExamResult.practicalMarks) {
-      toast.error('Please fill all exam result fields');
+  const handleAddExamResult = () => {
+    if (!newExamResult.subjectCode || !newExamResult.theoryMarks || isNaN(newExamResult.theoryMarks)) {
+      toast.error('Please fill all required exam result fields');
       return;
     }
 
-    try {
-      setLoading(true);
+    const subjectDetails = SUBJECT_DETAILS[newExamResult.subjectCode];
+    const theoryMarks = parseFloat(newExamResult.theoryMarks);
+    const practicalMarks = parseFloat(newExamResult.practicalMarks) || 0;
 
-      const payload = {
-        phoneNumber: searchMode === 'phone' ? watch('phoneNumber') : undefined,
-        rollNo: searchMode === 'roll' ? watch('rollNo') : undefined,
-        subjectCode: newExamResult.subjectCode,
-        subjectName: validSubjects[newExamResult.subjectCode] || 'Unknown Subject',
-        theoryMarks: parseFloat(newExamResult.theoryMarks),
-        practicalMarks: parseFloat(newExamResult.practicalMarks),
-        examDate: newExamResult.examDate.toISOString(),
-        totalMarks: parseFloat(newExamResult.theoryMarks) + parseFloat(newExamResult.practicalMarks),
-      };
-
-      const response = await api.post('/api/students/exam-result', payload);
-
-      if (response.data.success) {
-        setValue('examResults', response.data.data.examResults);
-        setNewExamResult({
-          subjectCode: '',
-          theoryMarks: '',
-          practicalMarks: '',
-          examDate: new Date(),
-        });
-        toast.success('Exam result added successfully');
-      } else {
-        toast.error('Failed to add exam result');
-      }
-    } catch (error) {
-      console.error('Error adding exam result:', error);
-      toast.error(error.response?.data?.message || 'Error adding exam result');
-    } finally {
-      setLoading(false);
+    if (theoryMarks > subjectDetails.MaxTheoryMarks || practicalMarks > subjectDetails.MaxPracticalMarks) {
+      toast.error(`Marks exceed maximum for ${newExamResult.subjectCode}`);
+      return;
     }
+
+    const newResult = {
+      subjectCode: newExamResult.subjectCode,
+      subjectName: certificationSubjectMap[watch('certificationTitle')]?.[newExamResult.subjectCode] || 'Unknown Subject',
+      theoryMarks,
+      practicalMarks,
+      examDate: newExamResult.examDate,
+      totalMarks: theoryMarks + practicalMarks,
+    };
+
+    const updatedResults = [...watch('examResults'), newResult];
+    setValue('examResults', updatedResults);
+
+    setNewExamResult({
+      subjectCode: '',
+      theoryMarks: '',
+      practicalMarks: '',
+      examDate: new Date(),
+    });
+
+    toast.success('Exam result added successfully');
+  };
+
+  const handleEditExamResult = (index) => {
+    const result = watch('examResults')[index];
+    setNewExamResult({
+      subjectCode: result.subjectCode,
+      theoryMarks: result.theoryMarks || '',
+      practicalMarks: result.practicalMarks || '',
+      examDate: result.examDate ? new Date(result.examDate) : new Date(),
+    });
+    setEditingResultIndex(index);
+  };
+
+  const handleUpdateExamResult = () => {
+    if (!newExamResult.subjectCode || !newExamResult.theoryMarks || isNaN(newExamResult.theoryMarks)) {
+      toast.error('Please fill all required exam result fields');
+      return;
+    }
+
+    const subjectDetails = SUBJECT_DETAILS[newExamResult.subjectCode];
+    const theoryMarks = parseFloat(newExamResult.theoryMarks);
+    const practicalMarks = parseFloat(newExamResult.practicalMarks) || 0;
+
+    if (theoryMarks > subjectDetails.MaxTheoryMarks || practicalMarks > subjectDetails.MaxPracticalMarks) {
+      toast.error(`Marks exceed maximum for ${newExamResult.subjectCode}`);
+      return;
+    }
+
+    const updatedResults = [...watch('examResults')];
+    updatedResults[editingResultIndex] = {
+      subjectCode: newExamResult.subjectCode,
+      subjectName: certificationSubjectMap[watch('certificationTitle')]?.[newExamResult.subjectCode] || 'Unknown Subject',
+      theoryMarks,
+      practicalMarks,
+      examDate: newExamResult.examDate,
+      totalMarks: theoryMarks + practicalMarks,
+    };
+
+    setValue('examResults', updatedResults);
+    setNewExamResult({
+      subjectCode: '',
+      theoryMarks: '',
+      practicalMarks: '',
+      examDate: new Date(),
+    });
+    setEditingResultIndex(null);
+    toast.success('Exam result updated successfully');
+  };
+
+  const handleDeleteExamResult = (index) => {
+    const updatedResults = watch('examResults').filter((_, i) => i !== index);
+    setValue('examResults', updatedResults);
+    toast.success('Exam result deleted successfully');
+  };
+
+  const handleCancelEdit = () => {
+    setNewExamResult({
+      subjectCode: '',
+      theoryMarks: '',
+      practicalMarks: '',
+      examDate: new Date(),
+    });
+    setEditingResultIndex(null);
   };
 
   const handleReset = () => {
@@ -312,8 +412,10 @@ const EditStudentForm = () => {
     setActiveStep(0);
     setInstallments([]);
     setCertificateIssued(false);
-    setNewInstallment({ amount: '', date: new Date() });
+    setNewInstallment({ amount: '', submissionDate: new Date(), paid: false });
     setNewExamResult({ subjectCode: '', theoryMarks: '', practicalMarks: '', examDate: new Date() });
+    setEditingResultIndex(null);
+    setPage(0);
     reset();
   };
 
@@ -325,7 +427,28 @@ const EditStudentForm = () => {
     setActiveStep((prev) => prev - 1);
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   const validSubjects = student?.certificationTitle ? certificationSubjectMap[student.certificationTitle] || {} : {};
+
+  if (error) {
+    return (
+      <Container>
+        <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+          <Typography color="error" variant="h6">
+            {error}
+          </Typography>
+        </Paper>
+      </Container>
+    );
+  }
 
   return (
     <div className="pt-25">
@@ -661,21 +784,37 @@ const EditStudentForm = () => {
                         label="Total Course Fees (₹)"
                         type="number"
                         variant="outlined"
-                        {...register('fees.total', {
+                        {...register('feeDetails.totalFees', {
                           required: 'Required field',
                           min: {
                             value: 0,
                             message: 'Total fees cannot be negative',
                           },
                         })}
-                        error={!!errors.fees?.total}
-                        helperText={errors.fees?.total?.message}
+                        error={!!errors.feeDetails?.totalFees}
+                        helperText={errors.feeDetails?.totalFees?.message}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Number of Installments"
+                        type="number"
+                        variant="outlined"
+                        {...register('feeDetails.installments', {
+                          required: 'Required field',
+                          min: { value: 1, message: 'Minimum 1 installment' },
+                          max: { value: 12, message: 'Maximum 12 installments' },
+                        })}
+                        error={!!errors.feeDetails?.installments}
+                        helperText={errors.feeDetails?.installments?.message}
                       />
                     </Grid>
 
                     <Grid item xs={12}>
                       <Typography variant="h6" gutterBottom>
-                        Payment History
+                        Installment Details
                       </Typography>
                       {installments.length > 0 ? (
                         <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
@@ -692,30 +831,30 @@ const EditStudentForm = () => {
                               }}
                             >
                               <Typography>
-                                ₹{inst.amount.toFixed(2)} on {new Date(inst.date).toLocaleDateString()}
+                                ₹{inst.amount.toFixed(2)} on {new Date(inst.submissionDate).toLocaleDateString()} ({inst.paid ? 'Paid' : 'Unpaid'})
                               </Typography>
                             </Box>
                           ))}
                           <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid #eee' }}>
                             <Typography variant="subtitle1">
-                              Total Paid: ₹{installments.reduce((sum, inst) => sum + parseFloat(inst.amount), 0).toFixed(2)}
+                              Total Paid: ₹{installments.reduce((sum, inst) => sum + (inst.paid ? parseFloat(inst.amount) : 0), 0).toFixed(2)}
                             </Typography>
                             <Typography variant="subtitle1">
-                              Remaining: ₹{(parseFloat(watch('fees.total') || 0) - installments.reduce((sum, inst) => sum + parseFloat(inst.amount), 0)).toFixed(2)}
+                              Remaining: ₹{(parseFloat(watch('feeDetails.totalFees') || 0) - installments.reduce((sum, inst) => sum + (inst.paid ? parseFloat(inst.amount) : 0), 0)).toFixed(2)}
                             </Typography>
                           </Box>
                         </Paper>
                       ) : (
                         <Typography variant="body1" color="textSecondary" sx={{ mb: 3 }}>
-                          No payments recorded yet
+                          No installments recorded yet
                         </Typography>
                       )}
 
                       <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>
-                        Add New Payment
+                        Add New Installment
                       </Typography>
                       <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} md={5}>
+                        <Grid item xs={12} md={4}>
                           <TextField
                             fullWidth
                             label="Amount (₹)"
@@ -728,13 +867,13 @@ const EditStudentForm = () => {
                             })}
                           />
                         </Grid>
-                        <Grid item xs={12} md={5}>
+                        <Grid item xs={12} md={4}>
                           <DatePicker
-                            label="Payment Date"
-                            value={newInstallment.date}
+                            label="Submission Date"
+                            value={newInstallment.submissionDate}
                             onChange={(date) => setNewInstallment({
                               ...newInstallment,
-                              date: date,
+                              submissionDate: date,
                             })}
                             renderInput={(params) => (
                               <TextField
@@ -743,6 +882,20 @@ const EditStudentForm = () => {
                                 variant="outlined"
                               />
                             )}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={newInstallment.paid}
+                                onChange={(e) => setNewInstallment({
+                                  ...newInstallment,
+                                  paid: e.target.checked,
+                                })}
+                              />
+                            }
+                            label="Paid"
                           />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -760,14 +913,13 @@ const EditStudentForm = () => {
                   </Grid>
                 )}
 
-{activeStep === 4 && (
+                {activeStep === 4 && (
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
                         Exam Results Management
                       </Typography>
-                      
-                      {/* Current Exam Results Table */}
+
                       <Paper elevation={2} sx={{ mb: 4 }}>
                         <TableContainer>
                           <Table>
@@ -790,7 +942,7 @@ const EditStudentForm = () => {
                                       {result.subjectName} ({result.subjectCode})
                                     </TableCell>
                                     <TableCell align="center">
-                                      {editingResultId === index ? (
+                                      {editingResultIndex === index ? (
                                         <TextField
                                           type="number"
                                           size="small"
@@ -800,13 +952,14 @@ const EditStudentForm = () => {
                                             theoryMarks: e.target.value,
                                           })}
                                           sx={{ width: 80 }}
+                                          inputProps={{ min: 0, max: SUBJECT_DETAILS[result.subjectCode]?.MaxTheoryMarks }}
                                         />
                                       ) : (
-                                        result.theoryMarks
+                                        result.theoryMarks || 0
                                       )}
                                     </TableCell>
                                     <TableCell align="center">
-                                      {editingResultId === index ? (
+                                      {editingResultIndex === index ? (
                                         <TextField
                                           type="number"
                                           size="small"
@@ -816,16 +969,17 @@ const EditStudentForm = () => {
                                             practicalMarks: e.target.value,
                                           })}
                                           sx={{ width: 80 }}
+                                          inputProps={{ min: 0, max: SUBJECT_DETAILS[result.subjectCode]?.MaxPracticalMarks }}
                                         />
                                       ) : (
-                                        result.practicalMarks
+                                        result.practicalMarks || 0
                                       )}
                                     </TableCell>
                                     <TableCell align="center">
-                                      {result.totalMarks}
+                                      {result.totalMarks || 0}
                                     </TableCell>
                                     <TableCell align="center">
-                                      {editingResultId === index ? (
+                                      {editingResultIndex === index ? (
                                         <DatePicker
                                           value={newExamResult.examDate}
                                           onChange={(date) => setNewExamResult({
@@ -845,7 +999,7 @@ const EditStudentForm = () => {
                                       )}
                                     </TableCell>
                                     <TableCell align="center">
-                                      {editingResultId === index ? (
+                                      {editingResultIndex === index ? (
                                         <>
                                           <Tooltip title="Save">
                                             <IconButton onClick={handleUpdateExamResult} color="primary">
@@ -889,9 +1043,8 @@ const EditStudentForm = () => {
                         />
                       </Paper>
 
-                      {/* Add New Exam Result Section */}
                       <Typography variant="h6" gutterBottom sx={{ mt: 3, mb: 2 }}>
-                        {editingResultId !== null ? 'Edit Exam Result' : 'Add New Exam Result'}
+                        {editingResultIndex !== null ? 'Edit Exam Result' : 'Add New Exam Result'}
                       </Typography>
                       <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
                         <Grid container spacing={2} alignItems="center">
@@ -926,7 +1079,7 @@ const EditStudentForm = () => {
                                 ...newExamResult,
                                 theoryMarks: e.target.value,
                               })}
-                              inputProps={{ min: 0, max: 100 }}
+                              inputProps={{ min: 0, max: SUBJECT_DETAILS[newExamResult.subjectCode]?.MaxTheoryMarks || 100 }}
                             />
                           </Grid>
                           <Grid item xs={12} md={2}>
@@ -941,7 +1094,7 @@ const EditStudentForm = () => {
                                 ...newExamResult,
                                 practicalMarks: e.target.value,
                               })}
-                              inputProps={{ min: 0, max: 100 }}
+                              inputProps={{ min: 0, max: SUBJECT_DETAILS[newExamResult.subjectCode]?.MaxPracticalMarks || 0 }}
                             />
                           </Grid>
                           <Grid item xs={12} md={3}>
@@ -965,14 +1118,14 @@ const EditStudentForm = () => {
                           <Grid item xs={12} md={2}>
                             <Button
                               variant="contained"
-                              onClick={editingResultId !== null ? handleUpdateExamResult : handleAddExamResult}
+                              onClick={editingResultIndex !== null ? handleUpdateExamResult : handleAddExamResult}
                               fullWidth
-                              disabled={!newExamResult.subjectCode || !newExamResult.theoryMarks || !newExamResult.practicalMarks}
-                              startIcon={editingResultId !== null ? <SaveIcon /> : <AddIcon />}
+                              disabled={!newExamResult.subjectCode || !newExamResult.theoryMarks}
+                              startIcon={editingResultIndex !== null ? <SaveIcon /> : <AddIcon />}
                             >
-                              {editingResultId !== null ? 'Update' : 'Add'}
+                              {editingResultIndex !== null ? 'Update' : 'Add'}
                             </Button>
-                            {editingResultId !== null && (
+                            {editingResultIndex !== null && (
                               <Button
                                 variant="outlined"
                                 onClick={handleCancelEdit}
@@ -987,7 +1140,6 @@ const EditStudentForm = () => {
                         </Grid>
                       </Paper>
 
-                      {/* Final Grade Selection */}
                       <Grid item xs={12} md={4} sx={{ mt: 2 }}>
                         <FormControl fullWidth>
                           <InputLabel>Final Grade</InputLabel>
@@ -1051,4 +1203,16 @@ const EditStudentForm = () => {
   );
 };
 
-export default EditStudentForm;
+// Wrap the component with providers
+const EditStudentFormWithProviders = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Toaster position="top-right" />
+        <EditStudentForm />
+      </LocalizationProvider>
+    </ThemeProvider>
+  );
+};
+
+export default EditStudentFormWithProviders;
