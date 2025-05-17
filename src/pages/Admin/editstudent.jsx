@@ -185,7 +185,7 @@ const EditStudentForm = () => {
       setLoading(true);
       const searchParam = searchMode === 'phone' ? { phoneNumber: data.phoneNumber } : { rollNo: data.rollNo };
 
-      const response = await api.get('/api/students/edit', { params: searchParam });
+      const response = await api.put('/api/students/edit', { params: searchParam });
 
       if (response.data.data) {
         const studentData = response.data.data;
