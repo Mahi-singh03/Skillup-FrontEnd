@@ -3,7 +3,7 @@ const ComingSoon = () => {
     <div className="ComingSoonContainer">
       <picture>
         <source 
-          srcSet="https://res.cloudinary.com/dufxj1sau/image/upload/v1742807382/Untitled_Project_zgwhxq_u3iqho.jpg" 
+          srcSet="https://res.cloudinary.com/dufxj1sau/image/upload/v1748493347/image_copy_wd0df8_1_wyrw2e.jpg" 
           media="(max-width: 768px)" 
         />
         <img 
